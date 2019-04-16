@@ -21,6 +21,7 @@ MIN = aantal minuten
 ## Beperkingen 
 
 Maximale T : 7
+
 Maximaal aantal minuten per traject: 120
 
 ## Toestandsruimte
