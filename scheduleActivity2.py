@@ -6,6 +6,8 @@ from vertex import Vertex
 import heapq
 import sys
 
+#fftesten
+
 minutes = 0
 
 # Makes the shortest path from v.previous
