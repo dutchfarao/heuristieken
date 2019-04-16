@@ -18,7 +18,7 @@ def shortest(v, path):
     return
 
 def dijkstra(aGraph, start, target):
-    print('Dijkstras shortest path')
+    #print('Dijkstras shortest path')
     # Set the distance for the start node to zero
     start.set_distance(0)
 
@@ -42,10 +42,10 @@ def dijkstra(aGraph, start, target):
             if new_dist < next.get_distance():
                 next.set_distance(new_dist)
                 next.set_previous(current)
-                print('updated : current = ' + current.get_id() + ' next = ' + next.get_id() + ' new_dist = ' + str(next.get_distance()))
+                #print('updated : current = ' + current.get_id() + ' next = ' + next.get_id() + ' new_dist = ' + str(next.get_distance()))
 
-            else:
-                print('not updated : current = ' + current.get_id() + ' next = ' + next.get_id() + ' new_dist = ' + str(next.get_distance()))
+            #else:
+                #print('not updated : current = ' + current.get_id() + ' next = ' + next.get_id() + ' new_dist = ' + str(next.get_distance()))
 
         # Rebuild heap
         # 1. Pop every item
@@ -54,6 +54,8 @@ def dijkstra(aGraph, start, target):
         # 2. Put all vertices not visited into the queue
         unvisited_queue = [(v.get_distance(),v) for v in aGraph if not v.visited]
         heapq.heapify(unvisited_queue)
+
+        #return reistijd
 
 if __name__ == "__main__":
 
@@ -76,12 +78,29 @@ if __name__ == "__main__":
             wid = w.get_id()
             #print( vid, wid, v.get_weight(w))
 
-    startstation = input("Van: ")
-    eindstation = input("Naar: ")
+    while True:
+        startstation = input("Van: ")
+        eindstation = input("Naar: ")
+        if startstation in stations and eindstation in stations:
+            break
+        else:
+            print("Stationsnaam onjuist")
 
     dijkstra(g, g.get_vertex(startstation), g.get_vertex(eindstation))
 
     target = g.get_vertex(eindstation)
     path = [target.get_id()]
+    reistijd = int(target.get_distance())
+    uren = 0
+    while True:
+        if reistijd > 60:
+            reistijd -= 60
+            uren +=1
+        else:
+            break
     shortest(target, path)
-    print('The shortest path :' + str((path[::-1])))
+    print('Reisadvies: ' + str((path[::-1])))
+    if uren > 0:
+        print('Reistijd:',uren,'uur en',reistijd,'minuten')
+    else:
+        print('Reistijd:',reistijd,'minuten')
