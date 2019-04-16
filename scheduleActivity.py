@@ -10,11 +10,13 @@ import random
 minutes = 0
 criticalConnections = []
 
+# The utility function, as defined in the problem description
 def utilityFunction(p, T, m):
 
     K = 10000 * (p / 20) - (T * 20 + m / 10)
     return K
 
+# Returns a random node/station from all the stations with at least one critical connection
 def randomizer():
     departure = str(random.choice(criticalConnections))
     return departure
@@ -73,9 +75,13 @@ def randomRouter():
     # The amount of searches
     for i in range(10):
 
+        # Specify the maximum amount of 'Trains' / 'Schedules'
         for j in range(7):
 
+            # Initialize a new Graph object
             g = Graph()
+
+            # Adds nodes for all stations
             for index in stations:
                 g.add_vertex(stations[index].name)
 
@@ -87,23 +93,29 @@ def randomRouter():
                 if connections[counter].cc == True:
                     criticalConnections.append(connections[counter].stat1)
 
+            # Calls the randomizer function to generate a random start and endpoint
             start = randomizer()
             end = randomizer()
 
+            # If the start and the endpoint are equal, calls randomizer again
             if start == end:
                 end = randomizer()
 
+            # Calls Dijkstra's algortihm using the start and endpoint
             dijkstra(g, g.get_vertex(start), g.get_vertex(end))
             target = g.get_vertex(end)
             path = [target.get_id()]
             shortest(target, path)
             print('The shortest path :' + str((path[::-1])))
 
+            # Updates the utility functions parameters
             m = m + int(target.get_distance())
             T = T + 1
             print('T is: ' + str(T))
             print('m is: ' + str(m))
 
+        # Prints the total utility (K) of this particular set of schedules
+        # Resets the utility functions' parameters
         K = utilityFunction(p, T, m)
         print('Value of K is: ' + str(K))
         print('----------------------------------')
