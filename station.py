@@ -11,6 +11,6 @@ class Station:
         """
         self.name = name
         self.xCoordinate = xCoordinate
-        self.yCoordinateco = yCoordinate
+        self.yCoordinate = yCoordinate
         self.critical = critical
         self.connections = []
