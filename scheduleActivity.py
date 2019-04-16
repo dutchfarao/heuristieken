@@ -72,11 +72,14 @@ if __name__ == "__main__":
         for w in v.get_connections():
             vid = v.get_id()
             wid = w.get_id()
-            print( vid, wid, v.get_weight(w))
+            #print( vid, wid, v.get_weight(w))
 
-    dijkstra(g, g.get_vertex('Alkmaar'), g.get_vertex('Dordrecht'))
+    startstation = input("Van: ")
+    eindstation = input("Naar: ")
 
-    target = g.get_vertex('Dordrecht')
+    dijkstra(g, g.get_vertex(startstation), g.get_vertex(eindstation))
+
+    target = g.get_vertex(eindstation)
     path = [target.get_id()]
     shortest(target, path)
     print('The shortest path :' + str((path[::-1])))

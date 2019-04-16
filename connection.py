@@ -12,3 +12,4 @@ class Connection(object):
         self.stat1 = station1
         self.stat2 = station2
         self.time = time
+        self.cc = False
