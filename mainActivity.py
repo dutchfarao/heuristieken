@@ -43,6 +43,9 @@ def load_connections(file):
             connection = Connection(name, id, station1, station2, time)
             connections[name] = connection
 
+            if row[3] == 'Kritiek':
+                connections[name].cc = True
+
         #connection_printer()
 
 # Can be called upon to check the contents of the dictionary 'stations'
