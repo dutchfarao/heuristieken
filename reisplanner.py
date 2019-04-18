@@ -1,5 +1,6 @@
 from train import Train
 from mainActivity import Station, Connection, connections, stations, load_stations, load_connections, INPUT_STATIONS, INPUT_CONNECTIONS
+from map import get_map
 from pprint import pprint
 from graph import Graph
 from vertex import Vertex
@@ -102,3 +103,4 @@ if __name__ == "__main__":
         print('Reistijd:',reistijd//60,'uur en',reistijd%60,'minuten')
     else:
         print('Reistijd:',reistijd,'minuten')
+    get_map(path[::-1])
