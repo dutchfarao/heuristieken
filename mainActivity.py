@@ -65,3 +65,5 @@ if __name__ == "__main__":
 
     load_stations(INPUT_STATIONS)
     load_connections(INPUT_CONNECTIONS)
+
+    print(str(len(connections)))
