@@ -1,4 +1,4 @@
-from vertex import Vertex
+from Dijkstra_vertex import Vertex
 import sys
 
 # Represents a grid of nodes/stations composed of nodes and edges

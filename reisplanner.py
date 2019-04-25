@@ -1,5 +1,6 @@
 from train import Train
 from mainActivity import Station, Connection, connections, stations, load_stations, load_connections, INPUT_STATIONS, INPUT_CONNECTIONS
+from map import get_map
 from pprint import pprint
 from graph import Graph
 from vertex import Vertex
@@ -79,12 +80,16 @@ if __name__ == "__main__":
             #print( vid, wid, v.get_weight(w))
 
     while True:
-        startstation = input("Van: ")
-        eindstation = input("Naar: ")
-        if startstation in stations and eindstation in stations:
-            break
+        startstation = input("Van: ").title()
+        eindstation = input("Naar: ").title()
+        if startstation not in stations:
+            print(startstation, "is geen bestaand station")
+            print("Bedoel je", startstation, "Centraal/Centrum?")
+        elif eindstation not in stations:
+            print(eindstation, "is geen bestaand station")
+            print("Bedoel je", eindstation, "Centraal/Centrum?")
         else:
-            print("Stationsnaam onjuist")
+            break
 
     dijkstra(g, g.get_vertex(startstation), g.get_vertex(eindstation))
 
@@ -92,15 +97,10 @@ if __name__ == "__main__":
     path = [target.get_id()]
     reistijd = int(target.get_distance())
     uren = 0
-    while True:
-        if reistijd > 60:
-            reistijd -= 60
-            uren +=1
-        else:
-            break
     shortest(target, path)
     print('Reisadvies: ' + str((path[::-1])))
-    if uren > 0:
-        print('Reistijd:',uren,'uur en',reistijd,'minuten')
+    if reistijd > 60:
+        print('Reistijd:',reistijd//60,'uur en',reistijd%60,'minuten')
     else:
         print('Reistijd:',reistijd,'minuten')
+    get_map(path[::-1])

@@ -1,8 +1,9 @@
 from train import Train
 from mainActivity import Station, Connection, connections, stations, load_stations, load_connections, INPUT_STATIONS, INPUT_CONNECTIONS
 from pprint import pprint
-from graph import Graph
-from vertex import Vertex
+from Dijkstra_graph import Graph
+from Dijkstra_vertex import Vertex
+from score import Score
 import heapq
 import sys
 import random
@@ -18,12 +19,6 @@ Connections = []
 ccStartEnd = []
 visitedCriticalConnections = []
 results = {}
-
-# The utility function, as defined in the problem description
-def utilityFunction(p, T, m):
-
-    K = (10000 * p) - (T * 20 + m / 10)
-    return K
 
 # Returns a random node/station from all the stations
 def randomizer():
@@ -102,6 +97,7 @@ def randomRouter():
     T = 0
     p = 0
     m = 0
+    minutelist = {}
 
     # for each connection, adds both nodes to the list 'Connections'
     for counter in connections:
@@ -172,16 +168,25 @@ def randomRouter():
 
             # Used to calculate the variables used for calculating K
             m = m + int(target.get_distance())
+            minutelist[j] = int(target.get_distance())
             T = T + 1
             p = ((number / 2) / 20)
 
         # Prints the total utility (K) of this particular set of schedules
         # Adds this score K, along with the 'run number (i)' to the dictionary
         # Resets the utility functions' parameters
-        K = utilityFunction(p, T, m)
+        score = Score(p, m, T)
+        score.set_K()
+        K = score.get_score()
+        print(K)
         results[i] = K
-        print('Value of K is: ' + str(K))
-        print('----------------------------------')
+
+        # Deletes the i'th entry in the dictionary if any of the routes in that entry are longer than 120 minutes
+        for index in minutelist.keys():
+            if minutelist[index] > 120:
+                print("One route in this collection is longer than 120 minutes.")
+                del results[i]
+
         print('This is the: ' + str(i) + 'th run.')
         print('----------------------------------')
         p = 0
