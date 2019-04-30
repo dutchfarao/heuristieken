@@ -46,6 +46,9 @@ def load_connections(file):
 
             g.add_connection(self, stationA, stationB, time, critical)
 
+            stations[stationA].add_neighbor(stationB, time)
+            stations[stationB].add_neighbor(stationA, time)
+
         #connection_printer()
 
 # Function to write the results to a CSV file
