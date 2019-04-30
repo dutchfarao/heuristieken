@@ -29,25 +29,25 @@ def load_stations(file):
 def load_connections(file):
 
     with open(file, newline='') as csvfile:
+
         reader = csv.reader(csvfile)
         stripe = '>'
 
-        id = 0
         for row in reader:
-            id += 1
-            station1 = row[0]
-            station2 = row[1]
-            time = row[2]
-            name = station1 + stripe + station2
 
-            connection = Connection(name, id, station1, station2, time)
+            stationA = row[0]
+            stationB = row[1]
+            time = row[2]
+            name = stationA + stripe + stationB
+
+            connection = Connection(name, stationA, stationB, time)
             connections[name] = connection
 
             if row[3] == 'Kritiek':
-                connections[name].cc = True
+                connections[name].critical = True
 
-            AddDestination(station1, station2)
-            AddDestination(station2, station1)
+            stationA.AddDestination(stationB)
+            stationB.AddDestination(stationA)
 
         #connection_printer()
 
