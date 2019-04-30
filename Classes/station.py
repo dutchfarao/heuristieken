@@ -1,21 +1,47 @@
-# Implements a station object
-class Station:
-    """
-    Representation of a station in RAILNL
-    """
+import sys
 
-    def __init__(self, name, yCoordinate, xCoordinate, critical):
-        """
-        Initializes a Station
-        """
-        self.name = name
+# Represents a node (station)
+class Station:
+
+    def __init__(self, name, xCoordinate, yCoordinate, critical):
+        self.id = name
+        self.adjacent = {}
         self.yco = yCoordinate
         self.xco = xCoordinate
         self.critical = critical
-        self.destinations = []
+        # Set distance to infinity for all nodes
+        self.distance = sys.maxsize
+        # Mark all nodes unvisited
+        self.visited = False
+        # Predecessor
+        self.previous = None
+
+    def add_neighbor(self, neighbor, weight=0):
+        self.adjacent[neighbor] = weight
+
+    def get_connections(self):
+        return self.adjacent.keys()
+
+    def get_id(self):
+        return self.id
+
+    def get_weight(self, neighbor):
+        return self.adjacent[neighbor]
+
+    def set_distance(self, dist):
+        self.distance = dist
+
+    def get_distance(self):
+        return self.distance
+
+    def set_previous(self, prev):
+        self.previous = prev
+
+    def set_visited(self):
+        self.visited = True
+
+    def __lt__(self, other):
+        return self.id < other.id
 
     def __str__(self):
-        return self.name
-
-    def AddDestination(self, dest):
-        self.destinations.append(dest)
+        return str(self.id) + ' adjacent: ' + str([x.id for x in self.adjacent])

@@ -83,6 +83,4 @@ if __name__ == "__main__":
 
     load_stations(INPUT_STATIONS)
     load_connections(INPUT_CONNECTIONS)
-    WriteScores(results)
-
-    print(str(len(connections)))
+    #WriteScores(results)

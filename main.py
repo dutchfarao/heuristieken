@@ -15,10 +15,6 @@ if __name__ == "__main__":
 
     load_stations(INPUT_STATIONS)
     load_connections(INPUT_CONNECTIONS)
-    station_printer()
-    connection_printer()
 
-    dienstregeling = Dienstvoering(1)
-    print(dienstregeling)
-
-    #WriteScores(results)
+    choiceAlgorithm = input("Please specify which algorithm you want to use. ")
+    #if choiceAlgorithm == "random":

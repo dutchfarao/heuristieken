@@ -1,38 +1,38 @@
-from vertex import Vertex
+from station import Station
 import sys
 
 # Represents a grid of nodes/stations composed of nodes and edges
 class Graph:
     def __init__(self):
-        self.vert_dict = {}
-        self.num_vertices = 0
+        self.station_dict = {}
+        self.num_stations = 0
 
     def __iter__(self):
-        return iter(self.vert_dict.values())
+        return iter(self.station_dict.values())
 
-    def add_vertex(self, node):
-        self.num_vertices = self.num_vertices + 1
-        new_vertex = Vertex(node)
-        self.vert_dict[node] = new_vertex
-        return new_vertex
+    def add_station(self, name):
+        self.num_stations = self.num_stations + 1
+        new_station = Station(name)
+        self.station_dict[name] = new_station
+        return new_station
 
-    def get_vertex(self, n):
-        if n in self.vert_dict:
-            return self.vert_dict[n]
+    def get_station(self, n):
+        if n in self.station_dict:
+            return self.station_dict[n]
         else:
             return None
 
-    def add_edge(self, frm, to, cost = 0):
-        if frm not in self.vert_dict:
-            self.add_vertex(frm)
-        if to not in self.vert_dict:
-            self.add_vertex(to)
+    def add_connection(self, frm, to, cost = 0):
+        if frm not in self.station_dict:
+            self.add_station(frm)
+        if to not in self.station_dict:
+            self.add_station(to)
 
-        self.vert_dict[frm].add_neighbor(self.vert_dict[to], cost)
-        self.vert_dict[to].add_neighbor(self.vert_dict[frm], cost)
+        self.station_dict[frm].add_neighbor(self.station_dict[to], cost)
+        self.station_dict[to].add_neighbor(self.station_dict[frm], cost)
 
-    def get_vertices(self):
-        return self.vert_dict.keys()
+    def get_stations(self):
+        return self.station_dict.keys()
 
     def set_previous(self, current):
         self.previous = current
