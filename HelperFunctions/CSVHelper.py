@@ -16,8 +16,8 @@ def load_stations(file):
 
         for row in reader:
             name = row[0]
-            xCoordinate = row[1]
-            yCoordinate = row[2]
+            yCoordinate = row[1]
+            xCoordinate = row[2]
             critical = row[3]
 
             station = Station(name, xCoordinate, yCoordinate, critical)
