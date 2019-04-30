@@ -20,7 +20,7 @@ def load_stations(file):
             xCoordinate = row[2]
             critical = row[3]
 
-            station = Station(name, xCoordinate, yCoordinate, critical)
+            station = Station(name, yCoordinate, xCoordinate, critical)
             stations[name] = station
 
         #station_printer()
