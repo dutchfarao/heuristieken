@@ -1,13 +1,14 @@
 import csv
 from Classes.station import Station
 from Classes.connection import Connection
+from Classes.graph import Graph
 
 
 INPUT_CONNECTIONS = "Data/ConnectiesHolland.csv"
 INPUT_STATIONS = "Data/StationsHolland.csv"
 stations = {}
 connections = {}
-
+g = Graph()
 # Function to load the CSV file 'StationsHolland' into a dictionary named 'stations'
 def load_stations(file):
 
@@ -21,7 +22,8 @@ def load_stations(file):
             critical = row[3]
 
             station = Station(name, yCoordinate, xCoordinate, critical)
-            stations[name] = station
+            g.add_station(station)
+
 
         #station_printer()
 
