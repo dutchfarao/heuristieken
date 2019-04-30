@@ -1,4 +1,3 @@
-from score import Score
 # Implements a Dienstvoering object
 class Dienstvoering:
     """

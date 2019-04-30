@@ -1,4 +1,5 @@
 from HelperFunctions.CSVHelper import *
+from Classes.dienstvoering import *
 
 if __name__ == "__main__":
 
@@ -17,6 +18,7 @@ if __name__ == "__main__":
     station_printer()
     connection_printer()
 
-
+    dienstregeling = Dienstvoering(1)
+    print(dienstregeling)
 
     #WriteScores(results)
