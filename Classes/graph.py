@@ -10,9 +10,9 @@ class Graph:
     def __iter__(self):
         return iter(self.station_dict.values())
 
-    def add_station(self, name):
+    def add_station(self, name, xCoordinate, yCoordinate, critical):
         self.num_stations = self.num_stations + 1
-        new_station = Station(name)
+        new_station = Station(name, xCoordinate, yCoordinate, critical)
         self.station_dict[name] = new_station
         return new_station
 
