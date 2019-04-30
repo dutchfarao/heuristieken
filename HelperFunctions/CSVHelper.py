@@ -1,10 +1,10 @@
 import csv
-from station import Station
-from connection import Connection
+from Classes.station import Station
+from Classes.connection import Connection
 
 
-INPUT_CONNECTIONS = "ConnectiesHolland.csv"
-INPUT_STATIONS = "StationsHolland.csv"
+INPUT_CONNECTIONS = "Data/ConnectiesHolland.csv"
+INPUT_STATIONS = "Data/StationsHolland.csv"
 stations = {}
 connections = {}
 

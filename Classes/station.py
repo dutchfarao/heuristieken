@@ -14,5 +14,8 @@ class Station:
         self.critical = critical
         self.destinations = []
 
+    def __str__(self):
+        return self.name
+
     def AddDestination(self, dest):
         self.destinations.append(dest)
