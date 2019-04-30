@@ -46,8 +46,8 @@ def load_connections(file):
             if row[3] == 'Kritiek':
                 connections[name].critical = True
 
-            stationA.AddDestination(stationB)
-            stationB.AddDestination(stationA)
+            stations[stationA].AddDestination(stationB)
+            stations[stationB].AddDestination(stationA)
 
         #connection_printer()
 
