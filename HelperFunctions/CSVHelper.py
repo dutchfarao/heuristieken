@@ -33,23 +33,18 @@ def load_connections(file):
     with open(file, newline='') as csvfile:
 
         reader = csv.reader(csvfile)
-        stripe = '>'
 
         for row in reader:
 
             stationA = row[0]
             stationB = row[1]
             time = row[2]
-            name = stationA + stripe + stationB
-
-            connection = Connection(name, stationA, stationB, time)
-            connections[name] = connection
-
             if row[3] == 'Kritiek':
-                connections[name].critical = True
+                critical = True
+            else :
+                critical = False
 
-            stations[stationA].AddDestination(stationB)
-            stations[stationB].AddDestination(stationA)
+            g.add_connection(self, stationA, stationB, time, critical)
 
         #connection_printer()
 
