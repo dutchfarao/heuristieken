@@ -61,7 +61,10 @@ def draw_route(map, stations, route):
         x,y = map(lon, lat)
         #label = stations[station].name
         #plt.text(x, y +5000, label, fontsize = 6)
-        map.plot(x, y, 'o', c="yellow", markeredgecolor="red", markersize=6,zorder=10)
+        if stations[station].critical == "Kritiek":
+            map.plot(x, y, 'o', c="yellow",markeredgecolor="red",markersize=6,zorder=10)
+        else:
+            map.plot(x, y, 'o', c="red",markersize=3,zorder=10)
         line_lon.append(lon)
         line_lat.append(lat)
     x,y = map(line_lon, line_lat)
