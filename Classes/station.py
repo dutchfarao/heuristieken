@@ -12,4 +12,7 @@ class Station:
         self.yco = yCoordinate
         self.xco = xCoordinate
         self.critical = critical
-        self.connections = []
+        self.destinations = []
+
+    def AddDestination(self, dest):
+        self.destinations.append(dest)

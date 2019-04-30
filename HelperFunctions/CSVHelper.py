@@ -46,6 +46,9 @@ def load_connections(file):
             if row[3] == 'Kritiek':
                 connections[name].cc = True
 
+            AddDestination(station1, station2)
+            AddDestination(station2, station1)
+
         #connection_printer()
 
 # Function to write the results to a CSV file
