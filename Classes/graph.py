@@ -22,7 +22,7 @@ class Graph:
         else:
             return None
 
-    def add_connection(self, frm, to, cost = 0, critical = False):
+    def add_connection(self, frm, to, cost = 0, critical = False, visited = False):
         if frm not in self.station_dict:
             self.add_station(frm)
         if to not in self.station_dict:

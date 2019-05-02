@@ -1,6 +1,7 @@
 from HelperFunctions.CSVHelper import *
 from Classes.dienstvoering import *
 from Classes.graph import Graph
+from Algorithms.random import *
 
 if __name__ == "__main__":
 
@@ -17,7 +18,23 @@ if __name__ == "__main__":
     load_stations(INPUT_STATIONS)
     load_connections(INPUT_CONNECTIONS)
     #print(g.station_dict)
-    print(g.station_dict["Alkmaar"].adjacent)
+    #print(g.station_dict["Alkmaar"].adjacent)
 
-    choiceAlgorithm = input("Please specify which algorithm you want to use. ")
-    #if choiceAlgorithm == "random":
+    print("Inputs are: Random, Greedy, Hillclimber or Depth-first.")
+    choiceAlgorithm = input("Please specify which algorithm you want to use: ")
+    if choiceAlgorithm == "Greedy":
+        pass
+
+    elif choiceAlgorithm == "Hillclimber":
+        pass
+
+    elif choiceAlgorithm == "Depth-first":
+        pass
+
+    elif choiceAlgorithm == "Random":
+        pass
+
+    else:
+        for i in range(1):
+            departure = randomizer()
+            randomRouter(departure[0])
