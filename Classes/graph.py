@@ -1,4 +1,4 @@
-from station import Station
+from Classes.station import Station
 import sys
 
 # Represents a grid of nodes/stations composed of nodes and edges

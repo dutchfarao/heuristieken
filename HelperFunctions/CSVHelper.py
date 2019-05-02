@@ -21,8 +21,7 @@ def load_stations(file):
             xCoordinate = row[2]
             critical = row[3]
 
-            station = Station(name, yCoordinate, xCoordinate, critical)
-            g.add_station(station)
+            g.add_station(name, yCoordinate, xCoordinate, critical)
 
 
         #station_printer()
@@ -44,10 +43,10 @@ def load_connections(file):
             else :
                 critical = False
 
-            g.add_connection(self, stationA, stationB, time, critical)
+            g.add_connection(stationA, stationB, time, critical)
 
-            stations[stationA].add_neighbor(stationB, time)
-            stations[stationB].add_neighbor(stationA, time)
+            g.station_dict[stationA].add_neighbor(stationB, time)
+            g.station_dict[stationB].add_neighbor(stationA, time)
 
         #connection_printer()
 
