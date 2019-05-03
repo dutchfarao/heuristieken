@@ -19,7 +19,10 @@ def load_stations(file):
             name = row[0]
             yCoordinate = row[1]
             xCoordinate = row[2]
-            critical = row[3]
+            if len(row) == 4 and row[3] == "Kritiek":
+                critical = True
+            else:
+                critical = False
 
             g.add_station(name, yCoordinate, xCoordinate, critical)
 
@@ -38,9 +41,9 @@ def load_connections(file):
             stationA = row[0]
             stationB = row[1]
             time = row[2]
-            if row[3] == 'Kritiek':
+            if len(row) == 4:
                 critical = True
-            else :
+            else:
                 critical = False
             visited = False
 
