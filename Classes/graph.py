@@ -1,4 +1,4 @@
-from station import Station
+from Classes.station import Station
 import sys
 
 # Represents a grid of nodes/stations composed of nodes and edges
@@ -22,7 +22,7 @@ class Graph:
         else:
             return None
 
-    def add_connection(self, frm, to, cost = 0):
+    def add_connection(self, frm, to, cost = 0, critical = False, visited = False):
         if frm not in self.station_dict:
             self.add_station(frm)
         if to not in self.station_dict:

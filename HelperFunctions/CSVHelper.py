@@ -21,8 +21,7 @@ def load_stations(file):
             xCoordinate = row[2]
             critical = row[3]
 
-            station = Station(name, yCoordinate, xCoordinate, critical)
-            g.add_station(station)
+            g.add_station(name, yCoordinate, xCoordinate, critical)
 
 
         #station_printer()
@@ -33,23 +32,22 @@ def load_connections(file):
     with open(file, newline='') as csvfile:
 
         reader = csv.reader(csvfile)
-        stripe = '>'
 
         for row in reader:
 
             stationA = row[0]
             stationB = row[1]
             time = row[2]
-            name = stationA + stripe + stationB
-
-            connection = Connection(name, stationA, stationB, time)
-            connections[name] = connection
-
             if row[3] == 'Kritiek':
-                connections[name].critical = True
+                critical = True
+            else :
+                critical = False
+            visited = False
 
-            stations[stationA].AddDestination(stationB)
-            stations[stationB].AddDestination(stationA)
+            g.add_connection(stationA, stationB, time, critical, visited)
+
+            g.station_dict[stationA].add_neighbor(stationB, time)
+            g.station_dict[stationB].add_neighbor(stationA, time)
 
         #connection_printer()
 
