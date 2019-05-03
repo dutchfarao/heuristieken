@@ -3,7 +3,7 @@ import sys
 # Represents a node (station)
 class Station:
 
-    def __init__(self, name, xCoordinate, yCoordinate, critical):
+    def __init__(self, name, yCoordinate, xCoordinate, critical):
         self.id = name
         self.adjacent = {}
         self.yco = yCoordinate
