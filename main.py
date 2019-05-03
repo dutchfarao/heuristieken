@@ -1,6 +1,7 @@
 from HelperFunctions.CSVHelper import *
 from Classes.dienstvoering import *
 from Classes.graph import Graph
+from Algorithms.greedy import *
 from Algorithms.random import *
 
 if __name__ == "__main__":
@@ -23,18 +24,19 @@ if __name__ == "__main__":
     print("Inputs are: Random, Greedy, Hillclimber or Depth-first.")
     choiceAlgorithm = input("Please specify which algorithm you want to use: ")
     if choiceAlgorithm == "Greedy":
-        pass
+        Greedy()
 
-    elif choiceAlgorithm == "Hillclimber":
-        pass
 
-    elif choiceAlgorithm == "Depth-first":
-        pass
+    #elif choiceAlgorithm == "Hillclimber":
+    #    pass
 
-    elif choiceAlgorithm == "Random":
-        pass
+    #elif choiceAlgorithm == "Depth-first":
+    #    pass
 
-    else:
-        for i in range(1):
-            departure = randomizer()
-            randomRouter(departure[0])
+    #elif choiceAlgorithm == "Random":
+    #    pass
+
+    #else:
+    #    for i in range(1):
+    #        departure = randomizer()
+    #        randomRouter(departure[0])
