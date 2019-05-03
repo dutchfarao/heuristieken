@@ -28,8 +28,8 @@ class Graph:
         if to not in self.station_dict:
             self.add_station(to)
 
-        self.station_dict[frm].add_neighbor(self.station_dict[to], cost)
-        self.station_dict[to].add_neighbor(self.station_dict[frm], cost)
+        self.station_dict[frm].add_neighbor(to, cost)
+        self.station_dict[to].add_neighbor(frm, cost)
 
     def get_stations(self):
         return self.station_dict.keys()

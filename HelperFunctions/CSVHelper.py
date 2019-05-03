@@ -46,8 +46,8 @@ def load_connections(file):
 
             g.add_connection(stationA, stationB, time, critical, visited)
 
-            g.station_dict[stationA].add_neighbor(stationB, time)
-            g.station_dict[stationB].add_neighbor(stationA, time)
+            #g.station_dict[stationA].add_neighbor(stationB, time)
+            #g.station_dict[stationB].add_neighbor(stationA, time)
 
         #connection_printer()
 
