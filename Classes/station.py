@@ -1,5 +1,6 @@
 import sys
 
+
 # Represents a node (station)
 class Station:
 
