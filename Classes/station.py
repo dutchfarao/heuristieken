@@ -3,7 +3,7 @@ import sys
 # Represents a node (station)
 class Station:
 
-    def __init__(self, name, yCoordinate, xCoordinate, critical):
+    def __init__(self, name, xCoordinate, yCoordinate, critical):
         self.id = name
         self.adjacent = {}
         self.yco = yCoordinate
@@ -39,6 +39,9 @@ class Station:
 
     def set_visited(self):
         self.visited = True
+
+    def get_critical(self):
+        return self.critical
 
     def __lt__(self, other):
         return self.id < other.id

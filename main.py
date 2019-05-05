@@ -1,5 +1,6 @@
 from HelperFunctions.CSVHelper import *
 from Classes.dienstvoering import *
+from Classes.traject import *
 from Classes.graph import Graph
 from Algorithms.greedy import *
 from Algorithms.random import *
