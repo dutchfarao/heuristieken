@@ -24,8 +24,12 @@ if __name__ == "__main__":
 
     print("Inputs are: Random, Greedy, Hillclimber or Depth-first.")
     choiceAlgorithm = input("Please specify which algorithm you want to use: ")
+
     if choiceAlgorithm == "Greedy":
         Greedy()
+
+    elif choiceAlgorithm == "Random":
+        Random()    
 
 
     #elif choiceAlgorithm == "Hillclimber":
