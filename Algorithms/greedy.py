@@ -50,13 +50,11 @@ def Greedy():
                 MIN = int((neighbors.get(key)))
                 #check if neighbor is a critical station
                 if current_station.get_critical() == True:
-                    print(current_station.get_id(), "is een kritiek station")
                     #check if critical connection is already visited
                     critical_check = d.get_critical_visited(departure, current_station)
                     #if not, add 500 to score
                     if critical_check == False:
                         score = current_score + 500 - MIN/10
-                        print(current_station.get_id(), score)
                         score_dict[key] = score
                         #else, just subtract minute amount
                     if critical_check == True:
@@ -66,7 +64,6 @@ def Greedy():
                 else:
                     #if not critical, just add minute amount
                     score = current_score - MIN/10
-                    print(current_station.get_id(), score)
                     score_dict[key] = score
             #this is where the best destination is chosen
             destination = max(score_dict, key=score_dict.get)
@@ -85,14 +82,15 @@ def Greedy():
                 critical_check = d.get_critical_visited(departure, destination)
                 if critical_check == False:
                     d.fill_critical(departure, destination)
-                    d.fill_critical(destination, departure)
                 else:
                     continue
             #set destination as new departure
             departure = destination
             #update score
             d.set_score(score)
+            print("volgende station is", departure)
             print(score)
+            
 
 
 
@@ -101,7 +99,9 @@ def Greedy():
 
 
 
-            print(TOTAL_MIN)
+        print("TOTAL_MIN = ", TOTAL_MIN)
+        print("Uiteindelijke score =", score )
+
 
 
 

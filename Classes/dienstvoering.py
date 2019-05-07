@@ -19,14 +19,7 @@ class Dienstvoering:
         self.critical_visited.append((b, a))
 
     def get_critical_visited(self, a, b):
-        #check if departure>adjacent is critical
-        key,value = a,b
-        try1 = key in self.critical_visited and value == self.critical_visited[key]
-        #check if adjacent>departure is critical
-        key,value = b,a
-        try2 = key in self.critical_visited and value == self.critical_visited[key]
-        #return True if connection is critical, else return False
-        if try1 or try2 == True:
+        if [a, b] or [b,a] in self.critical_visited:
             return True
         else:
             return False
