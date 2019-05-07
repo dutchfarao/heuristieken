@@ -93,6 +93,11 @@ def Random():
                 # E.g. {0: ('Station A', 'Station B'), 1: ('Station B', Station C')}
                 t.fill_connections(counter, current_station, next_station)
 
+                # If either current_station or next_station is a critical Station
+                # Calls the dienstvoering method fill_critical
+                if (g.station_dict[current_station].critical == True or g.station_dict[next_station].critical == True):
+                    d.fill_critical(current_station, next_station)
+
                 # Sets the new station as the current station e.g. ('Station A', '12')
                 current = next
 
@@ -103,4 +108,9 @@ def Random():
                 counter = counter + 1
 
             # Prints all connections in the current traject
+            print("All stations visited: ")
             print(t.connections_visited)
+            print("All critical connections: ")
+            print(d.critical_visited)
+            print("Number of critical connections visited: ")
+            print(len(d.critical_visited))

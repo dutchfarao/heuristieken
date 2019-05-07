@@ -15,8 +15,8 @@ class Dienstvoering:
 
     #input station of departure(a) and destinaton(b)
     def fill_critical(self, a, b):
-        self.critical_visited.[a] = b
-        self.critical_visited.[b] = a
+        self.critical_visited[a] = b
+        self.critical_visited[b] = a
 
     def get_critical_visited(self, a, b):
         #check if departure>adjacent is critical
