@@ -24,9 +24,10 @@ class Dienstvoering:
         else:
             return False
 
-    def set_score(self, p, m, t):
-        p = (20/(len(critical_visited)))
-        self.score = (10000 * self.p) - (self.t * 20 + self.m / 10)
+    def set_score(self, score):
+        #p = (20/(len(critical_visited)))
+        #self.score = (10000 * self.p) - (self.t * 20 + self.m / 10)
+        self.score = score
 
     def get_score(self):
         return self.score
