@@ -41,14 +41,21 @@ def Random():
             while (MIN < 120):
 
                 neighbors = g.station_dict[current[0]].adjacent
-                neighbors_items = []
+                print(neighbors)
+                unvisited_items = []
 
-                #for neighbor in neighbors:
-                    #if (g.station_dict[neighbor[0]].visited == False):
+                for neighbor in neighbors.items():
 
+                    visited = g.station_dict[neighbor[0]].get_visited()
+                    print(visited)
+                    print(neighbor)
+                    if (visited == False):
+                        unvisited_items.append(neighbor)
 
-                neighbors_items = list(neighbors.items())
-                next = random.choice(neighbors_items)
+                if (len(unvisited_items) == 0):
+                    break
+
+                next = random.choice(unvisited_items)
                 next_station = next[0]
                 print(neighbors_items)
                 print("Next stop: " + next_station)
