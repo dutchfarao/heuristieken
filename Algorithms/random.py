@@ -48,7 +48,7 @@ def Random():
                 # Neighbors of the current station (departure) in the form of:
                 # {'Station A': '12', 'Station B': '13', 'Station C': '7'}
                 neighbors = g.station_dict[current[0]].adjacent
-                print(neighbors)
+                #print(neighbors)
 
                 # Declare a list of unisited stations
                 unvisited_items = []
@@ -59,8 +59,8 @@ def Random():
                     # Returns True or False on the current object from neighbors
                     visited = g.station_dict[neighbor[0]].get_visited()
 
-                    print(visited)
-                    print(neighbor)
+                    #print(visited)
+                    #print(neighbor)
 
                     # If visited equals False, adds that neighbor to unvisited stations in the form
                     # neighbor = ('Station A', '12')
@@ -77,7 +77,7 @@ def Random():
 
                 # Gets the name of the station as a String e.g. 'Station A'
                 next_station = next[0]
-                print(neighbors_items)
+                #print(neighbors_items)
                 print("Next stop: " + next_station)
 
                 # Adds the amount of minutes the extra stop will take
@@ -97,6 +97,8 @@ def Random():
                 # Calls the dienstvoering method fill_critical
                 if (g.station_dict[current_station].critical == True or g.station_dict[next_station].critical == True):
                     d.fill_critical(current_station, next_station)
+                    print("------------------------------")
+                    print(d.critical_visited)
 
                 # Sets the new station as the current station e.g. ('Station A', '12')
                 current = next
@@ -114,3 +116,7 @@ def Random():
             print(d.critical_visited)
             print("Number of critical connections visited: ")
             print(len(d.critical_visited))
+            d.trajects[i] = t
+
+        print("Trajects: ")
+        print(d.trajects)

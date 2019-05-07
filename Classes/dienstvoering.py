@@ -11,12 +11,12 @@ class Dienstvoering:
         self.dienstId = dienstId
         self.score = 0
         self.trajects = {}
-        self.critical_visited = {}
+        self.critical_visited = []
 
     #input station of departure(a) and destinaton(b)
     def fill_critical(self, a, b):
-        self.critical_visited[a] = b
-        self.critical_visited[b] = a
+        self.critical_visited.append((a, b))
+        self.critical_visited.append((b, a))
 
     def get_critical_visited(self, a, b):
         #check if departure>adjacent is critical
