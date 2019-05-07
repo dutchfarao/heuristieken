@@ -19,7 +19,9 @@ class Dienstvoering:
         self.critical_visited.append((b, a))
 
     def get_critical_visited(self, a, b):
-        if [a, b] or [b,a] in self.critical_visited:
+        if ((a , b) in self.critical_visited):
+            return True
+        elif ((b, a) in self.critical_visited):
             return True
         else:
             return False
