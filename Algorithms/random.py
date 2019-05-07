@@ -12,44 +12,56 @@ def randomizer():
 # Finds a specified number of random routes
 def Random():
 
-    d = Dienstvoering(0)
+    # Specify the amount of runs
+    for runs in range(1):
 
-    # Specify the amount of routes
-    for i in range(1):
 
-        #create traject object
-        t = Traject(i)
-        MIN = 0
+        # Initializes a Dienstvoering object to store the 7 trajects
+        d = Dienstvoering(runs)
 
-        #choose random departure station
-        departure = random.choice(list(g.station_dict.keys()))
-        print("Departure is: ")
-        print(departure)
-        neighbors = g.station_dict[departure].adjacent
-        neighbors_keys = list(neighbors.keys())
-        neighbors_items = list(neighbors.items())
-        num_of_neighbors = len(neighbors)
+        # Specify the amount of routes
+        for i in range(1):
 
-        next_stop = random.choice(neighbors_items)
-        print("First stop chosen is: ")
-        MIN = int(next_stop[1])
-        print(next_stop)
-        print(MIN)
+            #create traject object
+            t = Traject(i)
+            MIN = 0
+            counter = 0
 
-        while (MIN < 120):
+            #choose random departure station
+            current = random.choice(list(g.station_dict.items()))
+            print("Departure: ")
+            print(current)
 
-            #get adjacent stations and save the number of adjacent Stations
-            neighbors = g.station_dict[next_stop[0]].adjacent
-            neighbors_keys = list(neighbors.keys())
+            neighbors = g.station_dict[current[0]].adjacent
             neighbors_items = list(neighbors.items())
-            num_of_neighbors = len(neighbors)
-            print(neighbors)
-            #print(neighbors_keys)
-            #print(neighbors_items)
-            #print(num_of_neighbors)
+            current_station = current[0]
+            g.station_dict[current_station].set_visited()
+            print("The first: " + current_station)
 
-            next_stop = random.choice(neighbors_items)
-            print("Next stop chosen is: ")
-            print(next_stop)
-            MIN = MIN + int(next_stop[1])
-            print(MIN)
+            while (MIN < 120):
+
+                neighbors = g.station_dict[current[0]].adjacent
+                neighbors_items = []
+
+                for neighbor in neighbors:
+                    if (g.station_dict[neighbor[0]].visited == False):
+                        
+
+                neighbors_items = list(neighbors.items())
+                next = random.choice(neighbors_items)
+                next_station = next[0]
+                print(neighbors_items)
+                print("Next stop: " + next_station)
+
+                MIN = MIN + int(next[1])
+                if (MIN > 120):
+                    break
+
+                current_station = current[0]
+                t.fill_connections(counter, current_station, next_station)
+
+                current = next
+                g.station_dict[current[0]].set_visited()
+                counter = counter + 1
+
+            print(t.connections_visited)

@@ -9,7 +9,7 @@ class Traject:
         """
         self.trajectId = trajectId
         self.time = 0
-        self.connections_visited = []
+        self.connections_visited = {}
 
-    def fill_connections(self, connection):
-        self.connections_visited.append(connection)
+    def fill_connections(self, a, b, c):
+        self.connections_visited[a] = b, c
