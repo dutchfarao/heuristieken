@@ -43,9 +43,9 @@ def Random():
                 neighbors = g.station_dict[current[0]].adjacent
                 neighbors_items = []
 
-                for neighbor in neighbors:
-                    if (g.station_dict[neighbor[0]].visited == False):
-                        
+                #for neighbor in neighbors:
+                    #if (g.station_dict[neighbor[0]].visited == False):
+
 
                 neighbors_items = list(neighbors.items())
                 next = random.choice(neighbors_items)
