@@ -10,13 +10,58 @@ def randomizer():
     return departure
 
 # Finds a specified number of random routes
-def randomRouter(departure):
-    # Specify the amount of routes
-    for i in range(1):
+def Random():
 
-        g.station_dict[departure].visited = True
-        unvisited = []
-        for j in g.station_dict[departure].adjacent.keys():
-            print(j)
-            #if g.station_dict[departure].adjecent[j].visited == False:
-                #unvisited.append(g.station_dict[j])
+    # Specify the amount of runs
+    for runs in range(1):
+
+
+        # Initializes a Dienstvoering object to store the 7 trajects
+        d = Dienstvoering(runs)
+
+        # Specify the amount of routes
+        for i in range(1):
+
+            #create traject object
+            t = Traject(i)
+            MIN = 0
+            counter = 0
+
+            #choose random departure station
+            current = random.choice(list(g.station_dict.items()))
+            print("Departure: ")
+            print(current)
+
+            neighbors = g.station_dict[current[0]].adjacent
+            neighbors_items = list(neighbors.items())
+            current_station = current[0]
+            g.station_dict[current_station].set_visited()
+            print("The first: " + current_station)
+
+            while (MIN < 120):
+
+                neighbors = g.station_dict[current[0]].adjacent
+                neighbors_items = []
+
+                #for neighbor in neighbors:
+                    #if (g.station_dict[neighbor[0]].visited == False):
+
+
+                neighbors_items = list(neighbors.items())
+                next = random.choice(neighbors_items)
+                next_station = next[0]
+                print(neighbors_items)
+                print("Next stop: " + next_station)
+
+                MIN = MIN + int(next[1])
+                if (MIN > 120):
+                    break
+
+                current_station = current[0]
+                t.fill_connections(counter, current_station, next_station)
+
+                current = next
+                g.station_dict[current[0]].set_visited()
+                counter = counter + 1
+
+            print(t.connections_visited)

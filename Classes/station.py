@@ -41,6 +41,9 @@ class Station:
     def set_visited(self):
         self.visited = True
 
+    def get_critical(self):
+        return self.critical
+
     def __lt__(self, other):
         return self.id < other.id
 
