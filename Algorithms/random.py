@@ -24,44 +24,83 @@ def Random():
 
             #create traject object
             t = Traject(i)
+
+            # Sets the minute and amount of stops in one traject counter to zero
             MIN = 0
             counter = 0
 
-            #choose random departure station
+            #choose random departure station in the form of: ('station' , <Classes.station.Station object>)
             current = random.choice(list(g.station_dict.items()))
             print("Departure: ")
             print(current)
 
+            # Puts the adjecent nodes into neighbors_items
             neighbors = g.station_dict[current[0]].adjacent
             neighbors_items = list(neighbors.items())
+
+            # Current Station as a string 'station', sets this station as visited in the station_dict
             current_station = current[0]
             g.station_dict[current_station].set_visited()
             print("The first: " + current_station)
 
             while (MIN < 120):
 
+                # Neighbors of the current station (departure) in the form of:
+                # {'Station A': '12', 'Station B': '13', 'Station C': '7'}
                 neighbors = g.station_dict[current[0]].adjacent
-                neighbors_items = []
+                print(neighbors)
 
-                #for neighbor in neighbors:
-                    #if (g.station_dict[neighbor[0]].visited == False):
+                # Declare a list of unisited stations
+                unvisited_items = []
 
+                # For each object in neighbors
+                for neighbor in neighbors.items():
 
-                neighbors_items = list(neighbors.items())
-                next = random.choice(neighbors_items)
+                    # Returns True or False on the current object from neighbors
+                    visited = g.station_dict[neighbor[0]].get_visited()
+
+                    print(visited)
+                    print(neighbor)
+
+                    # If visited equals False, adds that neighbor to unvisited stations in the form
+                    # neighbor = ('Station A', '12')
+                    if (visited == False):
+                        unvisited_items.append(neighbor)
+
+                # If there are no more unvisited nodes, stops the loop
+                if (len(unvisited_items) == 0):
+                    break
+
+                # Picks a random neighbor from unvisited_items
+                # neighbor = ('Station A', '12')
+                next = random.choice(unvisited_items)
+
+                # Gets the name of the station as a String e.g. 'Station A'
                 next_station = next[0]
                 print(neighbors_items)
                 print("Next stop: " + next_station)
 
+                # Adds the amount of minutes the extra stop will take
+                # If this amount adds up to more than 120, stops the loop
                 MIN = MIN + int(next[1])
                 if (MIN > 120):
                     break
 
+                # Sets the new station as the current station e.g. 'Station A'
                 current_station = current[0]
+
+                # Adds the new connection to the traject dictionary in dienstvoering
+                # E.g. {0: ('Station A', 'Station B'), 1: ('Station B', Station C')}
                 t.fill_connections(counter, current_station, next_station)
 
+                # Sets the new station as the current station e.g. ('Station A', '12')
                 current = next
+
+                # Sets the current stations' visited status to true in station_dict
                 g.station_dict[current[0]].set_visited()
+
+                # Increases the counter for the traject dictionary in dienstvoering
                 counter = counter + 1
 
+            # Prints all connections in the current traject
             print(t.connections_visited)
