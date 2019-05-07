@@ -40,6 +40,9 @@ class Station:
     def set_visited(self):
         self.visited = True
 
+    def get_visited(self):
+        return self.visited
+            
     def get_critical(self):
         return self.critical
 
