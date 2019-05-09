@@ -1,8 +1,14 @@
-from Helperfunctions/CSVHelper import load_stations, load_connections
-from station import Station
-from connection import connection
+from Classes.graph import *
+from Classes.station import *
+from random import *
+from main import *
 
-if __name__ == "__main__":
-    load_stations(INPUT_STATIONS)
-    load_connections(INPUT_CONNECTIONS)
-    print(Haarlem)
+def Hillclimber():
+
+    hillclimber_dienstvoeringen = {}
+
+    for i in range(10):
+        d = Random()
+        hillclimber_dienstvoeringen[i] = d
+
+    print(hillclimber_dienstvoeringen[0].value.score)
