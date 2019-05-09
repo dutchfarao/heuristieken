@@ -11,28 +11,25 @@ class Dienstvoering:
         self.dienstId = dienstId
         self.score = 0
         self.trajects = {}
-        self.critical_visited = {}
+        self.critical_visited = []
 
-
-    def fill_critical(self, critical):
-        self.critical_visited.append(critical)
+    #input station of departure(a) and destinaton(b)
+    def fill_critical(self, a, b):
+        self.critical_visited.append((a, b))
+        self.critical_visited.append((b, a))
 
     def get_critical_visited(self, a, b):
-        #check if departure>adjacent is critical
-        key,value = a,b
-        try1 = key in self.critical_visited and value == self.critical_visited[key]
-        #check if adjacent>departure is critical
-        key,value = b,a
-        try2 = key in self.critical_visited and value == self.critical_visited[key]
-        #return True if connection is critical, else return False
-        if try1 or try2 == True:
+        if ((a , b) in self.critical_visited):
+            return True
+        elif ((b, a) in self.critical_visited):
             return True
         else:
             return False
 
-    def set_score(self, p, m, t):
-        p = (20/(len(critical_visited)))
-        self.score = (10000 * self.p) - (self.t * 20 + self.m / 10)
+    def set_score(self, score):
+        #p = (20/(len(critical_visited)))
+        #self.score = (10000 * self.p) - (self.t * 20 + self.m / 10)
+        self.score = score
 
     def get_score(self):
         return self.score
