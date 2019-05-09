@@ -4,6 +4,7 @@ from Classes.traject import *
 from Classes.graph import Graph
 from Algorithms.greedy import *
 from Algorithms.random import *
+from Algorithms.hillclimber import *
 
 if __name__ == "__main__":
 
@@ -29,11 +30,10 @@ if __name__ == "__main__":
         Greedy()
 
     elif choiceAlgorithm == "Random":
-        Random()    
+        Random()
 
-
-    #elif choiceAlgorithm == "Hillclimber":
-    #    pass
+    elif choiceAlgorithm == "Hillclimber":
+        Hillclimber()
 
     #elif choiceAlgorithm == "Depth-first":
     #    pass
