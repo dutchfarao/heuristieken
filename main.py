@@ -4,7 +4,7 @@ from Classes.traject import *
 from Classes.graph import Graph
 from Algorithms.greedy import *
 from Algorithms.random import *
-from Algorithms.hillclimber import *
+#from Algorithms.hillclimber import *
 
 if __name__ == "__main__":
 
@@ -27,10 +27,13 @@ if __name__ == "__main__":
     choiceAlgorithm = input("Please specify which algorithm you want to use: ")
 
     if choiceAlgorithm == "Greedy":
-        Greedy()
+        random_size = int(input("Please specify the number of times (integer) you want to run Greedy: "))
+        for j in range(random_size):
+            Greedy(j)
 
     elif choiceAlgorithm == "Random":
         Random()
+
 
     elif choiceAlgorithm == "Hillclimber":
         Hillclimber()

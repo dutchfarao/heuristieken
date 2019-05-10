@@ -6,19 +6,25 @@ from HelperFunctions.CSVHelper import *
 import random
 
 # Returns a random node/station from all the stations:
-def Greedy():
-    d = Dienstvoering(0)
+def Greedy(id):
+    d = Dienstvoering(id)
+    Dienstvoering_MIN = 0
     i = 0
-    for i in range(1):
+    for i in range(6):
         #create traject object
         t = Traject(i)
+        #set all 'visited' at at the beginning of each new traject False
+        for station in list(g.station_dict.keys()):
+            station_reset = g.get_station(station)
+            station_reset.visited = False
+
         #choose random departure station
         departure = random.choice(list(g.station_dict.keys()))
-        print(departure)
+        #print(departure)
         #set visited True
         departure_station = g.get_station(departure)
         departure_station.set_visited()
-        print("Beginstation is", departure)
+        #print("Beginstation is", departure)
         TOTAL_MIN = 0
 
 
@@ -28,7 +34,7 @@ def Greedy():
             neighbors_keys = list(neighbors.keys())
             neighbors_items = list(neighbors.items())
             num_of_neighbors = len(neighbors)
-            print("Mogelijke volgende stations zijn", neighbors)
+            #print("Mogelijke volgende stations zijn", neighbors)
             #get the current score from the dienstvoering
             current_score = int(d.get_score())
             #create score_dict, we'll use this to temporarely save the scores of each adjacent station
@@ -39,11 +45,18 @@ def Greedy():
                 visited = g.get_station(neighbor).get_visited()
                 if (visited == False):
                     unvisited_items.append(neighbor)
+            #print("Stations die nog niet bezocht zijn:", unvisited_items)
+            #remove stations that are to far from options.
+            for neighbor in unvisited_items:
+                time_upgrade = int(neighbors.get(neighbor))
+                if (TOTAL_MIN + time_upgrade) > 120:
+                    unvisited_items.remove(neighbor)
 
+            #stop the traject if there are no more options
             if len(unvisited_items) == 0:
                 break
 
-                    #only look at the stations that are not yet visited for determination of destination
+            #only look at the stations that are not yet visited and not to far for determination of destination
             for key in (unvisited_items):
                 current_station = g.get_station(key)
                 #set MIN, needed for calculation of score
@@ -69,9 +82,11 @@ def Greedy():
             destination = max(score_dict, key=score_dict.get)
             #upgrade time, but check if the new total won't exceed the maximum
             time_upgrade = int(neighbors.get(destination))
+            #print(time_upgrade)
             TOTAL_MIN = TOTAL_MIN + time_upgrade
-            if (TOTAL_MIN > 120):
-                break
+            #if (TOTAL_MIN > 120):
+            #    TOTAL_MIN = TOTAL_MIN - time_upgrade
+            #    break
             #update station visited
             g.get_station(destination).set_visited()
             #update connections_visited in traject object
@@ -85,12 +100,14 @@ def Greedy():
                 else:
                     continue
             #set destination as new departure
+        #    print("Huidige station is", departure)
             departure = destination
             #update score
             d.set_score(score)
-            print("volgende station is", departure)
-            print(score)
-            
+        #    print("volgende station is", departure)
+            #print("Huidige score:", score)
+            i + 1
+            Dienstvoering_MIN = Dienstvoering_MIN + TOTAL_MIN
 
 
 
@@ -99,8 +116,13 @@ def Greedy():
 
 
 
-        print("TOTAL_MIN = ", TOTAL_MIN)
-        print("Uiteindelijke score =", score )
+
+        #print("TOTAL_MIN = ", TOTAL_MIN)
+        #print("tussenscore =", score )
+
+    #print("Dienstvoering_MIN =", Dienstvoering_MIN)
+    print("Final score= ", score)
+
 
 
 
