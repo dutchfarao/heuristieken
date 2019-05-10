@@ -5,6 +5,7 @@ from Classes.traject import *
 from HelperFunctions.CSVHelper import *
 import random
 
+scores_dict = {}
 # Returns a random node/station from all the stations:
 def Greedy(id):
     d = Dienstvoering(id)
@@ -122,6 +123,12 @@ def Greedy(id):
 
     #print("Dienstvoering_MIN =", Dienstvoering_MIN)
     print("Final score= ", score)
+    scores_dict[d.dienstId] = score
+
+def scores_dict_returner():
+    return scores_dict
+
+
 
 
 

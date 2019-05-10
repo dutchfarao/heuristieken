@@ -4,10 +4,12 @@ from Classes.traject import *
 from Classes.graph import Graph
 from Algorithms.greedy import *
 from Algorithms.random import *
+import time
 #from Algorithms.hillclimber import *
 
 if __name__ == "__main__":
 
+    scores_dict = {}
     choiceRegion = input("Dienstregeling voor heel Nederland of Noord en Zuid Holland? ")
 
     if choiceRegion == "Nederland":
@@ -28,8 +30,16 @@ if __name__ == "__main__":
 
     if choiceAlgorithm == "Greedy":
         random_size = int(input("Please specify the number of times (integer) you want to run Greedy: "))
+        start = time.time()
         for j in range(random_size):
             Greedy(j)
+        scores_dict = scores_dict_returner()
+        best_dienstvoering = max(scores_dict, key=scores_dict.get)
+        highscore = scores_dict[best_dienstvoering]
+        end = time.time()
+        time = end - start
+        print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", random_size, " | time elapsed (seconds) = ", time)
+
 
     elif choiceAlgorithm == "Random":
         Random()
