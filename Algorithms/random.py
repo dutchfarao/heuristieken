@@ -136,5 +136,5 @@ def Random(amount):
 
     print(scores_dict)
 
-def scores_dict_returner():
-    return scores_dict    
+def scores_dict_returner_random():
+    return scores_dict

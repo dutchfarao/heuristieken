@@ -125,7 +125,7 @@ def Greedy(id):
     print("Final score= ", score)
     scores_dict[d.dienstId] = score
 
-def scores_dict_returner():
+def scores_dict_returner_greedy():
     return scores_dict
 
 

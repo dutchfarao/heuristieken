@@ -34,7 +34,8 @@ if __name__ == "__main__":
         start = time.time()
         for j in range(random_size):
             Greedy(j)
-        scores_dict = scores_dict_returner()
+        scores_dict = scores_dict_returner_greedy()
+        print(scores_dict)
         best_dienstvoering = max(scores_dict, key=scores_dict.get)
         highscore = scores_dict[best_dienstvoering]
         end = time.time()
@@ -48,7 +49,7 @@ if __name__ == "__main__":
         random_size = int(input("Please specify the number of times (integer) you want to run Random: "))
         start = time.time()
         Random(random_size)
-        scores_dict = scores_dict_returner()
+        scores_dict = scores_dict_returner_random()
         best_dienstvoering = max(scores_dict, key=scores_dict.get)
         highscore = scores_dict[best_dienstvoering]
         end = time.time()
