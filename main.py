@@ -29,6 +29,7 @@ if __name__ == "__main__":
     choiceAlgorithm = input("Please specify which algorithm you want to use: ")
 
     if choiceAlgorithm == "Greedy":
+
         random_size = int(input("Please specify the number of times (integer) you want to run Greedy: "))
         start = time.time()
         for j in range(random_size):
@@ -39,10 +40,21 @@ if __name__ == "__main__":
         end = time.time()
         time = end - start
         print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", random_size, " | time elapsed (seconds) = ", time)
+        WriteScores(scores_dict, choiceAlgorithm)
 
 
     elif choiceAlgorithm == "Random":
-        Random()
+
+        random_size = int(input("Please specify the number of times (integer) you want to run Random: "))
+        start = time.time()
+        Random(random_size)
+        scores_dict = scores_dict_returner()
+        best_dienstvoering = max(scores_dict, key=scores_dict.get)
+        highscore = scores_dict[best_dienstvoering]
+        end = time.time()
+        time = end - start
+        print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", random_size, " | time elapsed (seconds) = ", time)
+        WriteScores(scores_dict, choiceAlgorithm)
 
 
     elif choiceAlgorithm == "Hillclimber":

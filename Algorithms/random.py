@@ -3,6 +3,9 @@ from Classes.station import *
 import random
 from main import *
 
+# Dictionary where all the scores will be saved
+scores_dict = {}
+
 # Returns a random node/station from all the stations:
 def randomizer():
 
@@ -10,10 +13,10 @@ def randomizer():
     return departure
 
 # Finds a specified number of random routes
-def Random():
+def Random(amount):
 
     # Specify the amount of runs
-    for runs in range(1):
+    for runs in range(amount):
 
         # Initializes a Dienstvoering object to store the 7 trajects
         d = Dienstvoering(runs)
@@ -124,4 +127,14 @@ def Random():
         #print(d.trajects)
         score = (10000 * P) - (T * 20 + MIN / 10)
         d.set_score(score)
+        scores_dict[d.dienstId] = score
+
+        print("scores_dict[d.dienstId]")
+        print(scores_dict[d.dienstId])
+        print("score")
         print(score)
+
+    print(scores_dict)
+
+def scores_dict_returner():
+    return scores_dict    

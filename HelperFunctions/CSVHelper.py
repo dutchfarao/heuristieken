@@ -55,11 +55,11 @@ def load_connections(file):
         #connection_printer()
 
 # Function to write the results to a CSV file
-def WriteScores(results):
+def WriteScores(results, choiceAlgorithm):
 
     # Location where the results will be saved (in CSV format)
-    save_location = "DijkstraRandomResults.csv"
-    csv = open(save_location, "w")
+    location = choiceAlgorithm + ".csv"
+    csv = open(location, "w")
     columnTitleRow = "run, K\n"
     csv.write(columnTitleRow)
 
