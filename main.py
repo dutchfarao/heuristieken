@@ -45,6 +45,7 @@ if __name__ == "__main__":
         time = end - start
         print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", random_size, " | time elapsed (seconds) = ", time)
         WriteScores(scores_dict, choiceAlgorithm)
+        ReadScores(choiceAlgorithm)
 
 
     elif choiceAlgorithm == "Random":
@@ -70,4 +71,4 @@ if __name__ == "__main__":
         CategoricalPlot(scores_dict)
 
     elif choiceVisualisation == "Graph":
-        GraphPlot(scores_dict)    
+        GraphPlot(scores_dict)

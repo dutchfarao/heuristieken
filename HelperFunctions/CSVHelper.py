@@ -79,9 +79,9 @@ def ReadScores(CSVName):
         reader = csv.reader(csvfile)
         next(reader, None)
         for row in reader:
-            d = Dienstvoering(row[0])
-            d.set_score(row[1])
-            scores_dict[d.dienstId] = row[1]
+            d = Dienstvoering(int(float(row[0])))
+            d.set_score(int(float(row[1])))
+            scores_dict[d.dienstId] = int(float(row[1]))
 
         return(scores_dict)
 
