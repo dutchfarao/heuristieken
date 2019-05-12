@@ -5,9 +5,12 @@ from Classes.graph import Graph
 from Algorithms.greedy import *
 from Algorithms.random import *
 import time
+from HelperFunctions.VisualisationHelper import *
+
 #from Algorithms.hillclimber import *
 
 if __name__ == "__main__":
+
 
     scores_dict = {}
     choiceRegion = input("Dienstregeling voor heel Nederland of Noord en Zuid Holland? ")
@@ -56,18 +59,15 @@ if __name__ == "__main__":
         time = end - start
         print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", random_size, " | time elapsed (seconds) = ", time)
         WriteScores(scores_dict, choiceAlgorithm)
-
+        ReadScores(choiceAlgorithm)
 
     elif choiceAlgorithm == "Hillclimber":
         Hillclimber()
 
-    #elif choiceAlgorithm == "Depth-first":
-    #    pass
+    choiceVisualisation = input("What kind of visualisation would you like? ")
+    scores_dict = ReadScores(choiceAlgorithm)
+    if choiceVisualisation == "CatPlot":
+        CategoricalPlot(scores_dict)
 
-    #elif choiceAlgorithm == "Random":
-    #    pass
-
-    #else:
-    #    for i in range(1):
-    #        departure = randomizer()
-    #        randomRouter(departure[0])
+    elif choiceVisualisation == "Graph":
+        GraphPlot(scores_dict)    
