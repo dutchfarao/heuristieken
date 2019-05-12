@@ -6,15 +6,9 @@ from main import *
 # Dictionary where all the scores will be saved
 scores_dict = {}
 
-# Returns a random node/station from all the stations:
-def randomizer():
-
-    departure = random.choice(list(g.station_dict.items()))
-    return departure
-
 # Finds a specified number of random routes
 def Random(amount):
-
+    
     # Specify the amount of runs
     for runs in range(amount):
 

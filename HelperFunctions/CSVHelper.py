@@ -2,6 +2,8 @@ import csv
 from Classes.station import Station
 from Classes.connection import Connection
 from Classes.graph import Graph
+from Classes.dienstvoering import Dienstvoering
+from HelperFunctions.VisualisationHelper import *
 
 
 INPUT_CONNECTIONS = "Data/ConnectiesHolland.csv"
@@ -68,6 +70,20 @@ def WriteScores(results, choiceAlgorithm):
         K = results[key]
         row = str(run) + ',' + str(K) + '\n'
         csv.write(row)
+
+def ReadScores(CSVName):
+
+    scores_dict = {}
+    location = CSVName + ".csv"
+    with open(location, newline='') as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader, None)
+        for row in reader:
+            d = Dienstvoering(int(float(row[0])))
+            d.set_score(int(float(row[1])))
+            scores_dict[d.dienstId] = int(float(row[1]))
+
+        return(scores_dict)
 
 # Can be called upon to check the contents of the dictionary 'stations'
 def station_printer():
