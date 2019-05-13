@@ -4,9 +4,10 @@ from Classes.traject import *
 from Classes.graph import Graph
 from Algorithms.greedy import *
 from Algorithms.random import *
-import time
-from HelperFunctions.VisualisationHelper import *
+from Algorithms.random2 import *
 from Algorithms.hillclimber import *
+from HelperFunctions.VisualisationHelper import *
+import time
 
 if __name__ == "__main__":
 
@@ -80,5 +81,5 @@ if __name__ == "__main__":
 
     elif choiceAlgorithm == "Hillclimber":
         hillclimber_size = int(input("Please specify the number of times (integer) you want to run Hillclimber: "))
-        d, P, P_traject, MIN, MIN_traject = Random(1)
+        d, P, P_traject, MIN, MIN_traject = Random2(1)
         Hillclimber(d, hillclimber_size, P, P_traject, MIN, MIN_traject)

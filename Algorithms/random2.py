@@ -13,7 +13,7 @@ def randomizer():
     return departure
 
 # Finds a specified number of random routes
-def Random(amount):
+def Random2(amount):
 
     # Specify the amount of runs
     for runs in range(amount):
@@ -23,12 +23,16 @@ def Random(amount):
         MIN = 0
         P = 0
         T = 0
+        MIN_traject = []
+        P_traject = []
 
         # Specify the amount of routes
         for i in range(7):
 
             #create traject object
             t = Traject(i)
+            P_traject.append(0)
+            MIN_traject.append(0)
 
             for station in g.station_dict:
                 g.station_dict[station].visited = False
@@ -47,7 +51,7 @@ def Random(amount):
             current_station = current[0]
             g.station_dict[current_station].set_visited()
 
-            while (MIN < 120):
+            while (MIN_traject[i] < 120):
 
                 # Neighbors of the current station (departure) in the form of:
                 # {'Station A': '12', 'Station B': '13', 'Station C': '7'}
@@ -84,8 +88,9 @@ def Random(amount):
 
                 # Adds the amount of minutes the extra stop will take
                 # If this amount adds up to more than 120, stops the loop
-                MIN = MIN + int(next[1])
-                if (MIN > 120):
+                MIN_traject[i] = MIN_traject[i] + int(next[1])
+                if (MIN_traject[i] > 120):
+                    MIN_traject[i] = MIN_traject[i] - int(next[1])
                     break
 
                 # Sets the new station as the current station e.g. 'Station A'
@@ -101,7 +106,7 @@ def Random(amount):
 
                     if (d.get_critical_visited(current_station, next_station) == False):
                         d.fill_critical(current_station, next_station)
-                        P = P + 0.05
+                        P_traject[i] = P_traject[i] + 0.05
                         #print(d.critical_visited)
 
                 # Sets the new station as the current station e.g. ('Station A', '12')
@@ -113,6 +118,10 @@ def Random(amount):
                 # Increases the counter for the traject dictionary in dienstvoering
                 counter = counter + 1
 
+            P = P + P_traject[i]
+            MIN = MIN + MIN_traject[i]
+            #print(MIN_traject[i])
+            #print(MIN)
             # Prints all connections in the current traject
             #print("All stations visited: ")
             #print(t.connections_visited)
@@ -129,12 +138,13 @@ def Random(amount):
         d.set_score(score)
         scores_dict[d.dienstId] = score
 
-        print("scores_dict[d.dienstId]")
-        print(scores_dict[d.dienstId])
-        print("score")
-        print(score)
+        #print("scores_dict[d.dienstId]")
+        #print(scores_dict[d.dienstId])
+        #print("score")
+        #print(score)
 
-    print(scores_dict)
+    #print(scores_dict)
+    return d, P, P_traject, MIN, MIN_traject
 
 def scores_dict_returner_random():
     return scores_dict
