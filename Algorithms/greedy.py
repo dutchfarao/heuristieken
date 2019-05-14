@@ -14,13 +14,26 @@ def Greedy(id):
     for i in range(6):
         #create traject object
         t = Traject(i)
+        print(i)
         #set all 'visited' at at the beginning of each new traject False
         for station in list(g.station_dict.keys()):
             station_reset = g.get_station(station)
             station_reset.visited = False
 
+
         #choose random departure station
         departure = random.choice(list(g.station_dict.keys()))
+        departure_station = g.get_station(departure)
+
+        while departure_station.critical == True:
+            departure = random.choice(list(g.station_dict.keys()))
+            departure_station = g.get_station(departure)
+            print(departure_station.critical)
+            if departure_station.critical == False:
+                break
+
+
+
         #print(departure)
         #set visited True
         departure_station = g.get_station(departure)
@@ -57,7 +70,7 @@ def Greedy(id):
             if len(unvisited_items) == 0:
                 break
 
-            #only look at the stations that are not yet visited and not to far for determination of destination
+            #only look at the stations that are not yet visited and not too far for determination of destination
             for key in (unvisited_items):
                 current_station = g.get_station(key)
                 #set MIN, needed for calculation of score

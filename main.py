@@ -63,9 +63,11 @@ if __name__ == "__main__":
         highscore = scores_dict[best_dienstvoering]
         end = time.time()
         time = end - start
-        print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", random_size, " | time elapsed (seconds) = ", time)
+        average = sum(scores_dict.values()) / float(len(scores_dict))
+        print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", random_size, " | time elapsed (seconds) = ", time, " | average = ", average)
         WriteScores(scores_dict, choiceAlgorithm)
         ReadScores(choiceAlgorithm)
+
 
 
     elif choiceAlgorithm == "Random":
