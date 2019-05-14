@@ -15,6 +15,8 @@ if __name__ == "__main__":
     data = {}
 
     choiceAction = input("Would you like to run algorithms or perform visualisations? Select 'a' or 'v'")
+
+    # If the user wants to perform visualisations
     if choiceAction == 'v':
 
             scores_dict_greedy = ReadScores("Greedy")
@@ -29,6 +31,7 @@ if __name__ == "__main__":
 
             elif choiceVisualisation == "Graph":
                 GraphPlot(scores_dict)
+
 
     choiceRegion = input("Dienstregeling voor heel Nederland of Noord en Zuid Holland? ")
 
@@ -69,8 +72,9 @@ if __name__ == "__main__":
 
         random_size = int(input("Please specify the number of times (integer) you want to run Random: "))
         start = time.time()
-        Random(random_size)
-        scores_dict = scores_dict_returner_random()
+        scores_dict = Random(random_size)
+        #scores_dict = scores_dict_returner_random()
+        #print(scores_dict)
         best_dienstvoering = max(scores_dict, key=scores_dict.get)
         highscore = scores_dict[best_dienstvoering]
         end = time.time()
