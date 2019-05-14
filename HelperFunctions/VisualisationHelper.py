@@ -13,6 +13,16 @@ def currency(x, pos):
         s = '{:1.0f}000'.format(x*1e-3)
     return s
 
+# Creates a histogram of the scores of a certain algorithm
+def HistogramPlot(scores):
+
+    scores_array = []
+    for row in scores.values():
+        scores_array.append(row)
+    plt.hist(scores_array, bins=[0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000, 8500, 9000, 9500, 10000])
+    plt.show()
+
+
 # Prints out the average, lowest and highest score for on scores_dict
 def CategoricalPlot(scores):
 
@@ -37,7 +47,7 @@ def CategoricalPlot(scores):
     plt.show()
 
 # This function calculates the lowest, highest and average K of the results of each algorithm
-def Calculator(scores_greedy, scores_random):
+def BarPlot(scores_greedy, scores_random):
 
     n_greedy = len(scores_greedy)
     n_random = len(scores_random)
@@ -67,7 +77,7 @@ def Calculator(scores_greedy, scores_random):
     ax.barh(group_names, group_data)
     labels = ax.get_xticklabels()
     plt.setp(labels, rotation=45, horizontalalignment='right')
-    ax.set(xlim=[0, 6000], xlabel='Average K', ylabel='Algorithm', title='Difference in averages')
+    ax.set(xlim=[0, 10000], xlabel='Average K', ylabel='Algorithm', title='Difference in averages')
     ax.xaxis.set_major_formatter(formatter)
     ax.axvline(average_random, ls='--', color='r')
     ax.title.set(y=1.05)

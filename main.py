@@ -24,7 +24,9 @@ if __name__ == "__main__":
             scores_dict_random = ReadScores("Random")
             #scores_dict_hillclimber =
             #scores_dict_hillclimberSA =
-            Calculator(scores_dict_greedy, scores_dict_random)
+            BarPlot(scores_dict_greedy, scores_dict_random)
+            HistogramPlot(scores_dict_random)
+            HistogramPlot(scores_dict_greedy)
             choiceVisualisation = input("What kind of visualisation would you like? ")
             scores_dict = ReadScores(choiceAlgorithm)
             if choiceVisualisation == "CatPlot":
