@@ -13,6 +13,7 @@ if __name__ == "__main__":
 
     scores_dict = {}
     data = {}
+    mapchooser = 0
 
     choiceAction = input("Would you like to run algorithms or perform visualisations? Select 'a' or 'v'")
 
@@ -36,10 +37,12 @@ if __name__ == "__main__":
     choiceRegion = input("Dienstregeling voor heel Nederland of Noord en Zuid Holland? ")
 
     if choiceRegion == "Nederland":
+        mapchooser = 1
         INPUT_CONNECTIONS = "Data/ConnectiesNationaal.csv"
         INPUT_STATIONS = "Data/StationsNationaal.csv"
 
     else:
+        mapchooser = 2
         INPUT_CONNECTIONS = "Data/ConnectiesHolland.csv"
         INPUT_STATIONS = "Data/StationsHolland.csv"
 
@@ -56,7 +59,7 @@ if __name__ == "__main__":
         random_size = int(input("Please specify the number of times (integer) you want to run Greedy: "))
         start = time.time()
         for j in range(random_size):
-            Greedy(j)
+            Greedy(j, mapchooser)
         scores_dict = scores_dict_returner_greedy()
         print(scores_dict)
         best_dienstvoering = max(scores_dict, key=scores_dict.get)
