@@ -7,14 +7,15 @@ import random
 
 scores_dict = {}
 # Returns a random node/station from all the stations:
-def Greedy(id):
+def Greedy(id, mapchooser):
     d = Dienstvoering(id)
+    #mapchoser: Nederland = 1, nood/zuid holland = 2
+    mapchooser = mapchooser
     Dienstvoering_MIN = 0
     i = 0
     for i in range(6):
         #create traject object
         t = Traject(i)
-        print(i)
         #set all 'visited' at at the beginning of each new traject False
         for station in list(g.station_dict.keys()):
             station_reset = g.get_station(station)
@@ -28,7 +29,6 @@ def Greedy(id):
         while departure_station.critical == True:
             departure = random.choice(list(g.station_dict.keys()))
             departure_station = g.get_station(departure)
-            print(departure_station.critical)
             if departure_station.critical == False:
                 break
 
@@ -53,6 +53,7 @@ def Greedy(id):
             current_score = int(d.get_score())
             #create score_dict, we'll use this to temporarely save the scores of each adjacent station
             score_dict = {}
+            score_dict1 = {}
             # check which 'neigbors have already been visited', if not, put neighbor in unvisited_items
             unvisited_items = []
             for neighbor in neighbors.keys():
@@ -75,25 +76,57 @@ def Greedy(id):
                 current_station = g.get_station(key)
                 #set MIN, needed for calculation of score
                 MIN = int((neighbors.get(key)))
-                #check if neighbor is a critical station
-                if current_station.get_critical() == True:
-                    #check if critical connection is already visited
-                    critical_check = d.get_critical_visited(departure, current_station)
-                    #if not, add 500 to score
-                    if critical_check == False:
-                        score = current_score + 500 - MIN/10
-                        score_dict[key] = score
-                        #else, just subtract minute amount
-                    if critical_check == True:
+
+                #do this for noord/zuid holland
+                if mapchooser == 2:
+                    #check if neighbor or current_station is a critical station
+                    departure_station = g.get_station(departure)
+                    if current_station.get_critical() or departure_station.get_critical() == True:
+                        #check if critical connection is already visited
+                        critical_check = d.get_critical_visited(departure, current_station)
+                        #if not, add 500 to score
+                        if critical_check == False:
+                            score = current_score + 500 - MIN/10
+                            score_dict[key] = score
+                            #else, just subtract minute amount
+                        if critical_check == True:
+                            score = current_score - MIN/10
+                            score_dict[key] = score
+                    else:
+                        #if not critical, just add minute amount
                         score = current_score - MIN/10
                         score_dict[key] = score
 
-                else:
-                    #if not critical, just add minute amount
-                    score = current_score - MIN/10
-                    score_dict[key] = score
-            #this is where the best destination is chosen
-            destination = max(score_dict, key=score_dict.get)
+                #this is where the best destination is chosen
+                destination = max(score_dict, key=score_dict.get)
+
+                if mapchooser == 1:
+                    #check if neighbor or current_station is a critical station
+                    departure_station = g.get_station(departure)
+                    if current_station.get_critical() or departure_station.get_critical() == True:
+                        #check if critical connection is already visited
+                        critical_check = d.get_critical_visited(departure, current_station)
+                        #if not, add 500 to score
+                        if critical_check == False:
+                            score = current_score + 500 - MIN/10
+                            score_dict1[key] = score
+                            #else, just subtract minute amount
+                        if critical_check == True:
+                            score = current_score - MIN/10
+                            score_dict1[key] = score
+
+                    else:
+                        #if not critical, just add minute amount
+                        score = current_score - MIN/10
+                        score_dict1[key] = score
+                #this is where the best destination is chosen
+                destination = max(score_dict, key=score_dict.get)
+
+
+
+
+
+
             #upgrade time, but check if the new total won't exceed the maximum
             time_upgrade = int(neighbors.get(destination))
             #print(time_upgrade)
@@ -135,6 +168,11 @@ def Greedy(id):
         #print("tussenscore =", score )
 
     #print("Dienstvoering_MIN =", Dienstvoering_MIN)
+    #compensate for T, this is 7*20 for noord/zuid holland and 7*20 for Nederland
+    if mapchooser == 2:
+        score = score - 120
+    if mapchooser == 1:
+        score = score - 400
     print("Final score= ", score)
     scores_dict[d.dienstId] = score
 
