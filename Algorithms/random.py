@@ -15,16 +15,22 @@ def Random(amount):
 
         # Initializes a Dienstvoering object to store the 7 trajects
         d = Dienstvoering(runs)
+        MIN_Traject = {}
+        P_Traject = {}
+        totalMinutes = 0.0
         MIN = 0.0
         P = 0.0
         T = 0
+        P_old = 0.0
+        minutes.clear()
 
         # Specify the amount of routes
         for i in range(7):
-
+            P_old = P
             #create traject object
             t = Traject(i)
 
+            # Resets the station visited tracker
             for station in g.station_dict:
                 g.station_dict[station].visited = False
 
@@ -32,10 +38,6 @@ def Random(amount):
             counter = 0
             #choose random departure station in the form of: ('station' , <Classes.station.Station object>)
             current = random.choice(list(g.station_dict.items()))
-            print("Current:")
-            print(i)
-            print(current)
-
 
             # Puts the adjecent nodes into neighbors_items
             neighbors = g.station_dict[current[0]].adjacent
@@ -60,9 +62,6 @@ def Random(amount):
 
                     # Returns True or False on the current object from neighbors
                     visited = g.station_dict[neighbor[0]].get_visited()
-
-                    #print(visited)
-                    #print(neighbor)
 
                     # If visited equals False, adds that neighbor to unvisited stations in the form
                     # neighbor = ('Station A', '12')
@@ -95,16 +94,20 @@ def Random(amount):
 
                 # If either current_station or next_station is a critical Station
                 # Calls the dienstvoering method fill_critical
-                print(current_station)
-                print(next_station)
+                #print(current_station)
+                #print(next_station)
+
                 if (g.station_dict[current_station].critical == True or g.station_dict[next_station].critical == True):
+                    d.fill_critical_HC(current_station, next_station)
+                    t.fill_critical_HC(current_station, next_station)
 
-
+                    # If the connection is not yet present in the Dienstvoering object
                     if (d.get_critical_visited(current_station, next_station) == False):
                         d.fill_critical(current_station, next_station)
-                        P = P + 0.05
-                        print("P Updated!")
-                        print(P)
+                        t.fill_critical(current_station, next_station)
+                        P = P + 0.025
+                        #print("P Updated!")
+                        #print(P)
 
                 # Sets the new station as the current station e.g. ('Station A', '12')
                 current = next
@@ -116,12 +119,23 @@ def Random(amount):
                 counter = counter + 1
 
             #Prints all connections in the current traject
-            print("All stations visited: ")
-            print(t.connections_visited)
-            print("All critical connections: ")
-            print(d.critical_visited)
-            print("Number of critical connections visited: ")
-            print(len(d.critical_visited))
+            #print("All stations visited: ")
+            #print(t.connections_visited)
+            #print("All critical connections: ")
+            #print(d.critical_visited)
+            #print("Number of critical connections visited: ")
+            #print(len(d.critical_visited))
+            t.Min_traject = MIN
+            #print("P_old:")
+            #print(P_old)
+            #print("P_new")
+            P_new = P
+            #print(P_new)
+            difference_P = P_new - P_old
+            difference_K = (10000 * difference_P) - (20 + MIN / 10)
+            #print("DIFFERENCE: ")
+            #print(difference_K)
+            t.K_traject = difference_K
             d.trajects[i] = t
             T = T + 1
             minutes.append(MIN)
@@ -130,17 +144,23 @@ def Random(amount):
 
         #print("Trajects: ")
         #print(d.trajects)
+        #for row in d.trajects.values():
+            #print(row)
+            #print(row.critical_visited)
+            #print(row.K_traject)
+
+
         totalMinutes = sum(minutes)
         score = (10000 * P) - (T * 20 + totalMinutes / 10)
-        print("Minutes: ")
-        print(totalMinutes)
+        #print("Minutes: ")
+        #print(totalMinutes)
         d.set_score(score)
-        scores_dict[d.dienstId] = score
+        scores_dict[d.dienstId] = d
 
-        print("scores_dict[d.dienstId]")
-        print(scores_dict[d.dienstId])
-        print("score")
-        print(score)
+        #print("scores_dict[d.dienstId]")
+        #print(scores_dict[d.dienstId])
+        #print("score")
+        #print(score)
 
     print(scores_dict)
     return scores_dict

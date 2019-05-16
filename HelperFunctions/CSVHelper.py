@@ -57,7 +57,7 @@ def load_connections(file):
         #connection_printer()
 
 # Function to write the results to a CSV file
-def WriteScores(results, choiceAlgorithm):
+def WriteScores(results, choiceAlgorithm, mode):
 
     # Location where the results will be saved (in CSV format)
     location = choiceAlgorithm + ".csv"
@@ -65,11 +65,22 @@ def WriteScores(results, choiceAlgorithm):
     columnTitleRow = "run, K\n"
     csv.write(columnTitleRow)
 
-    for key in results.keys():
-        run = key
-        K = results[key]
-        row = str(run) + ',' + str(K) + '\n'
-        csv.write(row)
+    if mode == 1:
+        for key in results.keys():
+            run = key
+            K = results[key]
+            row = str(run) + ',' + str(K) + '\n'
+            csv.write(row)
+
+    if mode == 2:
+        for key in results.keys():
+            #print("Key: ")
+            #print(key)
+            #print(results[key].score)
+            run = key
+            K = results[key].score
+            row = str(run) + ',' + str(K) + '\n'
+            csv.write(row)
 
 def ReadScores(CSVName):
 
