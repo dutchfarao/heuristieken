@@ -116,21 +116,21 @@ def BarPlot(scores_greedy, scores_random, scores_random_hc, scores_hc):
     plt.setp(labels, rotation=45, horizontalalignment='right')
     ax.set(xlim=[0, 10000], xlabel='Average K', ylabel='Algorithm', title='Difference in averages')
     ax.xaxis.set_major_formatter(formatter)
-    ax.axvline(average_random, ls='--', color='r')
+    ax.axvline(average_random, ls='--', color='r', linewidth=1)
     ax.title.set(y=1.05)
 
     # Annotate new companies
     for group in [0]:
-        ax.text(5000, group, "-1%", fontsize=10,
-                verticalalignment="center")
-
-    for group in [1]:
-        ax.text(5000, group, "+3%", fontsize=10,
-                verticalalignment="center")
+        ax.text(5000, group, "+61,42%", fontsize=10,
+                verticalalignment="center", horizontalalignment="left")
 
     for group in [2]:
-        ax.text(5000, group, "+12%", fontsize=10,
-                verticalalignment="center")
+        ax.text(5000, group, "-0,52%", fontsize=10,
+                verticalalignment="center", horizontalalignment="right")
+
+    for group in [3]:
+        ax.text(5000, group, "+16,86%", fontsize=10,
+                verticalalignment="center", horizontalalignment="center")
 
     plt.show()
 

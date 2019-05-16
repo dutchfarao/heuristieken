@@ -7,19 +7,19 @@ def Hillclimber2(dienstvoering_dict_HC):
 
     # First, checks the length of dienstvoering_dict
     length = len(dienstvoering_dict_HC)
-    #print("Dict:::")
-    #print(dienstvoering_dict)
+    print("Dict:::")
+    print(dienstvoering_dict_HC)
     dict_counter = 0
 
-    #print("Before: ")
-    #for row in dienstvoering_dict_HC:
-        #print(dienstvoering_dict_HC[row].get_score())
+    print("Before: ")
+    for row in dienstvoering_dict_HC:
+        print(dienstvoering_dict_HC[row].get_score())
 
     # For each dienstvoering:
     for dienstvoering in dienstvoering_dict_HC.values():
 
-        #print("Dienstvoering: ")
-        #print(dienstvoering)
+        print("Dienstvoering: ")
+        print(dienstvoering)
 
         # Initializes a dictionary to store the increases in K of each Traject
         K_dict = {}
@@ -28,35 +28,35 @@ def Hillclimber2(dienstvoering_dict_HC):
         for traject in dienstvoering.trajects.values():
 
             # Adds all changes of each Traject in K to K_dict
-            #print("Traject: ")
-            #print(traject.K_traject)
+            print("Traject: ")
+            print(traject.K_traject)
             K_dict[traject.trajectId] = traject.K_traject
 
         # Checks which of the Trajects in K_dict is the lowest
-        #print(K_dict)
+        print(K_dict)
         minimal_t = min(K_dict, key=K_dict.get)
-        #print(minimal_t)
+        print(minimal_t)
 
-        # This is the dictionary containing all of the visited critical connections in the Dienstvoering
-        #print("Before: ")
-        #print(len(dienstvoering.critical_visited_HC))
+        #This is the dictionary containing all of the visited critical connections in the Dienstvoering
+        print("Before: ")
+        print(len(dienstvoering.critical_visited_HC))
 
         # This is the dictionary containing all of the visited critical connections in the Traject
-        #print("Visited in minimal_t: ")
-        #print(len(dienstvoering.trajects[minimal_t].critical_visited_HC))
+        print("Visited in minimal_t: ")
+        print(len(dienstvoering.trajects[minimal_t].critical_visited_HC))
 
-        #print("Length after removing duplicates")
+        print("Length after removing duplicates")
         Before_Critical_Visited_No_Duplicates = list(dict.fromkeys(dienstvoering.critical_visited_HC))
         length_before = len(Before_Critical_Visited_No_Duplicates)
-        #print(length_before)
+        print(length_before)
 
         # Removes all the first instances of the critical connections visited by the minimal_t Traject
         for row in dienstvoering.trajects[minimal_t].critical_visited_HC:
             dienstvoering.critical_visited_HC.remove(row)
 
         # Checks how many critical visited connections are left after removing those visited in minimal_t
-        #print("After: ")
-        #print(len(dienstvoering.critical_visited_HC))
+        print("After: ")
+        print(len(dienstvoering.critical_visited_HC))
 
         temporary = Traject(8)
         temporary = dienstvoering.trajects[minimal_t]
@@ -163,22 +163,22 @@ def Hillclimber2(dienstvoering_dict_HC):
             #print("New Route: ")
             #print(dienstvoering.trajects[minimal_t].connections_visited)
 
-        #print("Length of critical_visited_HC after: ")
-        #print(len(dienstvoering.critical_visited_HC))
-        #print(MIN)
+        print("Length of critical_visited_HC after: ")
+        print(len(dienstvoering.critical_visited_HC))
+        print(MIN)
 
-        #print("Length after removing duplicates and adding new traject")
+        print("Length after removing duplicates and adding new traject")
         After_Critical_Visited_No_Duplicates = list(dict.fromkeys(dienstvoering.critical_visited_HC))
         length_after = len(After_Critical_Visited_No_Duplicates)
-        #print(length_after)
+        print(length_after)
         difference_P = length_after - length_before
         difference_min = MIN - min_before
-        #print(difference_P)
-        #print(difference_min)
+        print(difference_P)
+        print(difference_min)
         score = difference_P * 250 - (difference_min / 10)
-        #print("Score: ")
-        #print(score)
-        #print(dienstvoering_dict_HC[dict_counter].get_score())
+        print("Score: ")
+        print(score)
+        print(dienstvoering_dict_HC[dict_counter].get_score())
 
         if score > 0:
             dienstvoering_dict_HC[dict_counter].trajects[minimal_t].K_traject = score
@@ -190,23 +190,23 @@ def Hillclimber2(dienstvoering_dict_HC):
             dict_counter = dict_counter + 1
 
 
-    #print("After: ")
+    print("After: ")
     for dv in dienstvoering_dict_HC:
 
-        #print("Score from dienstvoering before adding up K")
-        #print(dienstvoering_dict_HC[dv].get_score())
+        print("Score from dienstvoering before adding up K")
+        print(dienstvoering_dict_HC[dv].get_score())
 
-        #print("Scores by adding up K")
+        print("Scores by adding up K")
         Score_test = 0.0
         for tc in dienstvoering_dict_HC[dv].trajects:
             #score_test = Score_test + float(dienstvoering_dict_HC[dv].trajects[tc].K_traject)
-            #print(dienstvoering_dict_HC[dv].trajects[tc].K_traject)
+            print(dienstvoering_dict_HC[dv].trajects[tc].K_traject)
             Score_test = Score_test + dienstvoering_dict_HC[dv].trajects[tc].K_traject
-            #print("Score test: ")
-            #print(Score_test)
+            print("Score test: ")
+            print(Score_test)
 
         dienstvoering_dict_HC[dv].set_score(Score_test)
-        #print("Score from dienstvoering after adding up K")
-        #print(dienstvoering_dict_HC[dv].get_score())
+        print("Score from dienstvoering after adding up K")
+        print(dienstvoering_dict_HC[dv].get_score())
 
     return dienstvoering_dict_HC

@@ -17,7 +17,7 @@ if __name__ == "__main__":
     mapchooser = 0
 
     # Allows the user to choose between runnign algorithms or performing visualisations
-    choiceAction = input("Would you like to run algorithms or perform visualisations? Select 'a' or 'v'")
+    choiceAction = input("Would you like to run algorithms or perform visualisations? Press 'v' for visuals.")
 
     # If the user wants to perform visualisations
     if choiceAction == 'v':
@@ -83,11 +83,14 @@ if __name__ == "__main__":
 
         # Calls the HillClimber algorithm using the scores from the Random algorithm and stores the return values in scores_dictionary_HC
         scores_dictionary_HC = Hillclimber2(dienstvoering_dict)
+        scores_dictionary_HC_1 = Hillclimber2(scores_dictionary_HC)
+        scores_dictionary_HC_2 = Hillclimber2(scores_dictionary_HC_1)
+
 
         # Afterwards, the new values of K are stored in K_HC_dict
         K_HC_dict = {}
-        for row in scores_dictionary_HC:
-            K_HC_dict[row] = scores_dictionary_HC[row].get_score()
+        for row in scores_dictionary_HC_2:
+            K_HC_dict[row] = scores_dictionary_HC_2[row].get_score()
 
         # Ends the timecounter and calculates running length of the algorithm
         end = time.time()
@@ -95,11 +98,11 @@ if __name__ == "__main__":
 
         # Calculates the highest value of K returned from the HillClimber algorithm
         best_dienstvoering = max(K_HC_dict, key=K_HC_dict.get)
-        highscore = scores_dictionary_HC[best_dienstvoering].get_score()
+        highscore = scores_dictionary_HC_2[best_dienstvoering].get_score()
         print("id of best dienstvoering after HC: ", best_dienstvoering, "| score: ", highscore, " | n = ", hillclimber2_size, " | time elapsed (seconds) = ", time)
 
         # Writes the scores from the Random algorithm called by HillClimber into a CSV file
-        WriteScores(scores_dictionary_HC, "RandomAfterHillClimber", 2)
+        WriteScores(scores_dictionary_HC_2, "RandomAfterHillClimber", 2)
 
     if choiceAlgorithm == "Greedy":
 
@@ -119,22 +122,33 @@ if __name__ == "__main__":
         ReadScores(choiceAlgorithm)
 
 
-
+    # If the user chooses the algorithm Random
     elif choiceAlgorithm == "Random":
 
+        # User has to input how many times Random is run
         random_size = int(input("Please specify the number of times (integer) you want to run Random: "))
+
+        # Starts the time, for comparison purposes
         start = time.time()
+
+        # Calls the Random algorithms the desired amount of times, and stores the results in scores_dict
         scores_dict = Random(random_size)
+
+        # Afterwards, the values of K are stored in K_dict
         K_dict = {}
-        print(scores_dict)
         for row in scores_dict:
             K_dict[row] = scores_dict[row].get_score()
 
+        # Calculates the highest value of K returned from the Random algorithm
         best_dienstvoering = max(K_dict, key=K_dict.get)
         highscore = K_dict[best_dienstvoering]
+
+        # Ends the timecounter
         end = time.time()
         time = end - start
         print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", random_size, " | time elapsed (seconds) = ", time)
+
+        # Writes the scores from the Random algorithm into a CSV file
         WriteScores(scores_dict, choiceAlgorithm, 2)
         ReadScores(choiceAlgorithm)
 
