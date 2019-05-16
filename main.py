@@ -16,29 +16,26 @@ if __name__ == "__main__":
     data = {}
     mapchooser = 0
 
+    # Allows the user to choose between runnign algorithms or performing visualisations
     choiceAction = input("Would you like to run algorithms or perform visualisations? Select 'a' or 'v'")
 
     # If the user wants to perform visualisations
     if choiceAction == 'v':
 
+            # Reads the scores of the algortihms from the CSV file, and stores it in a dictionary
             scores_dict_greedy = ReadScores("Greedy")
             scores_dict_random = ReadScores("Random")
             scores_dict_hillclimber_random = ReadScores("RandomHillClimber")
             scores_dict_hillclimber = ReadScores("RandomAfterHillClimber")
+
+            # Runs five visualisations: A barplot compairing all algorithms, and one histogram for each algortihm seperatly
             BarPlot(scores_dict_greedy, scores_dict_random, scores_dict_hillclimber_random, scores_dict_hillclimber)
             HistogramPlot(scores_dict_random, "Random")
             HistogramPlot(scores_dict_greedy, "Greedy")
             HistogramPlot(scores_dict_hillclimber_random, "Hillclimber Random")
             HistogramPlot(scores_dict_hillclimber, "Hillclimber")
-            choiceVisualisation = input("What kind of visualisation would you like? ")
-            scores_dict = ReadScores(choiceAlgorithm)
-            if choiceVisualisation == "CatPlot":
-                CategoricalPlot(scores_dict)
 
-            elif choiceVisualisation == "Graph":
-                GraphPlot(scores_dict)
-
-
+    # Allows the user to choose whether the Dienstregeling will be national or just for North and South Holland
     choiceRegion = input("Dienstregeling voor heel Nederland of Noord en Zuid Holland? ")
 
     if choiceRegion == "Nederland":
@@ -51,42 +48,57 @@ if __name__ == "__main__":
         INPUT_CONNECTIONS = "Data/ConnectiesHolland.csv"
         INPUT_STATIONS = "Data/StationsHolland.csv"
 
+    # Loads the data sources, after the user has selected the desired scope of the Dienstregeling
     load_stations(INPUT_STATIONS)
     load_connections(INPUT_CONNECTIONS)
-    #print(g.station_dict)
-    #print(g.station_dict["Alkmaar"].adjacent)
 
+    # Allows the user to choose which algorithm is ran
     print("Inputs are: Random, Greedy, Hillclimber or HillclimberSA.")
     choiceAlgorithm = input("Please specify which algorithm you want to use: ")
 
-    if choiceAlgorithm == "hc":
+    # If the user chooses Hillclimber
+    if choiceAlgorithm == "Hillclimber":
+
+        # User has to input how many times both Random and Hillclimber are run
         hillclimber2_size = int(input("Please specify the number of times (integer) you want to run HillClimber: "))
+
+        # Starts the time, for comparison purposes
         start = time.time()
+
+        # Calls the Random algorithms the desired amount of times, and stores the results in dienstvoering_dict
         dienstvoering_dict = Random(hillclimber2_size)
+
+        # Afterwards, the values of K are stored in K_dict
         K_dict = {}
-        #print("Scores from Random: ")
         for row in dienstvoering_dict:
             K_dict[row] = dienstvoering_dict[row].get_score()
-            print("Scores: ")
-            print(K_dict[row])
 
+        # Calculates the highest value of K returned from the Random algorithm
         best_dienstvoering = max(K_dict, key=K_dict.get)
         highscore = K_dict[best_dienstvoering]
         print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", hillclimber2_size)
+
+        # Writes the scores from the Random algorithm called by HillClimber into a CSV file
         WriteScores(dienstvoering_dict, "RandomHillClimber", 2)
 
+        # Calls the HillClimber algorithm using the scores from the Random algorithm and stores the return values in scores_dictionary_HC
         scores_dictionary_HC = Hillclimber2(dienstvoering_dict)
+
+        # Afterwards, the new values of K are stored in K_HC_dict
         K_HC_dict = {}
-        #print("Scores from Random after Hillclimber: ")
         for row in scores_dictionary_HC:
             K_HC_dict[row] = scores_dictionary_HC[row].get_score()
-            #print(K_HC_dict[row])
 
+        # Ends the timecounter and calculates running length of the algorithm
         end = time.time()
         time = end - start
+
+        # Calculates the highest value of K returned from the HillClimber algorithm
         best_dienstvoering = max(K_HC_dict, key=K_HC_dict.get)
         highscore = scores_dictionary_HC[best_dienstvoering].get_score()
         print("id of best dienstvoering after HC: ", best_dienstvoering, "| score: ", highscore, " | n = ", hillclimber2_size, " | time elapsed (seconds) = ", time)
+
+        # Writes the scores from the Random algorithm called by HillClimber into a CSV file
         WriteScores(scores_dictionary_HC, "RandomAfterHillClimber", 2)
 
     if choiceAlgorithm == "Greedy":
@@ -126,7 +138,7 @@ if __name__ == "__main__":
         WriteScores(scores_dict, choiceAlgorithm, 2)
         ReadScores(choiceAlgorithm)
 
-    elif choiceAlgorithm == "Hillclimber":
-        hillclimber_size = int(input("Please specify the number of times (integer) you want to run Hillclimber: "))
-        d, P, P_traject, MIN, MIN_traject = Random2(1)
-        Hillclimber(d, hillclimber_size, P, P_traject, MIN, MIN_traject)
+    #elif choiceAlgorithm == "Hillclimber":
+        #hillclimber_size = int(input("Please specify the number of times (integer) you want to run Hillclimber: "))
+        #d, P, P_traject, MIN, MIN_traject = Random2(1)
+        #Hillclimber(d, hillclimber_size, P, P_traject, MIN, MIN_traject)

@@ -25,13 +25,24 @@ def HistogramPlot(scores, name):
     total = sum(scores_array)
     average = total / n
 
-    plt.hist(scores_array, bins=[0, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 5500, 6000, 6500, 7000, 7500, 8000])
+    arrayticks = [0, 100, 200, 300, 400]
+
+    arraybins = []
+    bincounter = 0
+    for i in range(18):
+        bincounter = bincounter + 500
+        arraybins.append(bincounter)
+
+    plt.hist(scores_array, bins=arraybins)
 
     plt.xlabel('Value of K')
     plt.ylabel('Amount of occurences')
+    plt.yticks(arrayticks)
     plt.title(name)
-    plt.axvline(average, color='r', linestyle='dashed', linewidth=2)
-    plt.text(average + average/10, maximum - maximum/10,'Mean: {:.2f}'.format(average))
+    plt.text(100, 420, "n = 1000")
+    plt.axvline(average, label='average at x = {}'.format(average), linestyle='dashed', linewidth=2, color='r')
+    plt.tight_layout()
+    plt.legend()
     plt.show()
 
 
