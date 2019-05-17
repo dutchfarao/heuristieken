@@ -74,13 +74,17 @@ def WriteScores(results, choiceAlgorithm, mode):
 
     if mode == 2:
         for key in results.keys():
-            #print("Key: ")
-            #print(key)
-            #print(results[key].score)
             run = key
             K = results[key].score
             row = str(run) + ',' + str(K) + '\n'
             csv.write(row)
+
+    if mode == 3:
+
+        run = 0
+        row = str(run) + ',' + str(results) + '\n'
+        csv.write(row)
+
 
 def ReadScores(CSVName):
 

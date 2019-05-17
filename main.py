@@ -60,49 +60,37 @@ if __name__ == "__main__":
     if choiceAlgorithm == "Hillclimber":
 
         # User has to input how many times both Random and Hillclimber are run
-        hillclimber2_size = int(input("Please specify the number of times (integer) you want to run HillClimber: "))
+        hillclimber2_size = int(input("Please specify the number of iterations (integer) you want to run HillClimber: "))
 
         # Starts the time, for comparison purposes
         start = time.time()
 
         # Calls the Random algorithms the desired amount of times, and stores the results in dienstvoering_dict
-        dienstvoering_dict = Random(hillclimber2_size)
-
-        # Afterwards, the values of K are stored in K_dict
-        K_dict = {}
-        for row in dienstvoering_dict:
-            K_dict[row] = dienstvoering_dict[row].get_score()
+        dienstvoering_dict = Random(1)
+        dienstvoering_random = dienstvoering_dict[0]
 
         # Calculates the highest value of K returned from the Random algorithm
-        best_dienstvoering = max(K_dict, key=K_dict.get)
-        highscore = K_dict[best_dienstvoering]
-        print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", hillclimber2_size)
+        highscore = dienstvoering_random.get_score()
+        print("Random score: ")
+        print(highscore)
 
         # Writes the scores from the Random algorithm called by HillClimber into a CSV file
         WriteScores(dienstvoering_dict, "RandomHillClimber", 2)
 
         # Calls the HillClimber algorithm using the scores from the Random algorithm and stores the return values in scores_dictionary_HC
-        scores_dictionary_HC = Hillclimber2(dienstvoering_dict)
-        scores_dictionary_HC_1 = Hillclimber2(scores_dictionary_HC)
-        scores_dictionary_HC_2 = Hillclimber2(scores_dictionary_HC_1)
-
-
-        # Afterwards, the new values of K are stored in K_HC_dict
-        K_HC_dict = {}
-        for row in scores_dictionary_HC_2:
-            K_HC_dict[row] = scores_dictionary_HC_2[row].get_score()
+        dienstvoering_hillclimber = Hillclimber2(dienstvoering_random, hillclimber2_size)
 
         # Ends the timecounter and calculates running length of the algorithm
         end = time.time()
         time = end - start
 
         # Calculates the highest value of K returned from the HillClimber algorithm
-        best_dienstvoering = max(K_HC_dict, key=K_HC_dict.get)
-        highscore = scores_dictionary_HC_2[best_dienstvoering].get_score()
-        print("id of best dienstvoering after HC: ", best_dienstvoering, "| score: ", highscore, " | n = ", hillclimber2_size, " | time elapsed (seconds) = ", time)
+        highscore = dienstvoering_hillclimber.get_score()
+        print("Score after HC: ")
+        print(highscore)
 
         # Writes the scores from the Random algorithm called by HillClimber into a CSV file
-        WriteScores(scores_dictionary_HC_2, "RandomAfterHillClimber", 2)
+        WriteScores(highscore, "RandomAfterHillClimber", 3)
 
     if choiceAlgorithm == "Greedy":
 
