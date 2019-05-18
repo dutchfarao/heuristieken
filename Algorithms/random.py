@@ -7,14 +7,55 @@ from main import *
 scores_dict = {}
 minutes = []
 
+def TrajectSetter(d, traject, K_traject, Min_traject):
+
+    d.trajects[traject].K_traject = K_traject
+    d.trajects[traject].Min_traject = Min_traject
+    return d.trajects[traject]
+
+def LengthChecker(visited_hc):
+
+    temporary_critical_visited = visited_hc
+    length = len(temporary_critical_visited)
+    return length
+
+def K_trajectCalculator(length_before, length_after, MIN):
+
+    difference_length = length_after - length_before
+    K = 10000 * (difference_length / 40) - (20 + MIN / 10)
+
+    #print("MIN: ")
+    #print(MIN)
+    print("K:")
+    print(K)
+    return K
+
+def K_trajectSumFunctionality(dienstvoering):
+
+    K_temporary = 0.0
+    for traject in dienstvoering.trajects.values():
+
+        K_temporary = K_temporary + traject.K_traject
+
+    return K_temporary
+
+def DuplicateRemover(input):
+
+    # Removes all duplicate critical connections visited in the Dienstvoering's critical_visited_HC
+    Before_Duplicate_removal = input
+    Before_Critical_Visited_No_Duplicates = list(dict.fromkeys(Before_Duplicate_removal))
+    #print("Duplicateremover")
+    #print(value)
+    return Before_Critical_Visited_No_Duplicates
+
 # Finds a specified number of random routes
 def Random(amount):
 
     # Specify the amount of runs
-    for runs in range(amount):
+    for dienstvoering in range(amount):
 
         # Initializes a Dienstvoering object to store the 7 trajects
-        d = Dienstvoering(runs)
+        d = Dienstvoering(dienstvoering)
         MIN_Traject = {}
         P_Traject = {}
         totalMinutes = 0.0
@@ -25,10 +66,19 @@ def Random(amount):
         minutes.clear()
 
         # Specify the amount of routes
-        for i in range(7):
+        for traject in range(7):
+
+            temporary = d.critical_visited_HC
+            remove_duplicates = DuplicateRemover(temporary)
+            length_before = LengthChecker(remove_duplicates)
+
+            #print("length_before after removing duplicates: ")
+            #print(length_before)
+
             P_old = P
             #create traject object
-            t = Traject(i)
+            t = Traject(traject)
+            d.trajects[traject] = t
 
             # Resets the station visited tracker
             for station in g.station_dict:
@@ -36,6 +86,7 @@ def Random(amount):
 
             # Sets the minute and amount of stops in one traject counter to zero
             counter = 0
+
             #choose random departure station in the form of: ('station' , <Classes.station.Station object>)
             current = random.choice(list(g.station_dict.items()))
 
@@ -76,6 +127,9 @@ def Random(amount):
                 # neighbor = ('Station A', '12')
                 next = random.choice(unvisited_items)
 
+                if (MIN + float(next[1]) > 120):
+                    break
+
                 # Gets the name of the station as a String e.g. 'Station A'
                 next_station = next[0]
 
@@ -101,14 +155,6 @@ def Random(amount):
                     d.fill_critical_HC(current_station, next_station)
                     t.fill_critical_HC(current_station, next_station)
 
-                    # If the connection is not yet present in the Dienstvoering object
-                    if (d.get_critical_visited(current_station, next_station) == False):
-                        d.fill_critical(current_station, next_station)
-                        t.fill_critical(current_station, next_station)
-                        P = P + 0.025
-                        #print("P Updated!")
-                        #print(P)
-
                 # Sets the new station as the current station e.g. ('Station A', '12')
                 current = next
 
@@ -118,49 +164,27 @@ def Random(amount):
                 # Increases the counter for the traject dictionary in dienstvoering
                 counter = counter + 1
 
-            #Prints all connections in the current traject
-            #print("All stations visited: ")
-            #print(t.connections_visited)
-            #print("All critical connections: ")
-            #print(d.critical_visited)
-            #print("Number of critical connections visited: ")
-            #print(len(d.critical_visited))
-            t.Min_traject = MIN
-            #print("P_old:")
-            #print(P_old)
-            #print("P_new")
-            P_new = P
-            #print(P_new)
-            difference_P = P_new - P_old
-            difference_K = (10000 * difference_P) - (20 + MIN / 10)
-            #print("DIFFERENCE: ")
-            #print(difference_K)
-            t.K_traject = difference_K
-            d.trajects[i] = t
+            temporary = d.critical_visited_HC
+            remove_duplicates = DuplicateRemover(temporary)
+            length_after = LengthChecker(remove_duplicates)
+
+            K_traject = K_trajectCalculator(length_before, length_after, MIN)
+            min_traject = MIN
+
+            t = TrajectSetter(d, traject, K_traject, min_traject)
+            print("Route taken: ")
+            print(t.connections_visited)
+
+            d.trajects[traject] = t
             T = T + 1
             minutes.append(MIN)
             MIN = 0
 
-
-        #print("Trajects: ")
-        #print(d.trajects)
-        #for row in d.trajects.values():
-            #print(row)
-            #print(row.critical_visited)
-            #print(row.K_traject)
-
-
-        totalMinutes = sum(minutes)
-        score = (10000 * P) - (T * 20 + totalMinutes / 10)
-        #print("Minutes: ")
-        #print(totalMinutes)
+        print("K dienstvoering")
+        score = K_trajectSumFunctionality(d)
         d.set_score(score)
         scores_dict[d.dienstId] = d
-
-        #print("scores_dict[d.dienstId]")
-        #print(scores_dict[d.dienstId])
-        #print("score")
-        #print(score)
+        print(score)
 
     print(scores_dict)
     return scores_dict
