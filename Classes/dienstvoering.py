@@ -13,6 +13,7 @@ class Dienstvoering:
         self.trajects = {}
         self.critical_visited = []
         self.critical_visited_HC = []
+        self.minutes = 0
 
     #input station of departure(a) and destinaton(b)
     def fill_critical(self, a, b):

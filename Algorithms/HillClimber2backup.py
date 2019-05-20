@@ -3,43 +3,6 @@ from Classes.station import *
 from main import *
 import random
 
-scores_list = {}
-
-def SetAppendingFunctionality(dienstvoering):
-
-    # Initializes a set used to contain the critical visited connections
-    critical_visited_set = {}
-    critical_visited_set = set()
-    critical_visited_set.clear()
-
-    # Loops through all the trajects in the Dienstvoering
-    for traject in dienstvoering.trajects.values():
-
-        # Loops through all the visited critical connections in the Traject and appends them to a set
-        for connection in traject.critical_visited_HC:
-            critical_visited_set.add(connection)
-
-    length = len(critical_visited_set)
-
-    return length
-
-def MinutesCalculator(dienstvoering):
-
-    minutes = 0
-
-    # Loops through all the trajects in the Dienstvoering
-    for traject in dienstvoering.trajects.values():
-
-        # Loops through all the visited critical connections in the Traject and appends them to a set
-        minutes = minutes + traject.Min_traject
-
-    return minutes
-
-def SetScoreCalculator(length, minutes, dienstvoering):
-
-    score = 10000 * (length / 40) - (140 + minutes / 10)
-    return score
-
 def TrajectCopier(dienstvoering, random_t):
 
     temporary = Traject(8)
@@ -52,16 +15,6 @@ def TrajectCopier(dienstvoering, random_t):
     temporary.Min_traject = dienstvoering.trajects[random_t].Min_traject
 
     return temporary
-
-def DienstvoeringCopier(dienstvoering):
-
-    temporary_dienstvoering = Dienstvoering(8)
-    temporary_dienstvoering.score = dienstvoering.score
-    temporary_dienstvoering.trajects = dienstvoering.trajects
-    temporary_dienstvoering.critical_visited = dienstvoering.critical_visited
-    temporary_dienstvoering.critical_visited_HC = dienstvoering.critical_visited_HC
-
-    return temporary_dienstvoering
 
 def CorrectnessChecker(dienstvoering):
 
@@ -86,15 +39,21 @@ def K_trajectSumFunctionality(dienstvoering):
 
     return K_temporary
 
-def DecisionFunctionality(score_before, score_after, dienstvoering, temporary_dienstvoering, temporary_traject, random_t):
+def DecisionFunctionality(score, MIN, dienstvoering, temporary, random_t, score_before):
 
     print("Entering DecisionFunctionality")
     # If the score of the Traject is an improvement
-    if score_after >= score_before:
+    if score > 0:
+
+        score_before = temporary.K_traject
+        score = score + score_before
+        # Sets the values of K_traject and Min_traject to their new values
+        dienstvoering.trajects[random_t].K_traject = score
+        dienstvoering.trajects[random_t].Min_traject = MIN
 
         print("The score was determined to be an improvement")
         print("The score is: ")
-        print(score_after)
+        print(score)
         print("The score before is: ")
         print(score_before)
 
@@ -103,20 +62,26 @@ def DecisionFunctionality(score_before, score_after, dienstvoering, temporary_di
             dienstvoering.critical_visited_HC.append(row)
 
         # Removes all the first instances of the critical connections visited by the old (now replaced) Traject
-        for row in temporary_traject.critical_visited_HC:
+        for row in temporary.critical_visited_HC:
             dienstvoering.critical_visited_HC.remove(row)
 
-        dienstvoering.set_score(score_after)
+
 
     # If the score is not an improvement
     else:
 
+        score = score
         print("The score was NOT determined to be an improvement")
+        print("The score is: ")
+        print(score)
 
         # Resets the random_t Traject to its old values
-        dienstvoering.trajects[random_t] = temporary_traject
-        dienstvoering = temporary_dienstvoering
+        dienstvoering.trajects[random_t] = temporary
+        print("Score of the temporary traject placeholder: ")
+        print(temporary.K_traject)
 
+    print("Value of dienstvoering.trajects[random_t].K_traject inside DecisionFunctionality")
+    print(dienstvoering.trajects[random_t].K_traject)
     return dienstvoering
 
 def TrajectChooser():
@@ -158,10 +123,14 @@ def RandomRoutingFunctionality(dienstvoering, random_t):
 
     #choose random departure station in the form of: ('station' , <Classes.station.Station object>)
     current = random.choice(list(g.station_dict.items()))
+    print("Current: ")
+    print(current)
 
     # Puts the adjecent nodes into neighbors_items
     neighbors = g.station_dict[current[0]].adjacent
     neighbors_items = list(neighbors.items())
+    print("neighbors_items")
+    print(neighbors_items)
 
     # Current Station as a string 'station', sets this station as visited in the station_dict
     current_station = current[0]
@@ -172,6 +141,8 @@ def RandomRoutingFunctionality(dienstvoering, random_t):
         # Neighbors of the current station (departure) in the form of:
         # {'Station A': '12', 'Station B': '13', 'Station C': '7'}
         neighbors = g.station_dict[current[0]].adjacent
+        print("neighbors")
+        print(neighbors)
 
         # Declare a list of unisited stations
         unvisited_items = []
@@ -187,6 +158,9 @@ def RandomRoutingFunctionality(dienstvoering, random_t):
             if (visited == False):
                 unvisited_items.append(neighbor)
 
+        print("unvisited_items")
+        print(unvisited_items)
+
         # If there are no more unvisited nodes, stops the loop
         if (len(unvisited_items) == 0):
             break
@@ -198,9 +172,14 @@ def RandomRoutingFunctionality(dienstvoering, random_t):
         # Gets the name of the station as a String e.g. 'Station A'
         next_station = next[0]
 
+        print("next_station")
+        print(next_station)
+
         # Adds the amount of minutes the extra stop will take
         # If this amount adds up to more than 120, stops the loop
         MIN = MIN + float(next[1])
+        print("MIN")
+        print(MIN)
 
         if (MIN > 120):
             break
@@ -225,11 +204,10 @@ def RandomRoutingFunctionality(dienstvoering, random_t):
         # Sets the current stations' visited status to true in station_dict
         g.station_dict[current[0]].set_visited()
 
-    dienstvoering.trajects[random_t].Min_traject = MIN
     dienstvoering.trajects[random_t].time = MIN
-    #print("NEW ROUTE: ")
-    #print(dienstvoering.trajects[random_t].connections_visited)
-    #print("___________________________________________________")
+    print("NEW ROUTE: ")
+    print(dienstvoering.trajects[random_t].connections_visited)
+    print("___________________________________________________")
 
     return dienstvoering
 
@@ -241,59 +219,110 @@ def Hillclimber2(dienstvoering, iter):
     # Repeats the Hillclimber algorithm the desired amount of times
     for m in range(iter):
 
-        # length_before = 0
-        # minutes_before = 0
-        # score_before = 0
-        # length_after = 0
-        # minutes_after = 0
-        # score_after = 0
+        CorrectnessChecker(dienstvoering)
 
-        length_before = SetAppendingFunctionality(dienstvoering)
-        minutes_before = MinutesCalculator(dienstvoering)
-        score_before = SetScoreCalculator(length_before, minutes_before, dienstvoering)
+        # Initializes a dictionary to store the increases in K of each Traject
+        K_dict.clear()
 
-        print("Length_before, minutes_before and score_before")
-        print(length_before)
-        print(minutes_before)
-        print(score_before)
+        # For each Traject in the dienstvoering:
+        for traject in dienstvoering.trajects.values():
+
+            # Adds all changes of each Traject in K to K_dict
+            K_dict[traject.trajectId] = traject.K_traject
 
         # Randomly selects one Traject in the Dienstvoering to swap
         random_t = TrajectChooser()
+        print(random_t)
+        print("OLD ROUTE: ")
+        print(dienstvoering.trajects[random_t].connections_visited)
+        print(dienstvoering.trajects[random_t].Min_traject)
+        print("____________________________________________")
+        #print("-------------------------------------------------")
+        #print("The score of the chosen traject is: ")
+        #print(dienstvoering.trajects[random_t].K_traject)
+        #print("-------------------------------------------------")
+
+        #This is a list containing all of the visited critical connections (including duplicates) in the Dienstvoering
+        temporary_dienstvoering_before = dienstvoering.critical_visited_HC
+        #print("Dienstvoering.critical_visited_HC")
+        #print(len(dienstvoering.critical_visited_HC))
+        #print(dienstvoering.critical_visited_HC)
+        #print("_______________________________________________")
+        print("temporary_dienstvoering_before")
+        print(len(temporary_dienstvoering_before))
+        print(temporary_dienstvoering_before)
+        print("_______________________________________________")
+
+        print("dienstvoering.trajects[random_t].critical_visited_HC")
+        print(len(dienstvoering.trajects[random_t].critical_visited_HC))
+        print(dienstvoering.trajects[random_t].critical_visited_HC)
+        print("_______________________________________________")
+
+
+        # Removes all the first instances of the critical connections visited by the random_t Traject
+        for row in dienstvoering.trajects[random_t].critical_visited_HC:
+            temporary_dienstvoering_before.remove(row)
+
+        print("temporary_dienstvoering_before after removing first instances")
+        print(len(temporary_dienstvoering_before))
+        print(temporary_dienstvoering_before)
+        print("_______________________________________________")
+
+        # Calls DuplicateRemover
+        temporary_dienstvoering_before = DuplicateRemover(temporary_dienstvoering_before)
+        length_before = len(temporary_dienstvoering_before)
+
+        print("temporary_dienstvoering_before after removing duplicates")
+        print(len(temporary_dienstvoering_before))
+        print(temporary_dienstvoering_before)
+        print("_______________________________________________")
 
         # Initializes a new, temporary Traject object to store the values of the randomly chosen Traject
-        temporary_traject = TrajectCopier(dienstvoering, random_t)
-        temporary_dienstvoering = DienstvoeringCopier(dienstvoering)
+        temporary = TrajectCopier(dienstvoering, random_t)
+
+        # Stores the amount of minutes the random_t Traject took
+        min_before = dienstvoering.trajects[random_t].Min_traject
+        score_before = dienstvoering.trajects[random_t].K_traject
 
         # Resetting the minimal_t Traject
         dienstvoering.trajects[random_t] = random_tResetter(dienstvoering, random_t)
 
         # Calls the RandomRoutingFunctionality
         dienstvoering = RandomRoutingFunctionality(dienstvoering, random_t)
+        temporary_dienstvoering_after = dienstvoering.critical_visited_HC
+        print("temporary_dienstvoering_after after running RandomRoutingFunctionality")
+        print(len(temporary_dienstvoering_after))
+        print(temporary_dienstvoering_after)
+        print("_______________________________________________")
 
-        length_after = SetAppendingFunctionality(dienstvoering)
-        minutes_after = MinutesCalculator(dienstvoering)
-        score_after = SetScoreCalculator(length_after, minutes_after, dienstvoering)
+        # Calls DuplicateRemover and looks up the new duration of the new traject
+        temporary_dienstvoering_after = DuplicateRemover(temporary_dienstvoering_after)
+        print("temporary_dienstvoering_after after running RandomRoutingFunctionality and after removing duplicates")
+        print(len(temporary_dienstvoering_after))
+        print(temporary_dienstvoering_after)
+        print("_______________________________________________")
 
-        print("Length_after, minutes_after and score_after")
-        print(length_after)
-        print(minutes_after)
-        print(score_after)
+        length_after = len(temporary_dienstvoering_after)
+        minutes_after = dienstvoering.trajects[random_t].time
 
-        dienstvoering = DecisionFunctionality(score_before, score_after, dienstvoering, temporary_dienstvoering, temporary_traject, random_t)
+        # Calculates the new values of P and Min
+        difference_P = length_after - length_before
+        difference_min = minutes_after - min_before
+        print("difference_P")
+        print(difference_P)
+
+        # Calculates the new potential score and calls DecisionFunctionality with this score
+        score_t = 10000 * (difference_P / 40) - (difference_min / 10)
+        dienstvoering = DecisionFunctionality(score_t, minutes_after, dienstvoering, temporary, random_t, score_before)
+        print("Value of dienstvoering.trajects[random_t].K_traject after returning DecisionFunctionality")
+        print(dienstvoering.trajects[random_t].K_traject)
+        print(random_t)
+        print("Score_T")
+        print(score_t)
 
         # Calculates the total score of the dienstvoering
-        final_score = dienstvoering.score
+        final_score = K_trajectSumFunctionality(dienstvoering)
         print("Final Score")
         print(final_score)
-        scores_list[m] = final_score
-        print(scores_list)
-
-        print("___________________________________________________")
-        print("NEW ROUTE")
-        print("___________________________________________________")
-
-        print("---------------------------------------------------")
-        print(scores_list)
-        print("---------------------------------------------------")
 
     return dienstvoering

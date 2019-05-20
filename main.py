@@ -139,8 +139,3 @@ if __name__ == "__main__":
         # Writes the scores from the Random algorithm into a CSV file
         WriteScores(scores_dict, choiceAlgorithm, 2)
         ReadScores(choiceAlgorithm)
-
-    #elif choiceAlgorithm == "Hillclimber":
-        #hillclimber_size = int(input("Please specify the number of times (integer) you want to run Hillclimber: "))
-        #d, P, P_traject, MIN, MIN_traject = Random2(1)
-        #Hillclimber(d, hillclimber_size, P, P_traject, MIN, MIN_traject)

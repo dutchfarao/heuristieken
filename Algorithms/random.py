@@ -39,6 +39,18 @@ def K_trajectSumFunctionality(dienstvoering):
 
     return K_temporary
 
+def MinutesCalculator(dienstvoering):
+
+    minutes = 0
+
+    # Loops through all the trajects in the Dienstvoering
+    for traject in dienstvoering.trajects.values():
+
+        # Loops through all the visited critical connections in the Traject and appends them to a set
+        minutes = minutes + traject.Min_traject
+
+    return minutes
+
 def DuplicateRemover(input):
 
     # Removes all duplicate critical connections visited in the Dienstvoering's critical_visited_HC
@@ -172,8 +184,8 @@ def Random(amount):
             min_traject = MIN
 
             t = TrajectSetter(d, traject, K_traject, min_traject)
-            print("Route taken: ")
-            print(t.connections_visited)
+            #print("Route taken: ")
+            #print(t.connections_visited)
 
             d.trajects[traject] = t
             T = T + 1
@@ -183,6 +195,7 @@ def Random(amount):
         print("K dienstvoering")
         score = K_trajectSumFunctionality(d)
         d.set_score(score)
+        d.minutes = MinutesCalculator(d)
         scores_dict[d.dienstId] = d
         print(score)
 
