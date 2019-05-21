@@ -66,7 +66,7 @@ if __name__ == "__main__":
         start = time.time()
 
         # Calls the Random algorithms the desired amount of times, and stores the results in dienstvoering_dict
-        dienstvoering_dict = Random(1)
+        dienstvoering_dict = Random(1, mapchooser)
         dienstvoering_random = dienstvoering_dict[0]
 
         # Calculates the highest value of K returned from the Random algorithm
@@ -78,7 +78,7 @@ if __name__ == "__main__":
         WriteScores(dienstvoering_dict, "RandomHillClimber", 2)
 
         # Calls the HillClimber algorithm using the scores from the Random algorithm and stores the return values in scores_dictionary_HC
-        dienstvoering_hillclimber = Hillclimber2(dienstvoering_random, hillclimber2_size)
+        dienstvoering_hillclimber = Hillclimber2(dienstvoering_random, hillclimber2_size, mapchooser)
 
         # Ends the timecounter and calculates running length of the algorithm
         end = time.time()
@@ -120,7 +120,7 @@ if __name__ == "__main__":
         start = time.time()
 
         # Calls the Random algorithms the desired amount of times, and stores the results in scores_dict
-        scores_dict = Random(random_size)
+        scores_dict = Random(random_size, mapchooser)
 
         # Afterwards, the values of K are stored in K_dict
         K_dict = {}

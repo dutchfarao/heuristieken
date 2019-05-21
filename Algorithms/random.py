@@ -19,10 +19,10 @@ def LengthChecker(visited_hc):
     length = len(temporary_critical_visited)
     return length
 
-def K_trajectCalculator(length_before, length_after, MIN):
+def K_trajectCalculator(length_before, length_after, MIN, critical_connections):
 
     difference_length = length_after - length_before
-    K = 10000 * (difference_length / 40) - (20 + MIN / 10)
+    K = 10000 * (difference_length / critical_connections) - (20 + MIN / 10)
 
     #print("MIN: ")
     #print(MIN)
@@ -60,11 +60,44 @@ def DuplicateRemover(input):
     #print(value)
     return Before_Critical_Visited_No_Duplicates
 
+def MapChoice(mapchooser):
+
+    mapChoice_list = []
+
+    if mapchooser == 1:
+        max_duration = 180
+        critical_connections = 120
+        traject_amount = 20
+        mapChoice_list.append(max_duration)
+        mapChoice_list.append(critical_connections)
+        mapChoice_list.append(traject_amount)
+
+    if mapchooser == 2:
+        max_duration = 120
+        critical_connections = 40
+        traject_amount = 7
+        mapChoice_list.append(max_duration)
+        mapChoice_list.append(critical_connections)
+        mapChoice_list.append(traject_amount)
+
+    return mapChoice_list
+
+
+
 # Finds a specified number of random routes
-def Random(amount):
+def Random(amount, mapchooser):
+
+    max_duration, critical_connections, traject_amount = 0, 0, 0
+    mapChoice_list = MapChoice(mapchooser)
+    max_duration = mapChoice_list[0]
+    critical_connections = mapChoice_list[1]
+    traject_amount = mapChoice_list[2]
 
     # Specify the amount of runs
     for dienstvoering in range(amount):
+
+        print("_________________________")
+        print("Line 87")
 
         # Initializes a Dienstvoering object to store the 7 trajects
         d = Dienstvoering(dienstvoering)
@@ -78,8 +111,12 @@ def Random(amount):
         minutes.clear()
 
         # Specify the amount of routes
-        for traject in range(7):
+        for traject in range(traject_amount):
 
+            print("_________________________")
+            print("Traject number: ")
+            print(traject)
+            print("_________________________")
             temporary = d.critical_visited_HC
             remove_duplicates = DuplicateRemover(temporary)
             length_before = LengthChecker(remove_duplicates)
@@ -110,7 +147,7 @@ def Random(amount):
             current_station = current[0]
             g.station_dict[current_station].set_visited()
 
-            while (MIN < 120):
+            while (MIN < max_duration):
 
                 # Neighbors of the current station (departure) in the form of:
                 # {'Station A': '12', 'Station B': '13', 'Station C': '7'}
@@ -139,7 +176,7 @@ def Random(amount):
                 # neighbor = ('Station A', '12')
                 next = random.choice(unvisited_items)
 
-                if (MIN + float(next[1]) > 120):
+                if (MIN + float(next[1]) > max_duration):
                     break
 
                 # Gets the name of the station as a String e.g. 'Station A'
@@ -148,7 +185,7 @@ def Random(amount):
                 # Adds the amount of minutes the extra stop will take
                 # If this amount adds up to more than 120, stops the loop
                 MIN = MIN + float(next[1])
-                if (MIN > 120):
+                if (MIN > max_duration):
                     break
 
                 # Sets the new station as the current station e.g. 'Station A'
@@ -160,8 +197,8 @@ def Random(amount):
 
                 # If either current_station or next_station is a critical Station
                 # Calls the dienstvoering method fill_critical
-                #print(current_station)
-                #print(next_station)
+                print(current_station)
+                print(next_station)
 
                 if (g.station_dict[current_station].critical == True or g.station_dict[next_station].critical == True):
                     d.fill_critical_HC(current_station, next_station)
@@ -180,12 +217,16 @@ def Random(amount):
             remove_duplicates = DuplicateRemover(temporary)
             length_after = LengthChecker(remove_duplicates)
 
-            K_traject = K_trajectCalculator(length_before, length_after, MIN)
+            K_traject = K_trajectCalculator(length_before, length_after, MIN, critical_connections)
             min_traject = MIN
 
             t = TrajectSetter(d, traject, K_traject, min_traject)
-            #print("Route taken: ")
-            #print(t.connections_visited)
+            print("Route taken: ")
+            print(t.connections_visited)
+            print("_________________________")
+            print("Minutes taken by traject: ")
+            print(min_traject)
+            print("_________________________")
 
             d.trajects[traject] = t
             T = T + 1
