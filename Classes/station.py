@@ -4,7 +4,7 @@ import sys
 # Represents a node (station)
 class Station:
 
-    def _init_(self, name, xCoordinate, yCoordinate, critical):
+    def __init__(self, name, xCoordinate, yCoordinate, critical):
         self.id = name
         self.afkorting = None
         self.adjacent = {}

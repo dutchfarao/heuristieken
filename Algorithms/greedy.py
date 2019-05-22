@@ -6,14 +6,48 @@ from HelperFunctions.CSVHelper import *
 import random
 
 scores_dict = {}
+
+
+def MapChoice(mapchooser):
+
+    mapChoice_list = []
+
+    if mapchooser == 1:
+        max_duration = 180
+        critical_connections = 120
+        traject_amount = 20
+        mapChoice_list.append(max_duration)
+        mapChoice_list.append(critical_connections)
+        mapChoice_list.append(traject_amount)
+
+    if mapchooser == 2:
+        max_duration = 120
+        critical_connections = 40
+        traject_amount = 7
+        mapChoice_list.append(max_duration)
+        mapChoice_list.append(critical_connections)
+        mapChoice_list.append(traject_amount)
+
+    return mapChoice_list
+
+
+
 # Returns a random node/station from all the stations:
 def Greedy(id, mapchooser):
-    d = Dienstvoering(id)
+    max_duration, critical_connections, traject_amount = 0, 0, 0
     #mapchoser: Nederland = 1, nood/zuid holland = 2
-    mapchooser = mapchooser
+    mapChoice_list = MapChoice(mapchooser)
+    max_duration = mapChoice_list[0]
+    critical_connections = mapChoice_list[1]
+    traject_amount = mapChoice_list[2]
+
+
+    d = Dienstvoering(id)
+
+
     Dienstvoering_MIN = 0
     i = 0
-    for i in range(6):
+    for i in range(traject_amount):
         #create traject object
         t = Traject(i)
         #set all 'visited' at at the beginning of each new traject False
@@ -42,7 +76,7 @@ def Greedy(id, mapchooser):
         TOTAL_MIN = 0
 
 
-        while (TOTAL_MIN < 120):
+        while (TOTAL_MIN < max_duration):
             #get adjacent stations and save the number of adjacent Stations
             neighbors = g.station_dict[departure].adjacent
             neighbors_keys = list(neighbors.keys())
@@ -64,7 +98,7 @@ def Greedy(id, mapchooser):
             #remove stations that are to far from options.
             for neighbor in unvisited_items:
                 time_upgrade = int(neighbors.get(neighbor))
-                if (TOTAL_MIN + time_upgrade) > 120:
+                if (TOTAL_MIN + time_upgrade) > max_duration:
                     unvisited_items.remove(neighbor)
 
             #stop the traject if there are no more options
@@ -108,7 +142,7 @@ def Greedy(id, mapchooser):
                         critical_check = d.get_critical_visited(departure, current_station)
                         #if not, add 500 to score
                         if critical_check == False:
-                            score = current_score + 500 - MIN/10
+                            score = current_score + 166,67 - MIN/10
                             score_dict1[key] = score
                             #else, just subtract minute amount
                         if critical_check == True:
@@ -178,14 +212,3 @@ def Greedy(id, mapchooser):
 
 def scores_dict_returner_greedy():
     return scores_dict
-
-
-
-
-
-
-
-        #wat ik nu wil gaan doen is kijken wat de hoogste score is in score_dict,
-        #die selecteren en dan dat station toevoegen
-        #aan stations_visited(in het traject object), critical_visited (in het dienstvoering object).
-        #In het station object set_visited op True zetten. Score in dienstvoering object updaten.

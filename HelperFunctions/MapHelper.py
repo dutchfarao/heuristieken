@@ -180,8 +180,8 @@ def MapHelper(mapchooser, dienstvoering):
     if input == "Holland":
         Holland(NetworkXGraph)
 
-    else:
-        OverviewCreator(NetworkXGraph)import csv
+#    else:
+#        OverviewCreator(NetworkXGraph)import csv
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter

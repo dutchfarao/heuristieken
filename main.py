@@ -112,7 +112,7 @@ if __name__ == "__main__":
 
 
     # If the user chooses the algorithm Random
-    elif choiceAlgorithm == "Random":
+    if choiceAlgorithm == "Random":
 
         # User has to input how many times Random is run
         random_size = int(input("Please specify the number of times (integer) you want to run Random: "))

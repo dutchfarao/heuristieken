@@ -113,7 +113,7 @@ def connection_printer():
         print(index, value)
 
 
-if _name_ == "_main_":
+if __name__ == "__main__":
 
     load_stations(INPUT_STATIONS)
     load_connections(INPUT_CONNECTIONS)
