@@ -7,6 +7,7 @@ from Algorithms.random import *
 from Algorithms.random2 import *
 from Algorithms.hillclimber import *
 from Algorithms.HillClimber2 import *
+from Algorithms.SimulatedAnnealing import *
 from HelperFunctions.VisualisationHelper import *
 import time
 
@@ -53,7 +54,7 @@ if __name__ == "__main__":
     load_connections(INPUT_CONNECTIONS)
 
     # Allows the user to choose which algorithm is ran
-    print("Inputs are: Random, Greedy, Hillclimber or HillclimberSA.")
+    print("Inputs are: Random, Greedy, Hillclimber or Simulated Annealing (SA).")
     choiceAlgorithm = input("Please specify which algorithm you want to use: ")
 
     # If the user chooses Hillclimber
@@ -139,3 +140,36 @@ if __name__ == "__main__":
         # Writes the scores from the Random algorithm into a CSV file
         WriteScores(scores_dict, choiceAlgorithm, 2)
         ReadScores(choiceAlgorithm)
+
+
+    if choiceAlgorithm == "SA" or "Simulated Annealing":
+
+        # User has to input how many times both Random and Hillclimber are run
+        SA_size = int(input("Please specify the number of iterations (integer) you want to run Simulated Annealing: "))
+
+        # Starts the time, for comparison purposes
+        start = time.time()
+
+        # Calls the Random algorithms the desired amount of times, and stores the results in dienstvoering_dict
+        dienstvoering_dict = Random(1, mapchooser)
+        dienstvoering_random = dienstvoering_dict[0]
+
+        # Calculates the highest value of K returned from the Random algorithm
+        highscore = dienstvoering_random.get_score()
+        print("Random score: ")
+        print(highscore)
+
+        # Writes the scores from the Random algorithm called by HillClimber into a CSV file
+        WriteScores(dienstvoering_dict, "SimulatedAnnealing", 2)
+
+        # Calls the HillClimber algorithm using the scores from the Random algorithm and stores the return values in scores_dictionary_HC
+        dienstvoering_SA = SimulatedAnnealing(dienstvoering_random, SA_size, mapchooser)
+
+        # Ends the timecounter and calculates running length of the algorithm
+        end = time.time()
+        time = end - start
+
+        # Calculates the highest value of K returned from the HillClimber algorithm
+        highscore = dienstvoering_SA.get_score()
+        print("Score after Simulated Annealing: ")
+        print(highscore)
