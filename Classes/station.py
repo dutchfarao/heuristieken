@@ -4,11 +4,12 @@ import sys
 # Represents a node (station)
 class Station:
 
-    def __init__(self, name, yCoordinate, xCoordinate, critical):
+    def _init_(self, name, xCoordinate, yCoordinate, critical):
         self.id = name
+        self.afkorting = None
         self.adjacent = {}
-        self.yco = yCoordinate
         self.xco = xCoordinate
+        self.yco = yCoordinate
         self.critical = critical
         # Set distance to infinity for all nodes
         self.distance = sys.maxsize
@@ -43,12 +44,9 @@ class Station:
 
     def get_visited(self):
         return self.visited
-            
+
     def get_critical(self):
         return self.critical
 
-    def __lt__(self, other):
+    def _lt_(self, other):
         return self.id < other.id
-
-    def __str__(self):
-        return str(self.id) + ' adjacent: ' + str([x.id for x in self.adjacent])

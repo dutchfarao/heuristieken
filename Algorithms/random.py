@@ -96,9 +96,6 @@ def Random(amount, mapchooser):
     # Specify the amount of runs
     for dienstvoering in range(amount):
 
-        print("_________________________")
-        print("Line 87")
-
         # Initializes a Dienstvoering object to store the 7 trajects
         d = Dienstvoering(dienstvoering)
         MIN_Traject = {}
@@ -113,10 +110,10 @@ def Random(amount, mapchooser):
         # Specify the amount of routes
         for traject in range(traject_amount):
 
-            print("_________________________")
+            print("_________")
             print("Traject number: ")
             print(traject)
-            print("_________________________")
+            print("_________")
             temporary = d.critical_visited_HC
             remove_duplicates = DuplicateRemover(temporary)
             length_before = LengthChecker(remove_duplicates)
@@ -223,10 +220,10 @@ def Random(amount, mapchooser):
             t = TrajectSetter(d, traject, K_traject, min_traject)
             print("Route taken: ")
             print(t.connections_visited)
-            print("_________________________")
+            print("_________")
             print("Minutes taken by traject: ")
             print(min_traject)
-            print("_________________________")
+            print("_________")
 
             d.trajects[traject] = t
             T = T + 1

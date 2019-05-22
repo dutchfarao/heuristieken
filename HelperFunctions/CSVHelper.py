@@ -26,7 +26,7 @@ def load_stations(file):
             else:
                 critical = False
 
-            g.add_station(name, yCoordinate, xCoordinate, critical)
+            g.add_station(name, xCoordinate, yCoordinate, critical)
 
 
         #station_printer()
@@ -113,7 +113,7 @@ def connection_printer():
         print(index, value)
 
 
-if __name__ == "__main__":
+if _name_ == "_main_":
 
     load_stations(INPUT_STATIONS)
     load_connections(INPUT_CONNECTIONS)
