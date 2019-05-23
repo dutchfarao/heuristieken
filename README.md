@@ -53,7 +53,7 @@ Als we de lengte in minuten van alle kritieke verbindingen bij elkaar optellen k
 
 *Upperbound K = 1x10000 - ( 3x20 + 275/10 ) = 9912,5*
 
-### Gebruik
+## Gebruik
 
 #### Om het programma te starten voert men eerst de volgende command uit.
 ```
