@@ -59,8 +59,6 @@ Als we de lengte in minuten van alle kritieke verbindingen bij elkaar optellen k
 ```
     python main.py
 ```
-> python main.py
-
 
 #### *Keuze 1: Uitvoer van een algorithme of visualisatie van resultaten?*
 
@@ -92,9 +90,18 @@ Als we de lengte in minuten van alle kritieke verbindingen bij elkaar optellen k
 
 #### *Keuze 4: Hoeveel iteraties (n) ?*
 ```
-    n
+n
 ```
 
+
+## Requirements
+
+- matplotlib 2.1.0
+- os 16.1
+- sys 29.1
+- csv 14.1
+- random 9.6
+- re 6.2
 
 
 ```
