@@ -84,6 +84,7 @@ def Greedy(id, mapchooser):
             num_of_neighbors = len(neighbors)
             #print("Mogelijke volgende stations zijn", neighbors)
             #get the current score from the dienstvoering
+            print("GET SCORE:", d.get_score())
             current_score = int(d.get_score())
             #create score_dict, we'll use this to temporarely save the scores of each adjacent station
             score_dict = {}
@@ -97,7 +98,8 @@ def Greedy(id, mapchooser):
             #print("Stations die nog niet bezocht zijn:", unvisited_items)
             #remove stations that are to far from options.
             for neighbor in unvisited_items:
-                time_upgrade = int(neighbors.get(neighbor))
+                time_upgrade = float(neighbors.get(neighbor))
+                print("PROBLEM: ", neighbors.get(neighbor))
                 if (TOTAL_MIN + time_upgrade) > max_duration:
                     unvisited_items.remove(neighbor)
 
@@ -109,10 +111,11 @@ def Greedy(id, mapchooser):
             for key in (unvisited_items):
                 current_station = g.get_station(key)
                 #set MIN, needed for calculation of score
-                MIN = int((neighbors.get(key)))
+                print("PROBLEM: ", neighbors.get(key))
+                MIN = float((neighbors.get(key)))
 
                 #do this for noord/zuid holland
-                if mapchooser == 2:
+                if max_duration == 120:
                     #check if neighbor or current_station is a critical station
                     departure_station = g.get_station(departure)
                     if current_station.get_critical() or departure_station.get_critical() == True:
@@ -131,10 +134,10 @@ def Greedy(id, mapchooser):
                         score = current_score - MIN/10
                         score_dict[key] = score
 
-                #this is where the best destination is chosen
-                destination = max(score_dict, key=score_dict.get)
+                    #this is where the best destination is chosen
+                    destination = max(score_dict, key=score_dict.get)
 
-                if mapchooser == 1:
+                if max_duration == 180:
                     #check if neighbor or current_station is a critical station
                     departure_station = g.get_station(departure)
                     if current_station.get_critical() or departure_station.get_critical() == True:
@@ -142,7 +145,7 @@ def Greedy(id, mapchooser):
                         critical_check = d.get_critical_visited(departure, current_station)
                         #if not, add 500 to score
                         if critical_check == False:
-                            score = current_score + 166,67 - MIN/10
+                            score = (current_score + 166.67) - MIN/10
                             score_dict1[key] = score
                             #else, just subtract minute amount
                         if critical_check == True:
@@ -153,8 +156,11 @@ def Greedy(id, mapchooser):
                         #if not critical, just add minute amount
                         score = current_score - MIN/10
                         score_dict1[key] = score
-                #this is where the best destination is chosen
-                destination = max(score_dict, key=score_dict.get)
+
+
+                    #this is where the best destination is chosen
+                    print("SCOREDICT: ", score_dict1)
+                    destination = max(score_dict1, key=score_dict1.get)
 
 
 
@@ -162,7 +168,7 @@ def Greedy(id, mapchooser):
 
 
             #upgrade time, but check if the new total won't exceed the maximum
-            time_upgrade = int(neighbors.get(destination))
+            time_upgrade = float(neighbors.get(destination))
             #print(time_upgrade)
             TOTAL_MIN = TOTAL_MIN + time_upgrade
             #if (TOTAL_MIN > 120):

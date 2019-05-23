@@ -9,7 +9,7 @@ from Algorithms.hillclimber import *
 from Algorithms.HillClimber2 import *
 from Algorithms.SimulatedAnnealing import *
 from HelperFunctions.VisualisationHelper import *
-from HelperFunctions.MapHelper import MapHelper
+#from HelperFunctions.MapHelper import MapHelper
 import time
 
 if __name__ == "__main__":
@@ -19,14 +19,14 @@ if __name__ == "__main__":
     mapchooser = 0
 
     # Allows the user to choose whether the Dienstregeling will be national or just for North and South Holland
-    choiceRegion = input("Dienstregeling voor heel Nederland of Noord en Zuid Holland? ")
+    choiceRegion = input("Dienstregeling voor heel Nederland (1) of Noord en Zuid Holland (2)? ")
 
-    if choiceRegion == "Nederland":
+    if choiceRegion == "1":
         mapchooser = 1
         INPUT_CONNECTIONS = "Data/ConnectiesNationaal.csv"
         INPUT_STATIONS = "Data/StationsNationaal.csv"
 
-    else:
+    else choiceRegion == "2":
         mapchooser = 2
         INPUT_CONNECTIONS = "Data/ConnectiesHolland.csv"
         INPUT_STATIONS = "Data/StationsHolland.csv"
@@ -56,11 +56,11 @@ if __name__ == "__main__":
 
 
     # Allows the user to choose which algorithm is ran
-    print("Inputs are: Random, Greedy, Hillclimber or Simulated Annealing (SA).")
+    print("Inputs are: Random (r), Greedy (g), Hillclimber(h) or Simulated Annealing (s).")
     choiceAlgorithm = input("Please specify which algorithm you want to use: ")
 
     # If the user chooses Hillclimber
-    if choiceAlgorithm == "Hillclimber":
+    if choiceAlgorithm == "h":
 
         # User has to input how many times both Random and Hillclimber are run
         hillclimber2_size = int(input("Please specify the number of iterations (integer) you want to run HillClimber: "))
@@ -95,7 +95,7 @@ if __name__ == "__main__":
         # Writes the scores from the Random algorithm called by HillClimber into a CSV file
         WriteScores(highscore, "RandomAfterHillClimber", 3)
 
-    if choiceAlgorithm == "Greedy":
+    if choiceAlgorithm == "g":
 
         random_size = int(input("Please specify the number of times (integer) you want to run Greedy: "))
         start = time.time()
@@ -114,7 +114,7 @@ if __name__ == "__main__":
 
 
     # If the user chooses the algorithm Random
-    if choiceAlgorithm == "Random":
+    if choiceAlgorithm == "r":
 
         # User has to input how many times Random is run
         random_size = int(input("Please specify the number of times (integer) you want to run Random: "))
@@ -146,7 +146,7 @@ if __name__ == "__main__":
         MapHelper(mapchooser, beste_dv)
 
     # If the user chooses the algorithm Simulated Annealing
-    if choiceAlgorithm == "SA" or "Simulated Annealing":
+    if choiceAlgorithm == "s":
 
         # User has to input how many times both Random and Hillclimber are run
         SA_size = int(input("Please specify the number of iterations (integer) you want to run Simulated Annealing: "))
