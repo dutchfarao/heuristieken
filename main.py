@@ -9,7 +9,7 @@ from Algorithms.hillclimber import *
 from Algorithms.HillClimber2 import *
 from Algorithms.SimulatedAnnealing import *
 from HelperFunctions.VisualisationHelper import *
-#from HelperFunctions.MapHelper import MapHelper
+from HelperFunctions.MapHelper import MapHelper
 import time
 
 if __name__ == "__main__":
@@ -19,14 +19,22 @@ if __name__ == "__main__":
     mapchooser = 0
 
     # Allows the user to choose whether the Dienstregeling will be national or just for North and South Holland
-    choiceRegion = input("Dienstregeling voor heel Nederland (1) of Noord en Zuid Holland (2)? ")
+    while True:
+        choiceRegion = input("Dienstregeling voor heel Nederland (1) of Noord en Zuid Holland (2)? ")
+
+        if choiceRegion != ("1" or "2"):
+            print("Please enter 1 or 2.")
+            continue
+        else:
+            break
+        break
 
     if choiceRegion == "1":
         mapchooser = 1
         INPUT_CONNECTIONS = "Data/ConnectiesNationaal.csv"
         INPUT_STATIONS = "Data/StationsNationaal.csv"
 
-    else choiceRegion == "2":
+    elif choiceRegion == "2":
         mapchooser = 2
         INPUT_CONNECTIONS = "Data/ConnectiesHolland.csv"
         INPUT_STATIONS = "Data/StationsHolland.csv"
@@ -36,7 +44,8 @@ if __name__ == "__main__":
     load_connections(INPUT_CONNECTIONS)
 
     # Allows the user to choose between runnign algorithms or performing visualisations
-    choiceAction = input("Would you like to run algorithms or perform visualisations? Press 'v' for visuals.")
+    choiceAction = input("Would you like to run algorithms or perform visualisations? Press 'v' for visuals, otherwise just press ENTER")
+
 
     # If the user wants to perform visualisations
     if choiceAction == 'v':
@@ -57,14 +66,29 @@ if __name__ == "__main__":
 
     # Allows the user to choose which algorithm is ran
     print("Inputs are: Random (r), Greedy (g), Hillclimber(h) or Simulated Annealing (s).")
-    choiceAlgorithm = input("Please specify which algorithm you want to use: ")
+
+    while True:
+        choiceAlgorithm = input("Please specify which algorithm you want to use: ")
+
+        if choiceAlgorithm != ("r" or "g" or "h" or "s"):
+            print("Please enter r, g, h or s.")
+            continue
+        else:
+            break
+
 
     # If the user chooses Hillclimber
     if choiceAlgorithm == "h":
 
         # User has to input how many times both Random and Hillclimber are run
-        hillclimber2_size = int(input("Please specify the number of iterations (integer) you want to run HillClimber: "))
-
+        while True:
+            try:
+                hillclimber2_size = int(input("Please specify the number of times (integer) you want to run HillClimber: "))
+                break
+            except ValueError:
+                print("Please enter an positive integer.")
+                continue
+            break
         # Starts the time, for comparison purposes
         start = time.time()
 
@@ -117,7 +141,16 @@ if __name__ == "__main__":
     if choiceAlgorithm == "r":
 
         # User has to input how many times Random is run
-        random_size = int(input("Please specify the number of times (integer) you want to run Random: "))
+        #random_size = int(input("Please specify the number of times (integer) you want to run Random: "))
+        while True:
+            try:
+                random_size = int(input("Please specify the number of times (integer) you want to run Random: "))
+                break
+            except ValueError:
+                print("Please enter an positive integer.")
+                continue
+            break
+
 
         # Starts the time, for comparison purposes
         start = time.time()
@@ -149,8 +182,14 @@ if __name__ == "__main__":
     if choiceAlgorithm == "s":
 
         # User has to input how many times both Random and Hillclimber are run
-        SA_size = int(input("Please specify the number of iterations (integer) you want to run Simulated Annealing: "))
-
+        while True:
+            try:
+                SA_size = int(input("Please specify the number of times (integer) you want to run Simulated Annealing: "))
+                break
+            except ValueError:
+                print("Please enter an positive integer.")
+                continue
+            break
         # Starts the time, for comparison purposes
         start = time.time()
 
