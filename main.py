@@ -18,6 +18,26 @@ if __name__ == "__main__":
     data = {}
     mapchooser = 0
 
+    # Allows the user to choose between runnign algorithms or performing visualisations
+    choiceAction = input("Would you like to run algorithms or perform visualisations? Press 'v' for visuals, otherwise just press ENTER")
+
+
+    # If the user wants to perform visualisations
+    if choiceAction == 'v':
+
+            # Reads the scores of the algortihms from the CSV file, and stores it in a dictionary
+            scores_dict_greedy = ReadScores("Greedy")
+            scores_dict_random = ReadScores("Random")
+            scores_dict_hillclimber_random = ReadScores("RandomHillClimber")
+            scores_dict_hillclimber = ReadScores("RandomAfterHillClimber")
+
+            # Runs five visualisations: A barplot compairing all algorithms, and one histogram for each algortihm seperatly
+            BarPlot(scores_dict_greedy, scores_dict_random, scores_dict_hillclimber_random, scores_dict_hillclimber)
+            HistogramPlot(scores_dict_random, "Random")
+            HistogramPlot(scores_dict_greedy, "Greedy")
+            HistogramPlot(scores_dict_hillclimber_random, "Hillclimber Random")
+            HistogramPlot(scores_dict_hillclimber, "Hillclimber")
+
     # Allows the user to choose whether the Dienstregeling will be national or just for North and South Holland
     while True:
         choiceRegion = input("Dienstregeling voor heel Nederland (1) of Noord en Zuid Holland (2)? ")
@@ -43,25 +63,7 @@ if __name__ == "__main__":
     load_stations(INPUT_STATIONS)
     load_connections(INPUT_CONNECTIONS)
 
-    # Allows the user to choose between runnign algorithms or performing visualisations
-    choiceAction = input("Would you like to run algorithms or perform visualisations? Press 'v' for visuals, otherwise just press ENTER")
 
-
-    # If the user wants to perform visualisations
-    if choiceAction == 'v':
-
-            # Reads the scores of the algortihms from the CSV file, and stores it in a dictionary
-            scores_dict_greedy = ReadScores("Greedy")
-            scores_dict_random = ReadScores("Random")
-            scores_dict_hillclimber_random = ReadScores("RandomHillClimber")
-            scores_dict_hillclimber = ReadScores("RandomAfterHillClimber")
-
-            # Runs five visualisations: A barplot compairing all algorithms, and one histogram for each algortihm seperatly
-            BarPlot(scores_dict_greedy, scores_dict_random, scores_dict_hillclimber_random, scores_dict_hillclimber)
-            HistogramPlot(scores_dict_random, "Random")
-            HistogramPlot(scores_dict_greedy, "Greedy")
-            HistogramPlot(scores_dict_hillclimber_random, "Hillclimber Random")
-            HistogramPlot(scores_dict_hillclimber, "Hillclimber")
 
 
     # Allows the user to choose which algorithm is ran
@@ -70,7 +72,7 @@ if __name__ == "__main__":
     while True:
         choiceAlgorithm = input("Please specify which algorithm you want to use: ")
 
-        if choiceAlgorithm != ("r" or "g" or "h" or "s"):
+        if choiceAlgorithm not in ['r', 'g', 'h', 's']:
             print("Please enter r, g, h or s.")
             continue
         else:
@@ -121,18 +123,40 @@ if __name__ == "__main__":
 
     if choiceAlgorithm == "g":
 
-        random_size = int(input("Please specify the number of times (integer) you want to run Greedy: "))
+        while True:
+            try:
+                greedy_size = int(input("Please specify the number of times (integer) you want to run Greedy: "))
+                break
+            except ValueError:
+                print("Please enter an positive integer.")
+                continue
+            break
+
+        #start timer
         start = time.time()
-        for j in range(random_size):
+
+        #run greedy the specified amount of times
+        for j in range(greedy_size):
             Greedy(j, mapchooser)
+
+        #put scores of greedy in scores_dict
         scores_dict = scores_dict_returner_greedy()
         print(scores_dict)
+
+        #choose best score
         best_dienstvoering = max(scores_dict, key=scores_dict.get)
         highscore = scores_dict[best_dienstvoering]
+
+        #end timer and calculate time
         end = time.time()
         time = end - start
+
+        #calculate average score
         average = sum(scores_dict.values()) / float(len(scores_dict))
-        print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", random_size, " | time elapsed (seconds) = ", time, " | average = ", average)
+        #print best score and other info
+        print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", greedy_size, " | time elapsed (seconds) = ", time, " | average = ", average)
+
+        #write scores
         WriteScores(scores_dict, choiceAlgorithm, 1)
         ReadScores(choiceAlgorithm)
 
@@ -150,8 +174,6 @@ if __name__ == "__main__":
                 print("Please enter an positive integer.")
                 continue
             break
-
-
         # Starts the time, for comparison purposes
         start = time.time()
 
