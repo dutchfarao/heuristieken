@@ -80,11 +80,11 @@ Als we de lengte in minuten van alle kritieke verbindingen bij elkaar optellen k
 #### *Keuze 3: Welk algorithme?*
 
 | *Algorithm*         	| *Command*                                 	|
-|---------------------	|-------------------------------------------	|
-| Random              	|             ```     Random ```            	|
-| Greedy              	|               ``` Greedy ```              	|
-| Hillclimber         	|            ``` Hillclimber ```            	|
-| Simulated Annealing 	| ``` Simulated Annealing ``` or ``` SA ``` 	|
+|---------------------	|:-------------------------------------------:	|
+| Random              	|             ```     r ```            	|
+| Greedy              	|               ``` g ```              	|
+| Hillclimber         	|            ``` h ```            	|
+| Simulated Annealing 	| ``` s  ``` |
 
 
 
@@ -102,6 +102,8 @@ n
 - csv 14.1
 - random 9.6
 - re 6.2
+- networkx 2.0
+
 
 
 ```
