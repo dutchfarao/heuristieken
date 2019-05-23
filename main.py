@@ -9,6 +9,7 @@ from Algorithms.hillclimber import *
 from Algorithms.HillClimber2 import *
 from Algorithms.SimulatedAnnealing import *
 from HelperFunctions.VisualisationHelper import *
+from HelperFunctions.MapHelper import MapHelper
 import time
 
 if __name__ == "__main__":
@@ -16,6 +17,23 @@ if __name__ == "__main__":
     scores_dict = {}
     data = {}
     mapchooser = 0
+
+    # Allows the user to choose whether the Dienstregeling will be national or just for North and South Holland
+    choiceRegion = input("Dienstregeling voor heel Nederland of Noord en Zuid Holland? ")
+
+    if choiceRegion == "Nederland":
+        mapchooser = 1
+        INPUT_CONNECTIONS = "Data/ConnectiesNationaal.csv"
+        INPUT_STATIONS = "Data/StationsNationaal.csv"
+
+    else:
+        mapchooser = 2
+        INPUT_CONNECTIONS = "Data/ConnectiesHolland.csv"
+        INPUT_STATIONS = "Data/StationsHolland.csv"
+
+    # Loads the data sources, after the user has selected the desired scope of the Dienstregeling
+    load_stations(INPUT_STATIONS)
+    load_connections(INPUT_CONNECTIONS)
 
     # Allows the user to choose between runnign algorithms or performing visualisations
     choiceAction = input("Would you like to run algorithms or perform visualisations? Press 'v' for visuals.")
@@ -36,22 +54,6 @@ if __name__ == "__main__":
             HistogramPlot(scores_dict_hillclimber_random, "Hillclimber Random")
             HistogramPlot(scores_dict_hillclimber, "Hillclimber")
 
-    # Allows the user to choose whether the Dienstregeling will be national or just for North and South Holland
-    choiceRegion = input("Dienstregeling voor heel Nederland of Noord en Zuid Holland? ")
-
-    if choiceRegion == "Nederland":
-        mapchooser = 1
-        INPUT_CONNECTIONS = "Data/ConnectiesNationaal.csv"
-        INPUT_STATIONS = "Data/StationsNationaal.csv"
-
-    else:
-        mapchooser = 2
-        INPUT_CONNECTIONS = "Data/ConnectiesHolland.csv"
-        INPUT_STATIONS = "Data/StationsHolland.csv"
-
-    # Loads the data sources, after the user has selected the desired scope of the Dienstregeling
-    load_stations(INPUT_STATIONS)
-    load_connections(INPUT_CONNECTIONS)
 
     # Allows the user to choose which algorithm is ran
     print("Inputs are: Random, Greedy, Hillclimber or Simulated Annealing (SA).")
@@ -131,6 +133,7 @@ if __name__ == "__main__":
         # Calculates the highest value of K returned from the Random algorithm
         best_dienstvoering = max(K_dict, key=K_dict.get)
         highscore = K_dict[best_dienstvoering]
+        beste_dv = scores_dict[best_dienstvoering]
 
         # Ends the timecounter
         end = time.time()
@@ -140,8 +143,9 @@ if __name__ == "__main__":
         # Writes the scores from the Random algorithm into a CSV file
         WriteScores(scores_dict, choiceAlgorithm, 2)
         ReadScores(choiceAlgorithm)
+        MapHelper(mapchooser, beste_dv)
 
-
+    # If the user chooses the algorithm Simulated Annealing
     if choiceAlgorithm == "SA" or "Simulated Annealing":
 
         # User has to input how many times both Random and Hillclimber are run

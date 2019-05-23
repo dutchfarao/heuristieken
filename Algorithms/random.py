@@ -24,10 +24,6 @@ def K_trajectCalculator(length_before, length_after, MIN, critical_connections):
     difference_length = length_after - length_before
     K = 10000 * (difference_length / critical_connections) - (20 + MIN / 10)
 
-    #print("MIN: ")
-    #print(MIN)
-    print("K:")
-    print(K)
     return K
 
 def K_trajectSumFunctionality(dienstvoering):
@@ -110,10 +106,10 @@ def Random(amount, mapchooser):
         # Specify the amount of routes
         for traject in range(traject_amount):
 
-            print("_________")
-            print("Traject number: ")
-            print(traject)
-            print("_________")
+            # print("_________")
+            # print("Traject number: ")
+            # print(traject)
+            # print("_________")
             temporary = d.critical_visited_HC
             remove_duplicates = DuplicateRemover(temporary)
             length_before = LengthChecker(remove_duplicates)
@@ -194,8 +190,8 @@ def Random(amount, mapchooser):
 
                 # If either current_station or next_station is a critical Station
                 # Calls the dienstvoering method fill_critical
-                print(current_station)
-                print(next_station)
+                # print(current_station)
+                # print(next_station)
 
                 if (g.station_dict[current_station].critical == True or g.station_dict[next_station].critical == True):
                     d.fill_critical_HC(current_station, next_station)
@@ -218,26 +214,26 @@ def Random(amount, mapchooser):
             min_traject = MIN
 
             t = TrajectSetter(d, traject, K_traject, min_traject)
-            print("Route taken: ")
-            print(t.connections_visited)
-            print("_________")
-            print("Minutes taken by traject: ")
-            print(min_traject)
-            print("_________")
+            # print("Route taken: ")
+            # print(t.connections_visited)
+            # print("_________")
+            # print("Minutes taken by traject: ")
+            # print(min_traject)
+            # print("_________")
 
             d.trajects[traject] = t
             T = T + 1
             minutes.append(MIN)
             MIN = 0
 
-        print("K dienstvoering")
+        # print("K dienstvoering")
         score = K_trajectSumFunctionality(d)
         d.set_score(score)
         d.minutes = MinutesCalculator(d)
         scores_dict[d.dienstId] = d
-        print(score)
+        # print(score)
 
-    print(scores_dict)
+    # print(scores_dict)
     return scores_dict
 
 def scores_dict_returner_random():
