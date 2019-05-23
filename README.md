@@ -53,10 +53,50 @@ Als we de lengte in minuten van alle kritieke verbindingen bij elkaar optellen k
 
 *Upperbound K = 1x10000 - ( 3x20 + 275/10 ) = 9912,5*
 
+### Gebruik
 
+#### Om het programma te starten voert men eerst de volgende command uit.
+```
+    python main.py
+```
+> python main.py
+
+
+#### *Keuze 1: Uitvoer van een algorithme of visualisatie van resultaten?*
+
+| *Keuze*       	|   *Command*   	|
+|---------------	|:-------------:	|
+| Algorithmes   	| ``` ENTER ``` 	|
+| Visualisaties 	|   ``` v ```   	|
+
+*NB: een visualisatie kan pas worden uitgevoerd nadat er resultaten zijn geproduceerd.*
+
+
+#### *Keuze 2: Kaart van heel Nederland of alleen Noord- en Zuid-Holland?*
+
+| *Kaart*                	| *Command* 	|
+|------------------------	|:---------:	|
+| Nederland              	| ``` 1 ``` 	|
+| Noord- en Zuid-Holland 	| ``` 2 ``` 	|
+
+#### *Keuze 3: Welk algorithme?*
+
+| *Algorithm*         	| *Command*                                 	|
+|---------------------	|-------------------------------------------	|
+| Random              	|             ```     Random ```            	|
+| Greedy              	|               ``` Greedy ```              	|
+| Hillclimber         	|            ``` Hillclimber ```            	|
+| Simulated Annealing 	| ``` Simulated Annealing ``` or ``` SA ``` 	|
+
+
+
+#### *Keuze 4: Hoeveel iteraties (n) ?*
+```
+    n
+```
 
 
 
 ```
 ## Credits
-By Darian El Sayed, Felix Mooij and Bram Schmidt for de Universiteit van Amsterdam.
+By Darian El Sayed and Felix Mooij for de Universiteit van Amsterdam.
