@@ -9,7 +9,7 @@ from Algorithms.hillclimber import *
 from Algorithms.HillClimber2 import *
 from Algorithms.SimulatedAnnealing import *
 from HelperFunctions.VisualisationHelper import *
-from HelperFunctions.MapHelper import MapHelper
+#from HelperFunctions.MapHelper import MapHelper
 import time
 
 if __name__ == "__main__":
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     while True:
         choiceRegion = input("Dienstregeling voor heel Nederland (1) of Noord en Zuid Holland (2)? ")
 
-        if choiceRegion != ("1" or "2"):
+        if choiceRegion not in ['1', '2']:
             print("Please enter 1 or 2.")
             continue
         else:
@@ -157,8 +157,8 @@ if __name__ == "__main__":
         print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", greedy_size, " | time elapsed (seconds) = ", time, " | average = ", average)
 
         #write scores
-        WriteScores(scores_dict, choiceAlgorithm, 1)
-        ReadScores(choiceAlgorithm)
+        WriteScores(scores_dict, "Greedy", 2)
+        ReadScores("Greedy")
 
 
     # If the user chooses the algorithm Random
@@ -196,8 +196,8 @@ if __name__ == "__main__":
         print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", random_size, " | time elapsed (seconds) = ", time)
 
         # Writes the scores from the Random algorithm into a CSV file
-        WriteScores(scores_dict, choiceAlgorithm, 2)
-        ReadScores(choiceAlgorithm)
+        WriteScores(scores_dict, "Random", 2)
+        ReadScores("Random")
         MapHelper(mapchooser, beste_dv)
 
     # If the user chooses the algorithm Simulated Annealing
@@ -226,6 +226,7 @@ if __name__ == "__main__":
 
         # Writes the scores from the Random algorithm called by HillClimber into a CSV file
         WriteScores(dienstvoering_dict, "SimulatedAnnealing", 2)
+        ReadScores("SimulatedAnnealing")
 
         # Calls the HillClimber algorithm using the scores from the Random algorithm and stores the return values in scores_dictionary_HC
         dienstvoering_SA = SimulatedAnnealing(dienstvoering_random, SA_size, mapchooser)
