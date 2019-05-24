@@ -164,7 +164,7 @@ if __name__ == "__main__":
         print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", greedy_size, " | time elapsed (seconds) = ", time, " | average = ", average)
 
         #write scores
-        WriteScores(scores_dict, "Greedy", 2)
+        WriteScores(scores_dict, "Greedy", 1)
         ReadScores("Greedy")
 
 
