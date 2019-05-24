@@ -98,7 +98,7 @@ Als we de lengte in minuten van alle kritieke verbindingen bij elkaar optellen k
 | Hillclimber         	|            ``` h ```            	|
 | Simulated Annealing 	| ``` s  ``` |
 
-
+*NB: een visualisatie met een kaart (MapHelper) kan alleen worden geproduceerd na het runnen van Hillclimber of Simulated Annealing.*
 
 #### *Keuze 4: Hoeveel iteraties (n) ?*
 ```
