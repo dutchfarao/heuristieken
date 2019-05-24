@@ -1,8 +1,8 @@
+
 class Dienstvoering:
     """
     Representation of a dienstvoering object in RAILNL
     """
-
     def __init__(self, dienstId):
         self.dienstId = dienstId
         self.score = 0

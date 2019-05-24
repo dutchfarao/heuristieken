@@ -1,9 +1,8 @@
-class Traject:
 
+class Traject:
     """
     Representation of a traject
     """
-
     def __init__(self, trajectId):
         self.trajectId = trajectId
         self.time = 0

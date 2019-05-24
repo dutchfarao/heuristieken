@@ -1,8 +1,8 @@
 import sys
+
 class Station:
     """
     Representation of a Station object in RAILNL
-    
     """
     def __init__(self, name, xCoordinate, yCoordinate, critical):
         self.id = name

@@ -2,9 +2,9 @@ from Classes.station import Station
 import sys
 
 class Graph:
-        """
-        Representation of a Graph object in RAILNL, composed of nodes(stations) and edges(connections)
-        """
+    """
+    Representation of a Graph object in RAILNL, composed of nodes(stations) and edges(connections)
+    """
     def __init__(self):
         self.station_dict = {}
         self.num_stations = 0

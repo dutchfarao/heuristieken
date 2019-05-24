@@ -1,9 +1,9 @@
-class Connection:
 
+class Connection:
+    """
+    Representation of a connection in RAILNL
+    """
     def __init__(self, name, stationA, stationB, time):
-        """
-        Representation of a connection in RAILNL
-        """
         self.name = name
         self.stationA = stationA
         self.stationB = stationB
