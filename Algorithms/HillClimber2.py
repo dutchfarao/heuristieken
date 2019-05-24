@@ -8,6 +8,15 @@ scores_list = {}
 
 def MapChoice(mapchooser):
 
+    """
+     Sets variables based on which map is chosen by the user
+
+    Input:
+        mapchooser: An integer, 1 (for the Netherlands) or a 2 (for North and South Holland)
+    Returns:
+         mapChoice_list: A list containing the max_duration (180 / 120), the amount of critical_connections (120 / 40) and the maximum amount of trajects (7 / 20)
+    """
+
     mapChoice_list = []
 
     if mapchooser == 1:
@@ -30,6 +39,15 @@ def MapChoice(mapchooser):
 
 def SetAppendingFunctionality(dienstvoering):
 
+    """
+    Used in both appending to, and calculating the length, of the critical_visited_set
+
+    Input:
+        A dienstvoering object
+    Returns:
+         length: An integer representing the length of the critical_visited_set
+    """
+
     # Initializes a set used to contain the critical visited connections
     critical_visited_set = {}
     critical_visited_set = set()
@@ -48,6 +66,15 @@ def SetAppendingFunctionality(dienstvoering):
 
 def MinutesCalculator(dienstvoering):
 
+    """
+    Caulculates the total amount of minutes all trajects in a dienstvoering take
+
+    Input:
+        A dienstvoering object
+    Returns:
+         minutes: An integer representing the length of the dienstvoering in minutes
+    """
+
     minutes = 0
 
     # Loops through all the trajects in the Dienstvoering
@@ -60,12 +87,35 @@ def MinutesCalculator(dienstvoering):
 
 def SetScoreCalculator(length, minutes, dienstvoering, critical_connections, traject_amount):
 
+    """
+    Calculates the score of a certain combination of length, critical connections, trajects and minutes
+
+    Input:
+        length: An integer representing the length of the critical_visited_set
+        minutes: An integer representing the length of the dienstvoering in minutes
+        dienstvoering: A dienstvoering object
+        critical_connections: An integer representing the total amount of critical connections possible
+        traject_amount: An integer representing the maximum amount of trajects in a dienstvoering
+    Returns:
+         score: An integer representing the score of dienstvoering
+    """
+
     traject_cost = traject_amount * 20
 
     score = 10000 * (length / critical_connections) - (traject_cost + minutes / 10)
     return score
 
 def TrajectCopier(dienstvoering, random_t):
+
+    """
+    Copies a traject
+
+    Input:
+        dienstvoering: A dienstvoering object
+        random_t: An integer representing the randomly selected traject
+    Returns:
+         temporary: A traject object
+    """
 
     temporary = Traject(8)
     temporary.trajectId = dienstvoering.trajects[random_t].trajectId
@@ -80,12 +130,36 @@ def TrajectCopier(dienstvoering, random_t):
 
 def DienstvoeringCopier(dienstvoering):
 
+    """
+    Copies a dienstvoering
+
+    Input:
+        dienstvoering: A dienstvoering object
+    Returns:
+         temporary_dienstvoering: A dienstvoering object
+    """
+
     temporary_dienstvoering = Dienstvoering(8)
     temporary_dienstvoering = copy.deepcopy(dienstvoering)
 
     return temporary_dienstvoering
 
 def DecisionFunctionality(score_before, score_after, dienstvoering, temporary_dienstvoering, temporary_traject, random_t):
+
+    """
+    Decides on the basis of the score whether to accept the new dienstvoering or to reset back to the old dienstvoering
+
+    Input:
+        score_before: A float representing the score before the dienstvoering was changed
+        score_after: A float representing the score after the potential change to the dienstvoering
+        dienstvoering: A dienstvoering object
+        temporary_dienstvoering: A dienstvoering object, containing the old values of the dienstvoering before any changes were made
+        temporary_traject: A traject object, containing the values of the randomly chosen traject before any changes were made to it
+        random_t: An integer representing the randomly selected traject
+
+    Returns:
+         dienstvoering: A dienstvoering object
+    """
 
     print("Entering DecisionFunctionality")
     # If the score of the Traject is an improvement
@@ -119,6 +193,14 @@ def DecisionFunctionality(score_before, score_after, dienstvoering, temporary_di
 
 def TrajectChooser(traject_amount):
 
+    """
+    Chooses a random traject
+    Input:
+        traject_amount: An integer representing the maximum amount of trajects in a dienstvoering
+    Returns:
+         value: An integer
+    """
+
     # Randomly selects one Traject in the Dienstvoering to swap
     array_minimal = []
     for i in range(traject_amount):
@@ -128,6 +210,15 @@ def TrajectChooser(traject_amount):
     return value
 
 def random_tResetter(dienstvoering, random_t):
+
+    """
+    Resets a traject object
+    Input:
+        dienstvoering: A dienstvoering object
+        random_t: An integer representing the randomly selected traject
+    Returns:
+         dienstvoering.trajects[random_t]: A traject object with all fields reset
+    """
 
     # Resetting the random_t Traject and returning it
     dienstvoering.trajects[random_t].time = 0
@@ -139,6 +230,16 @@ def random_tResetter(dienstvoering, random_t):
     return dienstvoering.trajects[random_t]
 
 def RandomRoutingFunctionality(dienstvoering, random_t, max_duration):
+
+    """
+    Finds a route between nodes (stations) subject to certain constraints
+    Input:
+        dienstvoering: A dienstvoering object with one empty traject, to be filled
+        random_t: An integer representing the randomly selected traject
+        max_duration: An integer representing the maximum duration of a traject
+    Returns:
+         dienstvoering: A dienstvoering object with the new traject added
+    """
 
     # Resets the counters used in the Random pathfinding loop
     MIN = 0.0
@@ -219,13 +320,20 @@ def RandomRoutingFunctionality(dienstvoering, random_t, max_duration):
 
     dienstvoering.trajects[random_t].Min_traject = MIN
     dienstvoering.trajects[random_t].time = MIN
-    #print("NEW ROUTE: ")
-    #print(dienstvoering.trajects[random_t].connections_visited)
-    #print("___________________________________________________")
 
     return dienstvoering
 
 def Hillclimber2(dienstvoering, iter, mapchooser):
+
+    """
+    Randomly swaps one traject in a dienstvoering for a randomly created new one if it improves the score
+    Input:
+        dienstvoering: A dienstvoering object
+        iter: An integer representing the amount of iterations (swaps) Hillclimber will run
+        mapchooser: An integer, 1 (for the Netherlands) or a 2 (for North and South Holland)
+    Returns:
+         dienstvoering: A dienstvoering object
+    """
 
     max_duration, critical_connections, traject_amount = 0, 0, 0
     mapChoice_list = MapChoice(mapchooser)
