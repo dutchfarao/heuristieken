@@ -18,25 +18,6 @@ if __name__ == "__main__":
     data = {}
     mapchooser = 0
 
-    # Allows the user to choose between runnign algorithms or performing visualisations
-    choiceAction = input("Would you like to run algorithms or perform visualisations? Press 'v' for visuals, otherwise just press ENTER")
-
-
-    # If the user wants to perform visualisations
-    if choiceAction == 'v':
-
-            # Reads the scores of the algortihms from the CSV file, and stores it in a dictionary
-            scores_dict_greedy = ReadScores("Greedy")
-            scores_dict_random = ReadScores("Random")
-            scores_dict_hillclimber_random = ReadScores("RandomHillClimber")
-            scores_dict_hillclimber = ReadScores("RandomAfterHillClimber")
-
-            # Runs five visualisations: A barplot compairing all algorithms, and one histogram for each algortihm seperatly
-            BarPlot(scores_dict_greedy, scores_dict_random, scores_dict_hillclimber_random, scores_dict_hillclimber)
-            HistogramPlot(scores_dict_random, "Random")
-            HistogramPlot(scores_dict_greedy, "Greedy")
-            HistogramPlot(scores_dict_hillclimber_random, "Hillclimber Random")
-            HistogramPlot(scores_dict_hillclimber, "Hillclimber")
 
     # Allows the user to choose whether the Dienstregeling will be national or just for North and South Holland
     while True:
@@ -63,7 +44,35 @@ if __name__ == "__main__":
     load_stations(INPUT_STATIONS)
     load_connections(INPUT_CONNECTIONS)
 
+    # Allows the user to choose between runnign algorithms or performing visualisations
+    choiceAction = input("Would you like to run algorithms or perform visualisations? Press 'v' for visuals, otherwise just press ENTER")
 
+
+    # If the user wants to perform visualisations
+    if choiceAction == 'v':
+
+        choiceAction = input("Would you like to do a Barplot, a Categoricalplot or a Histogramplot? Press 'b', 'c' or 'h'.")
+
+        # Reads the scores of the algortihms from the CSV file, and stores it in a dictionary
+        scores_dict_random = ReadScores("Random")
+        scores_dict_greedy = ReadScores("Greedy")
+        scores_dict_hillclimber = ReadScores("HillclimberComparison")
+        scores_dict_SA = ReadScores("SimulatedAnnealing")
+        temperatures = ReadScores("Temperatures")
+
+        # Runs five visualisations: A barplot compairing all algorithms, and one histogram for each algortihm seperatly
+        if choiceAction == 'b':
+            BarPlot(scores_dict_random, scores_dict_greedy, scores_dict_hillclimber, scores_dict_SA)
+
+        if choiceAction == 'c':
+            CategoricalPlot(temperatures, scores_dict_SA)
+
+        if choiceAction == 'h':
+
+            HistogramPlot(scores_dict_random, "Random")
+            HistogramPlot(scores_dict_greedy, "Greedy")
+            HistogramPlot(scores_dict_hillclimber, "Hillclimber")
+            HistogramPlot(scores_dict_SA, "Simulated Annealing")
 
 
     # Allows the user to choose which algorithm is ran
@@ -212,6 +221,7 @@ if __name__ == "__main__":
                 print("Please enter an positive integer.")
                 continue
             break
+
         # Starts the time, for comparison purposes
         start = time.time()
 
