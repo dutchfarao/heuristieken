@@ -115,13 +115,23 @@ n
 
 ## Requirements
 
-- matplotlib 2.1.0
-- os 16.1
-- sys 29.1
-- csv 14.1
-- random 9.6
-- re 6.2
-- networkx 2.0
+- certifi==2019.3.9
+- chardet==3.0.4
+- cycler==0.10.0
+- decorator==4.4.0
+- docopt==0.6.2
+- idna==2.8
+- kiwisolver==1.1.0
+- matplotlib==3.0.3
+- networkx==2.3
+- numpy==1.16.3
+- pipreqs==0.4.9
+- pyparsing==2.4.0
+- python-dateutil==2.8.0
+- requests==2.22.0
+- six==1.12.0
+- urllib3==1.25.3
+- yarg==0.1.9
 
 
 
