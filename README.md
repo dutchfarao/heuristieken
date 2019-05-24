@@ -68,6 +68,8 @@ Als we de lengte in minuten van alle kritieke verbindingen bij elkaar optellen k
 
 ## Gebruik
 
+#### Om het programma te gebruiken dienen eerst de requirements uit requirements.txt geinstalleerd te worden.
+
 #### Om het programma te starten voert men eerst de volgende command uit.
 ```
     python main.py
