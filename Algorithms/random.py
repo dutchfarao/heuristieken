@@ -9,17 +9,35 @@ minutes = []
 
 def TrajectSetter(d, traject, K_traject, Min_traject):
 
+    """
+     Sets the values of a traject object to certain values
+
+    Input:
+        d: A dienstvoering object, the current dienstvoering
+        traject: The current traject object
+        K_traject: A float, the value of K for the current traject
+        Min_traject: A float, the length in minutes of the current traject
+    Returns:
+         d.trajects[traject]: A traject object, with updated values for K and Minutes
+    """
+
     d.trajects[traject].K_traject = K_traject
     d.trajects[traject].Min_traject = Min_traject
     return d.trajects[traject]
 
-def LengthChecker(visited_hc):
-
-    temporary_critical_visited = visited_hc
-    length = len(temporary_critical_visited)
-    return length
-
 def K_trajectCalculator(length_before, length_after, MIN, critical_connections):
+
+    """
+     Calculates the value of K for a certain traject
+
+    Input:
+        length_before: An integer, representing the length of the list containing all the visited critical connections in the dienstvoering
+        length_after: An integer, representing the length of the list containing all the visited critical connections in the dienstvoering after the new traject has been made
+        MIN: A float, the amount of minutes the traject takes to complete
+        critical_connections: An integer, the maximum amount of critical connections that can be visited in the dienstvoering
+    Returns:
+         K: An integer, representing the score of a certain traject
+    """
 
     difference_length = length_after - length_before
     K = 10000 * (difference_length / critical_connections) - (20 + MIN / 10)
@@ -27,6 +45,15 @@ def K_trajectCalculator(length_before, length_after, MIN, critical_connections):
     return K
 
 def K_trajectSumFunctionality(dienstvoering):
+
+    """
+    Adds all the values of K of each traject in a dienstvoering together
+
+    Input:
+        dienstvoering: A dienstvoering object
+    Returns:
+         K_temporary: An integer, representing the score of all trajects in a dienstvoering added together
+    """
 
     K_temporary = 0.0
     for traject in dienstvoering.trajects.values():
@@ -36,6 +63,15 @@ def K_trajectSumFunctionality(dienstvoering):
     return K_temporary
 
 def MinutesCalculator(dienstvoering):
+
+    """
+    Caulculates the total amount of minutes all trajects in a dienstvoering take
+
+    Input:
+        A dienstvoering object
+    Returns:
+         minutes: An integer representing the length of the dienstvoering in minutes
+    """
 
     minutes = 0
 
@@ -49,14 +85,31 @@ def MinutesCalculator(dienstvoering):
 
 def DuplicateRemover(input):
 
+    """
+    Removes all the duplicates in a list
+
+    Input:
+        input: A list of visited critical connections containing duplicates
+    Returns:
+         Before_Critical_Visited_No_Duplicates: A list of visited critical connections, containing no duplicates
+    """
+
     # Removes all duplicate critical connections visited in the Dienstvoering's critical_visited_HC
     Before_Duplicate_removal = input
     Before_Critical_Visited_No_Duplicates = list(dict.fromkeys(Before_Duplicate_removal))
-    #print("Duplicateremover")
-    #print(value)
+
     return Before_Critical_Visited_No_Duplicates
 
 def MapChoice(mapchooser):
+
+    """
+     Sets variables based on which map is chosen by the user
+
+    Input:
+        mapchooser: An integer, 1 (for the Netherlands) or a 2 (for North and South Holland)
+    Returns:
+         mapChoice_list: A list containing the max_duration (180 / 120), the amount of critical_connections (120 / 40) and the maximum amount of trajects (7 / 20)
+    """
 
     mapChoice_list = []
 
@@ -82,6 +135,15 @@ def MapChoice(mapchooser):
 
 # Finds a specified number of random routes
 def Random(amount, mapchooser):
+
+    """
+    Finds a route between nodes (stations) subject to certain constraints
+    Input:
+        amount: An integer, representing the amount of Dienstvoeringen random will create
+        mapchooser: An integer, 1 (for the Netherlands) or a 2 (for North and South Holland)
+    Returns:
+         scores_dict: A dictionary containing dienstvoering objects
+    """
 
     max_duration, critical_connections, traject_amount = 0, 0, 0
     mapChoice_list = MapChoice(mapchooser)
@@ -112,7 +174,7 @@ def Random(amount, mapchooser):
             # print("_________")
             temporary = d.critical_visited_HC
             remove_duplicates = DuplicateRemover(temporary)
-            length_before = LengthChecker(remove_duplicates)
+            length_before = len(remove_duplicates)
 
             #print("length_before after removing duplicates: ")
             #print(length_before)
@@ -208,7 +270,7 @@ def Random(amount, mapchooser):
 
             temporary = d.critical_visited_HC
             remove_duplicates = DuplicateRemover(temporary)
-            length_after = LengthChecker(remove_duplicates)
+            length_after = len(remove_duplicates)
 
             K_traject = K_trajectCalculator(length_before, length_after, MIN, critical_connections)
             min_traject = MIN
