@@ -237,5 +237,7 @@ if __name__ == "__main__":
 
         # Calculates the highest value of K returned from the HillClimber algorithm
         highscore = dienstvoering_SA.get_score()
+
+        #print best score and other info
         print("Score after Simulated Annealing: ")
         print(highscore)

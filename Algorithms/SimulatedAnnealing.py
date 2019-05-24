@@ -275,7 +275,7 @@ def cooling_function(max_temp, iteration, max_iterations):
     # the function
     function = max_iterations / (1 + math.exp(-6 * iteration / max_iterations))
     # calculation of temp.
-    temperature = 2 * (max_temp - function)
+    temperature = (max_temp - function)
 
     return temperature
 
