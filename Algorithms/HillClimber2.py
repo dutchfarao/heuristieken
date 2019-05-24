@@ -139,11 +139,9 @@ def DecisionFunctionality(score_before, score_after, dienstvoering, temporary_di
          dienstvoering: A dienstvoering object
     """
 
-    print("Entering DecisionFunctionality")
     # If the score of the Traject is an improvement
     if score_after >= score_before:
 
-        print("The score was determined to be an improvement")
         # Adds the newly visited critical connections to the dienstvoering
         for row in dienstvoering.trajects[random_t].critical_visited_HC:
             dienstvoering.critical_visited_HC.append(row)
@@ -152,8 +150,6 @@ def DecisionFunctionality(score_before, score_after, dienstvoering, temporary_di
 
     # If the score is not an improvement
     else:
-
-        print("The score was NOT determined to be an improvement")
 
         # Resets the random_t Traject to its old value
         dienstvoering = temporary_dienstvoering
@@ -183,25 +179,25 @@ def TrajectChooser(traject_amount):
     value = random.choice(list(array_minimal))
     return value
 
-def random_tResetter(dienstvoering, random_t):
-
-    """
-    Resets a traject object
-    Input:
-        dienstvoering: A dienstvoering object
-        random_t: An integer representing the randomly selected traject
-    Returns:
-         dienstvoering.trajects[random_t]: A traject object with all fields reset
-    """
-
-    # Resetting the random_t Traject and returning it
-    dienstvoering.trajects[random_t].time = 0
-    dienstvoering.trajects[random_t].connections_visited.clear()
-    dienstvoering.trajects[random_t].critical_visited.clear()
-    dienstvoering.trajects[random_t].critical_visited_HC.clear()
-    dienstvoering.trajects[random_t].K_traject = 0
-    dienstvoering.trajects[random_t].Min_traject = 0
-    return dienstvoering.trajects[random_t]
+# def random_tResetter(dienstvoering, random_t):
+#
+#     """
+#     Resets a traject object
+#     Input:
+#         dienstvoering: A dienstvoering object
+#         random_t: An integer representing the randomly selected traject
+#     Returns:
+#          dienstvoering.trajects[random_t]: A traject object with all fields reset
+#     """
+#
+#     # Resetting the random_t Traject and returning it
+#     dienstvoering.trajects[random_t].time = 0
+#     dienstvoering.trajects[random_t].connections_visited.clear()
+#     dienstvoering.trajects[random_t].critical_visited.clear()
+#     dienstvoering.trajects[random_t].critical_visited_HC.clear()
+#     dienstvoering.trajects[random_t].K_traject = 0
+#     dienstvoering.trajects[random_t].Min_traject = 0
+#     return dienstvoering.trajects[random_t]
 
 def RandomRoutingFunctionality(dienstvoering, random_t, max_duration):
 
@@ -237,7 +233,6 @@ def RandomRoutingFunctionality(dienstvoering, random_t, max_duration):
     while (MIN < max_duration):
 
         # Neighbors of the current station (departure) in the form of:
-        # {'Station A': '12', 'Station B': '13', 'Station C': '7'}
         neighbors = g.station_dict[current[0]].adjacent
 
         # Declare a list of unisited stations
@@ -250,7 +245,6 @@ def RandomRoutingFunctionality(dienstvoering, random_t, max_duration):
             visited = g.station_dict[neighbor[0]].get_visited()
 
             # If visited equals False, adds that neighbor to unvisited stations in the form
-            # neighbor = ('Station A', '12')
             if (visited == False):
                 unvisited_items.append(neighbor)
 
@@ -259,7 +253,6 @@ def RandomRoutingFunctionality(dienstvoering, random_t, max_duration):
             break
 
         # Picks a random neighbor from unvisited_items
-        # neighbor = ('Station A', '12')
         next = random.choice(unvisited_items)
 
         # Gets the name of the station as a String e.g. 'Station A'
@@ -276,7 +269,6 @@ def RandomRoutingFunctionality(dienstvoering, random_t, max_duration):
         current_station = current[0]
 
         # Adds the new connection to the traject dictionary in dienstvoering
-        # E.g. {0: ('Station A', 'Station B'), 1: ('Station B', Station C')}
         dienstvoering.trajects[random_t].fill_connections(counter, current_station, next_station)
         counter = counter + 1
 
@@ -306,7 +298,7 @@ def Hillclimber2(dienstvoering, iter, mapchooser):
         iter: An integer representing the amount of iterations (swaps) Hillclimber will run
         mapchooser: An integer, 1 (for the Netherlands) or a 2 (for North and South Holland)
     Returns:
-         dienstvoering: A dienstvoering object
+         scores_list: A dictionary of dienstvoering objects
     """
 
     max_duration, critical_connections, traject_amount = 0, 0, 0
@@ -325,14 +317,12 @@ def Hillclimber2(dienstvoering, iter, mapchooser):
 
         # Randomly selects one Traject in the Dienstvoering to swap
         random_t = TrajectChooser(traject_amount)
-        # print("Random_t is: ")
-        # print(random_t)
 
         # Initializes a new, temporary Dienstvoering object to store the values
         temporary_dienstvoering = DienstvoeringCopier(dienstvoering)
 
-        # Resetting the minimal_t Traject
-        dienstvoering.trajects[random_t] = random_tResetter(dienstvoering, random_t)
+        # # Resetting the minimal_t Traject
+        # dienstvoering.trajects[random_t] = random_tResetter(dienstvoering, random_t)
 
         # Calls the RandomRoutingFunctionality
         dienstvoering = RandomRoutingFunctionality(dienstvoering, random_t, max_duration)
@@ -345,13 +335,7 @@ def Hillclimber2(dienstvoering, iter, mapchooser):
 
         # Calculates the total score of the dienstvoering
         final_score = dienstvoering.score
-        print("Final Score")
-        print(final_score)
-        scores_list[m] = final_score
+        scores_list[m] = dienstvoering
 
 
-        print("---------------------------------------------------")
-        print(scores_list)
-        print("---------------------------------------------------")
-
-    return dienstvoering
+    return scores_list

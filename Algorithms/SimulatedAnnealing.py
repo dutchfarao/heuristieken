@@ -152,8 +152,10 @@ def DecisionFunctionality(temperature, score_before, score_after, dienstvoering,
          dienstvoering: A dienstvoering object
     """
     temperature = temperature
+
     # If the score of the Traject is an improvement
     if score_after >= score_before:
+
         # Adds the newly visited critical connections to the dienstvoering
         for row in dienstvoering.trajects[random_t].critical_visited_HC:
             dienstvoering.critical_visited_HC.append(row)
@@ -162,11 +164,13 @@ def DecisionFunctionality(temperature, score_before, score_after, dienstvoering,
 
     # If the score is not an improvement
     if score_after < score_before and temperature is not 0:
+
         #calculate the change of acceptance
         chance = math.exp((score_after - score_before) / temperature)
 
-             # accept the new score
+         # accept the new score
         if random.random() < chance:
+
             # Adds the newly visited critical connections to the dienstvoering
             for row in dienstvoering.trajects[random_t].critical_visited_HC:
                 dienstvoering.critical_visited_HC.append(row)
@@ -174,6 +178,7 @@ def DecisionFunctionality(temperature, score_before, score_after, dienstvoering,
             dienstvoering.set_score(score_after)
 
         else:
+
             # Resets the random_t Traject to its old value
             dienstvoering = temporary_dienstvoering
             dienstvoering.dienstId = temporary_dienstvoering.dienstId
@@ -213,6 +218,7 @@ def random_tResetter(dienstvoering, random_t):
     Returns:
          dienstvoering.trajects[random_t]: A traject object with all fields reset
     """
+
     # Resetting the random_t Traject and returning it
     dienstvoering.trajects[random_t].time = 0
     dienstvoering.trajects[random_t].connections_visited.clear()
@@ -220,6 +226,7 @@ def random_tResetter(dienstvoering, random_t):
     dienstvoering.trajects[random_t].critical_visited_HC.clear()
     dienstvoering.trajects[random_t].K_traject = 0
     dienstvoering.trajects[random_t].Min_traject = 0
+
     return dienstvoering.trajects[random_t]
 
 def RandomRoutingFunctionality(dienstvoering, random_t, max_duration):
@@ -256,7 +263,6 @@ def RandomRoutingFunctionality(dienstvoering, random_t, max_duration):
     while (MIN < max_duration):
 
         # Neighbors of the current station (departure) in the form of:
-        # {'Station A': '12', 'Station B': '13', 'Station C': '7'}
         neighbors = g.station_dict[current[0]].adjacent
 
         # Declare a list of unisited stations
@@ -269,7 +275,6 @@ def RandomRoutingFunctionality(dienstvoering, random_t, max_duration):
             visited = g.station_dict[neighbor[0]].get_visited()
 
             # If visited equals False, adds that neighbor to unvisited stations in the form
-            # neighbor = ('Station A', '12')
             if (visited == False):
                 unvisited_items.append(neighbor)
 
@@ -278,7 +283,6 @@ def RandomRoutingFunctionality(dienstvoering, random_t, max_duration):
             break
 
         # Picks a random neighbor from unvisited_items
-        # neighbor = ('Station A', '12')
         next = random.choice(unvisited_items)
 
         # Gets the name of the station as a String e.g. 'Station A'
@@ -295,7 +299,6 @@ def RandomRoutingFunctionality(dienstvoering, random_t, max_duration):
         current_station = current[0]
 
         # Adds the new connection to the traject dictionary in dienstvoering
-        # E.g. {0: ('Station A', 'Station B'), 1: ('Station B', Station C')}
         dienstvoering.trajects[random_t].fill_connections(counter, current_station, next_station)
         counter = counter + 1
 
@@ -327,8 +330,10 @@ def cooling_function(max_temp, iteration, max_iterations):
     Returns:
          temperature.
     """
+
     # the function
     function = max_iterations / (1 + math.exp(-6 * iteration / max_iterations))
+
     # calculation of temp.
     temperature = (max_temp - function)
 
@@ -345,7 +350,7 @@ def SimulatedAnnealing(dienstvoering, iter, mapchooser):
         iter: An integer representing the amount of iterations (swaps) Hillclimber will run
         mapchooser: An integer, 1 (for the Netherlands) or a 2 (for North and South Holland)
     Returns:
-         dienstvoering: A dienstvoering object
+         scores_list: A dictionary of dienstvoering objects
     """
 
     #set values
@@ -376,7 +381,6 @@ def SimulatedAnnealing(dienstvoering, iter, mapchooser):
 
         # Calls the RandomRoutingFunctionality
         dienstvoering = RandomRoutingFunctionality(dienstvoering, random_t, max_duration)
-
         length_after = SetAppendingFunctionality(dienstvoering)
         minutes_after = MinutesCalculator(dienstvoering)
         score_after = SetScoreCalculator(length_after, minutes_after, dienstvoering, critical_connections, traject_amount)
@@ -385,12 +389,7 @@ def SimulatedAnnealing(dienstvoering, iter, mapchooser):
 
         # Calculates the total score of the dienstvoering
         final_score = dienstvoering.score
-        scores_list[m] = final_score
+        scores_list[m] = dienstvoering
         iteration = iteration + 1
 
-        #print scores
-        print("---------------------------------------------------")
-        print(scores_list)
-        print("---------------------------------------------------")
-
-    return dienstvoering
+    return scores_list

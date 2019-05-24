@@ -6,8 +6,8 @@ from Algorithms.greedy import Greedy, scores_dict_returner_greedy
 from Algorithms.random import Random, scores_dict_returner_random
 from Algorithms.HillClimber2 import Hillclimber2
 from Algorithms.SimulatedAnnealing import SimulatedAnnealing
-from HelperFunctions.VisualisationHelper import HistogramPlot, CategoricalPlot
-#from HelperFunctions.MapHelper import MapHelper
+from HelperFunctions.VisualisationHelper import HistogramPlot, CategoricalPlot, BarPlot
+from HelperFunctions.MapHelper import MapHelper
 import time
 import random
 
@@ -51,19 +51,25 @@ if __name__ == "__main__":
 
         choiceAction = input("Would you like to do a Barplot, a Categoricalplot or a Histogramplot? Press 'b', 'c' or 'h'.")
 
+        if mapchooser == 1:
+            size = "NL"
+
+        if mapchooser == 2:
+            size = "NZH"
+
         # Reads the scores of the algortihms from the CSV file, and stores it in a dictionary
-        scores_dict_random = ReadScores("Random")
-        scores_dict_greedy = ReadScores("Greedy")
-        scores_dict_hillclimber = ReadScores("HillclimberComparison")
-        scores_dict_SA = ReadScores("SimulatedAnnealing")
-        temperatures = ReadScores("Temperatures")
+        scores_dict_random = ReadScores("Random" + size)
+        scores_dict_greedy = ReadScores("Greedy" + size)
+        scores_dict_hillclimber = ReadScores("Hillclimber" + size)
+        scores_dict_SA = ReadScores("SimulatedAnnealing" + size)
+        #temperatures = ReadScores("Temperatures" + size)
 
         # Runs five visualisations: A barplot compairing all algorithms, and one histogram for each algortihm seperatly
         if choiceAction == 'b':
             BarPlot(scores_dict_random, scores_dict_greedy, scores_dict_hillclimber, scores_dict_SA)
 
         if choiceAction == 'c':
-            CategoricalPlot(temperatures, scores_dict_SA)
+            CategoricalPlot(scores_dict_hillclimber, scores_dict_SA)
 
         if choiceAction == 'h':
 
@@ -104,28 +110,25 @@ if __name__ == "__main__":
         dienstvoering_dict = Random(1, mapchooser)
         dienstvoering_random = dienstvoering_dict[0]
 
-        # Calculates the highest value of K returned from the Random algorithm
-        highscore = dienstvoering_random.get_score()
-        print("Random score: ")
-        print(highscore)
-
-        # Writes the scores from the Random algorithm called by HillClimber into a CSV file
-        WriteScores(dienstvoering_dict, "RandomHillClimber", 2)
-
         # Calls the HillClimber algorithm using the scores from the Random algorithm and stores the return values in scores_dictionary_HC
         dienstvoering_hillclimber = Hillclimber2(dienstvoering_random, hillclimber2_size, mapchooser)
+
+        # Afterwards, the values of K are stored in K_dict
+        K_dict = {}
+        for row in dienstvoering_hillclimber.keys():
+            K_dict[row] = dienstvoering_hillclimber[row].get_score()
+
+        # Calculates the highest value of K returned from the Random algorithm
+        best_dienstvoering = max(K_dict, key=K_dict.get)
+        beste_dv = dienstvoering_hillclimber[best_dienstvoering]
 
         # Ends the timecounter and calculates running length of the algorithm
         end = time.time()
         time = end - start
 
-        # Calculates the highest value of K returned from the HillClimber algorithm
-        highscore = dienstvoering_hillclimber.get_score()
-        print("Score after HC: ")
-        print(highscore)
-
         # Writes the scores from the Random algorithm called by HillClimber into a CSV file
-        WriteScores(highscore, "RandomAfterHillClimber", 3)
+        WriteScores(K_dict, "Hillclimber", 1, mapchooser)
+        MapHelper(mapchooser, beste_dv)
 
     if choiceAlgorithm == "g":
 
@@ -147,7 +150,6 @@ if __name__ == "__main__":
 
         #put scores of greedy in scores_dict
         scores_dict = scores_dict_returner_greedy()
-        print(scores_dict)
 
         #choose best score
         best_dienstvoering = max(scores_dict, key=scores_dict.get)
@@ -163,8 +165,7 @@ if __name__ == "__main__":
         print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", greedy_size, " | time elapsed (seconds) = ", time, " | average = ", average)
 
         #write scores
-        WriteScores(scores_dict, "Greedy", 1)
-        ReadScores("Greedy")
+        WriteScores(scores_dict, "Greedy", 1, mapchooser)
 
     # If the user chooses the algorithm Random
     if choiceAlgorithm == "r":
@@ -201,9 +202,7 @@ if __name__ == "__main__":
         print("id of best dienstvoering: ", best_dienstvoering, "| score: ", highscore, " | n = ", random_size, " | time elapsed (seconds) = ", time)
 
         # Writes the scores from the Random algorithm into a CSV file
-        WriteScores(scores_dict, "Random", 2)
-        ReadScores("Random")
-        MapHelper(mapchooser, beste_dv)
+        WriteScores(K_dict, "Random", 1, mapchooser)
 
     # If the user chooses the algorithm Simulated Annealing
     if choiceAlgorithm == "s":
@@ -225,25 +224,18 @@ if __name__ == "__main__":
         dienstvoering_dict = Random(1, mapchooser)
         dienstvoering_random = dienstvoering_dict[0]
 
-        # Calculates the highest value of K returned from the Random algorithm
-        highscore = dienstvoering_random.get_score()
-        print("Random score: ")
-        print(highscore)
-
-        # Writes the scores from the Random algorithm called by HillClimber into a CSV file
-        WriteScores(dienstvoering_dict, "SimulatedAnnealing", 2)
-        ReadScores("SimulatedAnnealing")
-
         # Calls the HillClimber algorithm using the scores from the Random algorithm and stores the return values in scores_dictionary_HC
         dienstvoering_SA = SimulatedAnnealing(dienstvoering_random, SA_size, mapchooser)
 
-        # Ends the timecounter and calculates running length of the algorithm
-        end = time.time()
-        time = end - start
+        # Afterwards, the values of K are stored in K_dict
+        K_dict = {}
+        for row in dienstvoering_SA.keys():
+            K_dict[row] = dienstvoering_SA[row].get_score()
 
-        # Calculates the highest value of K returned from the HillClimber algorithm
-        highscore = dienstvoering_SA.get_score()
+        # Calculates the highest value of K returned from the Random algorithm
+        best_dienstvoering = max(K_dict, key=K_dict.get)
+        beste_dv = dienstvoering_SA[best_dienstvoering]
 
-        #print best score and other info
-        print("Score after Simulated Annealing: ")
-        print(highscore)
+        # Writes the scores from the Random algorithm called by HillClimber into a CSV file
+        WriteScores(K_dict, "SimulatedAnnealing", 1, mapchooser)
+        MapHelper(mapchooser, beste_dv)

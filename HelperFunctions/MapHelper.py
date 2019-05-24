@@ -5,12 +5,23 @@ from matplotlib.ticker import FuncFormatter
 import numpy as np
 from Classes.graph import Graph
 from Classes.dienstvoering import Dienstvoering
+from HelperFunctions.CSVHelper import g
 import networkx as nx
-import edges as e
 
 def LabelPositionChanger(pos):
+
+    """
+     Changes the position of labels by a certain offset
+
+    Input:
+        pos: A tuple, containing the values of a position as (x, y)
+
+    Returns:
+        pos_changed: A tuple, containing the values of a position as (x, y), now offset by a certain degree
+    """
+
     pos_changed = {}
-    y_off = 0.04 # offset on the y axis
+    y_off = 0.04
 
     for k, v in pos.items():
         pos_changed[k] = (v[0], v[1] + y_off)
@@ -18,6 +29,13 @@ def LabelPositionChanger(pos):
     return pos_changed
 
 def NodeColorSetter(color_values):
+
+    """
+     Changes the color of nodes depending on if they are critical or not
+
+    Returns:
+        color_values: A list, containing the colours of all nodes
+    """
 
     for station in g.station_dict.values():
         if station.critical == True:
@@ -30,8 +48,19 @@ def NodeColorSetter(color_values):
 
 def NodeAdder(G):
 
+    """
+     Changes the position of labels by a certain offset
+
+    Input:
+        G: A DiGraph object, containing the values necessary to create a NetworkGraph
+    Returns:
+        G: A DiGraph object, containing the values necessary to create a NetworkGraph with values of new nodes added
+    """
+
     values = []
+
     for station in g.station_dict.values():
+
         id = station.id
         latitude = station.xco
         longitude = station.yco
@@ -40,6 +69,14 @@ def NodeAdder(G):
     return G
 
 def StationLoader():
+
+    """
+     Creates strings used for the labels on the nodes in the NetworkGraph, and adds those to the station objects
+
+    Input:
+        g: A graph object, containing (among other things) a station_dict containing all the stations used in the dienstvoering
+
+    """
 
     for station in g.station_dict.values():
 
@@ -53,20 +90,41 @@ def StationLoader():
 
 def EdgeAdder(G):
 
+    """
+     Adds edges to a NetworkGraph object
+
+    Input:
+        G: A DiGraph object, containing the values necessary to create a NetworkGraph
+    Returns:
+        G: A DiGraph object, containing the values necessary to create a NetworkGraph with values of new edges added
+    """
+
     elist = []
 
     for station in g.station_dict.values():
 
         for key in station.adjacent.keys():
+
             elist.append((station.id, key, station.adjacent[key]))
 
     for edge in elist:
 
-        print(edge)
         G.add_edge(edge[0], edge[1])
+
     return G
 
 def EdgeAdderTrajects(G, dienstvoering, mapchooser):
+
+    """
+     Adds edges to a NetworkGraph object for each traject in the dienstvoering
+
+    Input:
+        G: A DiGraph object, containing the values necessary to create a NetworkGraph
+        dienstvoering: A dienstvoering object
+        mapchooser: An integer, representing whether the dienstvoering was made for Noord and Zuid Holland or the Netherlands
+    Returns:
+        G: A DiGraph object, containing the values necessary to create a NetworkGraph with values of new edges added
+    """
 
     elist = []
 
@@ -100,16 +158,36 @@ def EdgeAdderTrajects(G, dienstvoering, mapchooser):
 
 def NodeTextAdderCritical(G):
 
+    """
+     Adds a label to a node in case the node (station) is critical
+
+    Input:
+        G: A DiGraph object, containing the values necessary to create a NetworkGraph
+    Returns:
+        labels_critical: A dictionary, containing the afkortingen of nodes (stations) which are critical
+    """
+
     labels_critical = {}
 
     for station in g.station_dict.values():
+
         if station.critical == True:
+
             name = station.afkorting
             labels_critical[station.id] = station.afkorting
 
     return labels_critical
 
 def NodeTextAdderNonCritical(G):
+
+    """
+     Adds a label to a node in case the node (station) is not critical
+
+    Input:
+        G: A DiGraph object, containing the values necessary to create a NetworkGraph
+    Returns:
+        labels_not_critical: A dictionary, containing the afkortingen of nodes (stations) which are not critical
+    """
 
     labels_not_critical = {}
 
@@ -123,6 +201,16 @@ def NodeTextAdderNonCritical(G):
     return labels_not_critical
 
 def TrajectsCreator(NetworkXGraph, dienstvoering, mapchooser):
+
+    """
+     Creates a NetworkGraph which has the trajects in a dienstvoering as edges
+
+    Input:
+        NetworkXGraph: A DiGraph object, containing the values necessary to create a NetworkGraph
+        dienstvoering: A dienstvoering object
+        mapchooser: An integer, representing whether the dienstvoering was made for Noord and Zuid Holland or the Netherlands
+
+    """
 
     NetworkXGraph = NodeAdder(NetworkXGraph)
     NetworkXGraph = EdgeAdderTrajects(NetworkXGraph, dienstvoering, mapchooser)
@@ -148,7 +236,15 @@ def TrajectsCreator(NetworkXGraph, dienstvoering, mapchooser):
     plt.show()
 
 def OverviewCreator(NetworkXGraph):
-    # img = plt.imread("kaart.png")
+
+    """
+     Creates a NetworkGraph
+
+    Input:
+        NetworkXGraph: A DiGraph object, containing the values necessary to create a NetworkGraph
+
+    """
+
     NetworkXGraph = NodeAdder(NetworkXGraph)
     NetworkXGraph = EdgeAdder(NetworkXGraph)
 
@@ -161,14 +257,23 @@ def OverviewCreator(NetworkXGraph):
     pos=nx.get_node_attributes(NetworkXGraph,'pos')
     pos_changed = LabelPositionChanger(pos)
     fig,ax = plt.subplots(1, figsize = (8,11))
-    # ax.imshow(img, extent=[5, 8, 50, 54])
 
     nx.draw(NetworkXGraph, pos, node_color=color_values, node_size=80)
     nx.draw_networkx_labels(NetworkXGraph, pos_changed, labels = labelsdictcritical, font_size=10, font_color='#381e1e')
     nx.draw_networkx_labels(NetworkXGraph, pos_changed, labels = labelsdictnoncritical, font_size=8, font_color='#381e1e')
+    
     plt.show()
 
 def MapHelper(mapchooser, dienstvoering):
+
+    """
+     Creates a NetworkGraph, of either Noord and Zuid Holland or the Netherlands. Can also use the trajects in a dienstvoering as edges
+
+    Input:
+        mapchooser: An integer, representing whether the dienstvoering was made for Noord and Zuid Holland or the Netherlands
+        dienstvoering: A dienstvoering object
+
+    """
 
     NetworkXGraph = nx.DiGraph()
     StationLoader()

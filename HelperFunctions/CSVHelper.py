@@ -4,13 +4,18 @@ from Classes.connection import Connection
 from Classes.graph import Graph
 from Classes.dienstvoering import Dienstvoering
 
-INPUT_CONNECTIONS = "Data/ConnectiesHolland.csv"
-INPUT_STATIONS = "Data/StationsHolland.csv"
 stations = {}
 connections = {}
 g = Graph()
-# Function to load the CSV file 'StationsHolland' into a dictionary named 'stations'
+
 def load_stations(file):
+
+    """
+     Loads stations from a CSV file and adds them to a graph
+
+    Input:
+        file: A string, either "Data/StationsNationaal.csv" or "Data/StationsHolland.csv"
+    """
 
     with open(file, newline='') as csvfile:
         reader = csv.reader(csvfile)
@@ -26,8 +31,16 @@ def load_stations(file):
 
             g.add_station(name, xCoordinate, yCoordinate, critical)
 
-# Function to load the CSV file 'ConnectiesHolland' into a dictionary named connections
 def load_connections(file):
+
+    """
+     Loads connections from a CSV file and adds them to a graph
+
+    Input:
+        file: A string, either "Data/ConnectiesHolland.csv" or "Data/ConnectiesNationaal.csv"
+    """
+
+
 
     with open(file, newline='') as csvfile:
 
@@ -38,19 +51,35 @@ def load_connections(file):
             stationA = row[0]
             stationB = row[1]
             time = row[2]
+            
             if len(row) == 4:
                 critical = True
+
             else:
                 critical = False
             visited = False
 
             g.add_connection(stationA, stationB, time, critical, visited)
 
-# Function to write the results to a CSV file
-def WriteScores(results, choiceAlgorithm, mode):
+def WriteScores(results, choiceAlgorithm, mode, mapchooser):
+
+    """
+     Writes scores from an algorithm to a CSV file
+
+    Input:
+        results: A string, either "Data/ConnectiesHolland.csv" or "Data/ConnectiesNationaal.csv"
+        choiceAlgorithm: A string, the name of the algorithm used
+        mode: An integer, representing whether the scores are stored in a dictionary or only one score is passed
+        mapchooser: An integer, representing whether the dienstvoering was made for Noord and Zuid Holland or the Netherlands
+    """
+    if mapchooser == 1:
+        string_size = "NL"
+
+    if mapchooser == 2:
+        string_size = "NZH"
 
     # Location where the results will be saved (in CSV format)
-    location = choiceAlgorithm + ".csv"
+    location = choiceAlgorithm + string_size + ".csv"
     csv = open(location, "w")
     columnTitleRow = "run, K\n"
     csv.write(columnTitleRow)
@@ -62,13 +91,6 @@ def WriteScores(results, choiceAlgorithm, mode):
             row = str(run) + ',' + str(K) + '\n'
             csv.write(row)
 
-    if mode == 2:
-        for key in results.keys():
-            run = key
-            K = results[key].score
-            row = str(run) + ',' + str(K) + '\n'
-            csv.write(row)
-
     if mode == 3:
 
         run = 0
@@ -76,6 +98,15 @@ def WriteScores(results, choiceAlgorithm, mode):
         csv.write(row)
 
 def ReadScores(CSVName):
+
+    """
+     Reads scores from a CSV file and adds them to a dictionary
+
+    Input:
+        CSVName: A string, the name of the file to be scanned for scores
+    Returns:
+        scores_dict: A dictionary of scores, containing the run number and a score
+    """
 
     scores_dict = {}
     location = CSVName + ".csv"
@@ -87,19 +118,7 @@ def ReadScores(CSVName):
             d.set_score(int(float(row[1])))
             scores_dict[d.dienstId] = int(float(row[1]))
 
-        return(scores_dict)
-
-# Can be called upon to check the contents of the dictionary 'stations'
-def station_printer():
-
-    for index, value in stations.items():
-        print(index, value)
-
-# Can be called upon to check the contents of the dictionary 'connections'
-def connection_printer():
-
-    for index, value in connections.items():
-        print(index, value)
+    return(scores_dict)
 
 
 if __name__ == "__main__":

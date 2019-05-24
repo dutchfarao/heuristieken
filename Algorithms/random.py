@@ -171,18 +171,11 @@ def Random(amount, mapchooser):
         # Specify the amount of routes
         for traject in range(traject_amount):
 
-            # print("_________")
-            # print("Traject number: ")
-            # print(traject)
-            # print("_________")
             temporary = d.critical_visited_HC
             remove_duplicates = DuplicateRemover(temporary)
             length_before = len(remove_duplicates)
-
-            #print("length_before after removing duplicates: ")
-            #print(length_before)
-
             P_old = P
+
             #create traject object
             t = Traject(traject)
             d.trajects[traject] = t
@@ -208,9 +201,7 @@ def Random(amount, mapchooser):
             while (MIN < max_duration):
 
                 # Neighbors of the current station (departure) in the form of:
-                # {'Station A': '12', 'Station B': '13', 'Station C': '7'}
                 neighbors = g.station_dict[current[0]].adjacent
-                #print(neighbors)
 
                 # Declare a list of unisited stations
                 unvisited_items = []
@@ -222,7 +213,6 @@ def Random(amount, mapchooser):
                     visited = g.station_dict[neighbor[0]].get_visited()
 
                     # If visited equals False, adds that neighbor to unvisited stations in the form
-                    # neighbor = ('Station A', '12')
                     if (visited == False):
                         unvisited_items.append(neighbor)
 
@@ -231,7 +221,6 @@ def Random(amount, mapchooser):
                     break
 
                 # Picks a random neighbor from unvisited_items
-                # neighbor = ('Station A', '12')
                 next = random.choice(unvisited_items)
 
                 if (MIN + float(next[1]) > max_duration):
@@ -250,13 +239,10 @@ def Random(amount, mapchooser):
                 current_station = current[0]
 
                 # Adds the new connection to the traject dictionary in dienstvoering
-                # E.g. {0: ('Station A', 'Station B'), 1: ('Station B', Station C')}
                 t.fill_connections(counter, current_station, next_station)
 
                 # If either current_station or next_station is a critical Station
                 # Calls the dienstvoering method fill_critical
-                # print(current_station)
-                # print(next_station)
 
                 if (g.station_dict[current_station].critical == True or g.station_dict[next_station].critical == True):
                     d.fill_critical_HC(current_station, next_station)
@@ -279,26 +265,17 @@ def Random(amount, mapchooser):
             min_traject = MIN
 
             t = TrajectSetter(d, traject, K_traject, min_traject)
-            # print("Route taken: ")
-            # print(t.connections_visited)
-            # print("_________")
-            # print("Minutes taken by traject: ")
-            # print(min_traject)
-            # print("_________")
 
             d.trajects[traject] = t
             T = T + 1
             minutes.append(MIN)
             MIN = 0
 
-        # print("K dienstvoering")
         score = K_trajectSumFunctionality(d)
         d.set_score(score)
         d.minutes = MinutesCalculator(d)
         scores_dict[d.dienstId] = d
-        # print(score)
 
-    # print(scores_dict)
     return scores_dict
 
 def scores_dict_returner_random():
