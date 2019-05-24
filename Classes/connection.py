@@ -1,13 +1,8 @@
-"""
-Representation of a connection in RAILNL
-"""
-
 class Connection:
 
     def __init__(self, name, stationA, stationB, time):
-
         """
-        Initializes a Connection
+        Representation of a connection in RAILNL
         """
         self.name = name
         self.stationA = stationA

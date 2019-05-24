@@ -1,12 +1,10 @@
 class Traject:
+
     """
     Representation of a traject
     """
 
     def __init__(self, trajectId):
-        """
-        Initializes a Dienstvoering
-        """
         self.trajectId = trajectId
         self.time = 0
         self.connections_visited = {}
@@ -15,6 +13,7 @@ class Traject:
         self.K_traject = 0
         self.Min_traject = 0
 
+    #input integer(a) station of departure(b) and destinaton(c)
     def fill_connections(self, a, b, c):
         self.connections_visited[a] = b, c
 

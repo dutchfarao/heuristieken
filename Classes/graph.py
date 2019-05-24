@@ -1,8 +1,10 @@
 from Classes.station import Station
 import sys
 
-# Represents a grid of nodes/stations composed of nodes and edges
 class Graph:
+        """
+        Representation of a Graph object in RAILNL, composed of nodes(stations) and edges(connections)
+        """
     def __init__(self):
         self.station_dict = {}
         self.num_stations = 0

@@ -1,9 +1,9 @@
 import sys
-
-
-# Represents a node (station)
 class Station:
-
+    """
+    Representation of a Station object in RAILNL
+    
+    """
     def __init__(self, name, xCoordinate, yCoordinate, critical):
         self.id = name
         self.afkorting = None

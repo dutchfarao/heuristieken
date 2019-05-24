@@ -1,13 +1,9 @@
-# Implements a Dienstvoering object
 class Dienstvoering:
     """
-    Representation of a dienstvoering (7 trajects) in RAILNL
+    Representation of a dienstvoering object in RAILNL
     """
 
     def __init__(self, dienstId):
-        """
-        Initializes a Dienstvoering
-        """
         self.dienstId = dienstId
         self.score = 0
         self.trajects = {}
@@ -25,6 +21,7 @@ class Dienstvoering:
         self.critical_visited_HC.append((a, b))
         self.critical_visited_HC.append((b, a))
 
+    #input station of departure(a) and destinaton(b)
     def get_critical_visited(self, a, b):
         if ((a , b) in self.critical_visited):
             return True
@@ -34,8 +31,6 @@ class Dienstvoering:
             return False
 
     def set_score(self, score):
-        #p = (20/(len(critical_visited)))
-        #self.score = (10000 * self.p) - (self.t * 20 + self.m / 10)
         self.score = score
 
     def get_score(self):
