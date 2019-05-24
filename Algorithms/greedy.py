@@ -204,9 +204,13 @@ def Greedy(id, mapchooser):
         score = score - 120
     if mapchooser == 1:
         score = score - 400
+    
     #add score to scores_dict
     scores_dict[d.dienstId] = score
+    print("---------------------------------------------------")
     print(scores_dict)
+    print("---------------------------------------------------")
+
 
 def scores_dict_returner_greedy():
     """
