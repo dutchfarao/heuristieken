@@ -60,7 +60,14 @@ Als we de lengte in minuten van alle kritieke verbindingen bij elkaar optellen k
     python main.py
 ```
 
-#### *Keuze 1: Uitvoer van een algorithme of visualisatie van resultaten?*
+#### *Keuze 1: Kaart van heel Nederland of alleen Noord- en Zuid-Holland?*
+
+| *Kaart*                	| *Command* 	|
+|------------------------	|:---------:	|
+| Nederland              	| ``` 1 ``` 	|
+| Noord- en Zuid-Holland 	| ``` 2 ``` 	|
+
+#### *Keuze 2: Uitvoer van een algorithme of visualisatie van resultaten?*
 
 | *Keuze*       	|   *Command*   	|
 |---------------	|:-------------:	|
@@ -68,14 +75,6 @@ Als we de lengte in minuten van alle kritieke verbindingen bij elkaar optellen k
 | Visualisaties 	|   ``` v ```   	|
 
 *NB: een visualisatie kan pas worden uitgevoerd nadat er resultaten zijn geproduceerd.*
-
-
-#### *Keuze 2: Kaart van heel Nederland of alleen Noord- en Zuid-Holland?*
-
-| *Kaart*                	| *Command* 	|
-|------------------------	|:---------:	|
-| Nederland              	| ``` 1 ``` 	|
-| Noord- en Zuid-Holland 	| ``` 2 ``` 	|
 
 #### *Keuze 3: Welk algorithme?*
 
