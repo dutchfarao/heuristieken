@@ -1,21 +1,29 @@
-from Classes.graph import *
-from Classes.station import *
-from Classes.dienstvoering import *
-from Classes.traject import *
-from HelperFunctions.CSVHelper import *
+from Classes.graph import Graph
+from Classes.station import Station
+from Classes.dienstvoering import Dienstvoering
+from Classes.traject import Traject
+from HelperFunctions.CSVHelper import g
 import random
 
 scores_dict = {}
 
-
 def MapChoice(mapchooser):
+    """
+     A function that sets the map chosen
 
+    Input:
+        mapchooser: an integer, NL is 1, N/Z Holland is 2
+    Returns:
+         mapChoice_list: a list that sets variables later used for calculation of score
+    """
+    #create empty list
     mapChoice_list = []
 
     if mapchooser == 1:
         max_duration = 180
         critical_connections = 120
         traject_amount = 20
+        #fill list
         mapChoice_list.append(max_duration)
         mapChoice_list.append(critical_connections)
         mapChoice_list.append(traject_amount)
@@ -24,16 +32,22 @@ def MapChoice(mapchooser):
         max_duration = 120
         critical_connections = 40
         traject_amount = 7
+        #fill list
         mapChoice_list.append(max_duration)
         mapChoice_list.append(critical_connections)
         mapChoice_list.append(traject_amount)
 
     return mapChoice_list
 
-
-
 # Returns a random node/station from all the stations:
 def Greedy(id, mapchooser):
+
+    """
+ The Greedy algorithm
+    Input:
+        mapchooser: an integer, NL is 1, N/Z Holland is 2
+        id: an integer ranging from 0 to chosen number of iterations
+        """
     max_duration, critical_connections, traject_amount = 0, 0, 0
     #mapchoser: Nederland = 1, nood/zuid holland = 2
     mapChoice_list = MapChoice(mapchooser)
@@ -41,12 +55,11 @@ def Greedy(id, mapchooser):
     critical_connections = mapChoice_list[1]
     traject_amount = mapChoice_list[2]
 
-
+    #create dienstvoering, set minutes and i to 0
     d = Dienstvoering(id)
-
-
     Dienstvoering_MIN = 0
     i = 0
+
     for i in range(traject_amount):
         #create traject object
         t = Traject(i)
@@ -82,24 +95,22 @@ def Greedy(id, mapchooser):
             neighbors_keys = list(neighbors.keys())
             neighbors_items = list(neighbors.items())
             num_of_neighbors = len(neighbors)
-            #print("Mogelijke volgende stations zijn", neighbors)
+
             #get the current score from the dienstvoering
-            print("GET SCORE:", d.get_score())
             current_score = int(d.get_score())
             #create score_dict, we'll use this to temporarely save the scores of each adjacent station
             score_dict = {}
             score_dict1 = {}
+
             # check which 'neigbors have already been visited', if not, put neighbor in unvisited_items
             unvisited_items = []
             for neighbor in neighbors.keys():
                 visited = g.get_station(neighbor).get_visited()
                 if (visited == False):
                     unvisited_items.append(neighbor)
-            #print("Stations die nog niet bezocht zijn:", unvisited_items)
             #remove stations that are to far from options.
             for neighbor in unvisited_items:
                 time_upgrade = float(neighbors.get(neighbor))
-                print("PROBLEM: ", neighbors.get(neighbor))
                 if (TOTAL_MIN + time_upgrade) > max_duration:
                     unvisited_items.remove(neighbor)
 
@@ -111,7 +122,6 @@ def Greedy(id, mapchooser):
             for key in (unvisited_items):
                 current_station = g.get_station(key)
                 #set MIN, needed for calculation of score
-                print("PROBLEM: ", neighbors.get(key))
                 MIN = float((neighbors.get(key)))
 
                 #do this for noord/zuid holland
@@ -159,62 +169,50 @@ def Greedy(id, mapchooser):
 
 
                     #this is where the best destination is chosen
-                    print("SCOREDICT: ", score_dict1)
                     destination = max(score_dict1, key=score_dict1.get)
-
-
-
-
 
 
             #upgrade time, but check if the new total won't exceed the maximum
             time_upgrade = float(neighbors.get(destination))
             #print(time_upgrade)
             TOTAL_MIN = TOTAL_MIN + time_upgrade
-            #if (TOTAL_MIN > 120):
-            #    TOTAL_MIN = TOTAL_MIN - time_upgrade
-            #    break
+
             #update station visited
             g.get_station(destination).set_visited()
             #update connections_visited in traject object
             t.fill_connections(i, departure, destination)
             #update critical_visited
             if g.get_station(destination).get_critical() or g.get_station(departure).get_critical() == True:
+
                 #check if connection is already get_critical_visited
                 critical_check = d.get_critical_visited(departure, destination)
                 if critical_check == False:
                     d.fill_critical(departure, destination)
                 else:
                     continue
+
             #set destination as new departure
-        #    print("Huidige station is", departure)
             departure = destination
+
             #update score
             d.set_score(score)
-        #    print("volgende station is", departure)
-            #print("Huidige score:", score)
             i + 1
             Dienstvoering_MIN = Dienstvoering_MIN + TOTAL_MIN
 
-
-
-
-
-
-
-
-
-        #print("TOTAL_MIN = ", TOTAL_MIN)
-        #print("tussenscore =", score )
-
-    #print("Dienstvoering_MIN =", Dienstvoering_MIN)
     #compensate for T, this is 7*20 for noord/zuid holland and 7*20 for Nederland
     if mapchooser == 2:
         score = score - 120
     if mapchooser == 1:
         score = score - 400
-    print("Final score= ", score)
+    #add score to scores_dict
     scores_dict[d.dienstId] = score
+    print(scores_dict)
 
 def scores_dict_returner_greedy():
+    """
+     A simple method that to return score_dict in main
+
+    Returns:
+         scores_dict: a dict of scores produced by greedy.
+    """
     return scores_dict
