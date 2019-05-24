@@ -4,8 +4,6 @@ from Classes.traject import *
 from Classes.graph import Graph
 from Algorithms.greedy import *
 from Algorithms.random import *
-from Algorithms.random2 import *
-from Algorithms.hillclimber import *
 from Algorithms.HillClimber2 import *
 from Algorithms.SimulatedAnnealing import *
 from HelperFunctions.VisualisationHelper import *
