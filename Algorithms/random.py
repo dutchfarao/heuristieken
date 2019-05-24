@@ -1,7 +1,10 @@
-from Classes.graph import *
-from Classes.station import *
+from Classes.graph import Graph
+from Classes.station import Station
+from Classes.dienstvoering import Dienstvoering
+from Classes.traject import Traject
+from HelperFunctions.CSVHelper import g
 import random
-from main import *
+
 
 # Dictionary where all the scores will be saved
 scores_dict = {}

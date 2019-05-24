@@ -5,7 +5,6 @@ from matplotlib.ticker import FuncFormatter
 import numpy as np
 from Classes.graph import Graph
 from Classes.dienstvoering import Dienstvoering
-from main import *
 import networkx as nx
 import edges as e
 

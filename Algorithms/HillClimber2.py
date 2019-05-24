@@ -1,6 +1,7 @@
-from Classes.graph import *
-from Classes.station import *
-from main import *
+from Classes.graph import Graph
+from Classes.station import Station
+from Classes.dienstvoering import Dienstvoering
+from HelperFunctions.CSVHelper import g
 import random
 import copy
 
@@ -105,29 +106,6 @@ def SetScoreCalculator(length, minutes, dienstvoering, critical_connections, tra
     score = 10000 * (length / critical_connections) - (traject_cost + minutes / 10)
     return score
 
-def TrajectCopier(dienstvoering, random_t):
-
-    """
-    Copies a traject
-
-    Input:
-        dienstvoering: A dienstvoering object
-        random_t: An integer representing the randomly selected traject
-    Returns:
-         temporary: A traject object
-    """
-
-    temporary = Traject(8)
-    temporary.trajectId = dienstvoering.trajects[random_t].trajectId
-    temporary.time = dienstvoering.trajects[random_t].time
-    temporary.connections_visited = dienstvoering.trajects[random_t].connections_visited
-    temporary.critical_visited = dienstvoering.trajects[random_t].critical_visited
-    temporary.critical_visited_HC = dienstvoering.trajects[random_t].critical_visited_HC
-    temporary.K_traject = dienstvoering.trajects[random_t].K_traject
-    temporary.Min_traject = dienstvoering.trajects[random_t].Min_traject
-
-    return temporary
-
 def DienstvoeringCopier(dienstvoering):
 
     """
@@ -144,7 +122,7 @@ def DienstvoeringCopier(dienstvoering):
 
     return temporary_dienstvoering
 
-def DecisionFunctionality(score_before, score_after, dienstvoering, temporary_dienstvoering, temporary_traject, random_t):
+def DecisionFunctionality(score_before, score_after, dienstvoering, temporary_dienstvoering, random_t):
 
     """
     Decides on the basis of the score whether to accept the new dienstvoering or to reset back to the old dienstvoering
@@ -169,10 +147,6 @@ def DecisionFunctionality(score_before, score_after, dienstvoering, temporary_di
         # Adds the newly visited critical connections to the dienstvoering
         for row in dienstvoering.trajects[random_t].critical_visited_HC:
             dienstvoering.critical_visited_HC.append(row)
-
-        # Removes all the first instances of the critical connections visited by the old (now replaced) Traject
-        for row in temporary_traject.critical_visited_HC:
-            dienstvoering.critical_visited_HC.remove(row)
 
         dienstvoering.set_score(score_after)
 
@@ -354,8 +328,7 @@ def Hillclimber2(dienstvoering, iter, mapchooser):
         # print("Random_t is: ")
         # print(random_t)
 
-        # Initializes a new, temporary Traject and Dienstvoering object to store the values
-        temporary_traject = TrajectCopier(dienstvoering, random_t)
+        # Initializes a new, temporary Dienstvoering object to store the values
         temporary_dienstvoering = DienstvoeringCopier(dienstvoering)
 
         # Resetting the minimal_t Traject
@@ -368,7 +341,7 @@ def Hillclimber2(dienstvoering, iter, mapchooser):
         minutes_after = MinutesCalculator(dienstvoering)
         score_after = SetScoreCalculator(length_after, minutes_after, dienstvoering, critical_connections, traject_amount)
 
-        dienstvoering = DecisionFunctionality(score_before, score_after, dienstvoering, temporary_dienstvoering, temporary_traject, random_t)
+        dienstvoering = DecisionFunctionality(score_before, score_after, dienstvoering, temporary_dienstvoering, random_t)
 
         # Calculates the total score of the dienstvoering
         final_score = dienstvoering.score

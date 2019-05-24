@@ -1,21 +1,21 @@
-from HelperFunctions.CSVHelper import *
+from HelperFunctions.CSVHelper import load_stations, load_connections, WriteScores, ReadScores
 from Classes.dienstvoering import Dienstvoering
 from Classes.traject import Traject
 from Classes.graph import Graph
-from Algorithms.greedy import Greedy
-from Algorithms.random import *
-from Algorithms.HillClimber2 import *
-from Algorithms.SimulatedAnnealing import *
-from HelperFunctions.VisualisationHelper import *
-#from HelperFunctions.MapHelper import MapHelper
+from Algorithms.greedy import Greedy, scores_dict_returner_greedy
+from Algorithms.random import Random, scores_dict_returner_random
+from Algorithms.HillClimber2 import Hillclimber2
+from Algorithms.SimulatedAnnealing import SimulatedAnnealing
+from HelperFunctions.VisualisationHelper import HistogramPlot, CategoricalPlot
+from HelperFunctions.MapHelper import MapHelper
 import time
+import random
 
 if __name__ == "__main__":
 
     scores_dict = {}
     data = {}
     mapchooser = 0
-
 
     # Allows the user to choose whether the Dienstregeling will be national or just for North and South Holland
     while True:
@@ -84,7 +84,6 @@ if __name__ == "__main__":
             continue
         else:
             break
-
 
     # If the user chooses Hillclimber
     if choiceAlgorithm == "h":
@@ -166,7 +165,6 @@ if __name__ == "__main__":
         #write scores
         WriteScores(scores_dict, "Greedy", 1)
         ReadScores("Greedy")
-
 
     # If the user chooses the algorithm Random
     if choiceAlgorithm == "r":
