@@ -31,11 +31,13 @@ MIN = aantal minuten
 Voor Noord en Zuid Holland:
 
 Maximale T : 7 
+
 Maximaal aantal minuten per traject: 120
     
 Voor heel Nederland:
 
 Maximale T : 20
+
 Maximaal aantal minuten per traject: 180
 
 ## Toestandsruimte
