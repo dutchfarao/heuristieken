@@ -12,7 +12,7 @@ import edges as e
 def LabelPositionChanger(pos):
 
     pos_changed = {}
-    y_off = 0.025 # offset on the y axis
+    y_off = 0.04 # offset on the y axis
 
     for k, v in pos.items():
         pos_changed[k] = (v[0], v[1] + y_off)
@@ -23,10 +23,10 @@ def NodeColorSetter(color_values):
 
     for station in g.station_dict.values():
         if station.critical == True:
-            color_values.append('k')
+            color_values.append('#a5330c')
 
         if station.critical == False:
-            color_values.append('#808080')
+            color_values.append('#ffffff')
 
     return color_values
 
@@ -62,7 +62,7 @@ def EdgeAdder(G):
         for key in station.adjacent.keys():
             elist.append((station.id, key, station.adjacent[key]))
 
-    print(elist)
+    #print(elist)
 
     for edge in elist:
 
@@ -71,24 +71,39 @@ def EdgeAdder(G):
 
     return G
 
-def EdgeAdderTrajects(G, dienstvoering):
+def EdgeAdderTrajects(G, dienstvoering, mapchooser):
 
     elist = []
 
+    if mapchooser == 2:
+        colours = ['b', 'g', 'r', 'c', 'm', 'y', 'k', '#880e4f', '#af90a1']
+
+    elif mapchooser == 1:
+        colours = ['b', 'g', 'r', 'c', 'm', 'y', 'k', '#880e4f', '#af90a1', '#b2adbd', '#aafaeb', '#b813d1', '#26eda3', '#d6c902', '#8c82cb', '#49599b', '#bde3da', '#c72c20', '#48057f', '#178f4b']
+
+    counter = 0
+    size = (counter + 1) * len(dienstvoering.trajects)
+
     for traject in dienstvoering.trajects.values():
+
+        elist.clear()
 
         for train in traject.connections_visited.values():
 
-            print(train)
+            # print(train)
             elist.append((train[0], train[1]))
 
+        for edge in elist:
 
-    #print(elist)
-    #
-    # for edge in elist:
-    #
-    #     print(edge)
-    #     G.add_edge(edge[0], edge[1])
+            G.add_edge(edge[0], edge[1], color=colours[counter], weight=(size - counter))
+
+        counter = counter + 1
+        first = elist[0][0]
+        length = len(elist) - 1
+        last = elist[length][1]
+
+        # print(first)
+        # print(last)
 
     return G
 
@@ -116,10 +131,10 @@ def NodeTextAdderNonCritical(G):
 
     return labels_not_critical
 
-def TrajectsCreator(NetworkXGraph, dienstvoering):
+def TrajectsCreator(NetworkXGraph, dienstvoering, mapchooser):
 
     NetworkXGraph = NodeAdder(NetworkXGraph)
-    NetworkXGraph = EdgeAdderTrajects(NetworkXGraph, dienstvoering)
+    NetworkXGraph = EdgeAdderTrajects(NetworkXGraph, dienstvoering, mapchooser)
 
     color_values = []
     color_values = NodeColorSetter(color_values)
@@ -128,16 +143,22 @@ def TrajectsCreator(NetworkXGraph, dienstvoering):
     labelsdictnoncritical = NodeTextAdderNonCritical(NetworkXGraph)
 
     pos=nx.get_node_attributes(NetworkXGraph,'pos')
+    edges = NetworkXGraph.edges()
+    colours = [NetworkXGraph[u][v]['color'] for u,v in edges]
+    weights = [NetworkXGraph[u][v]['weight'] for u,v in edges]
+
     pos_changed = LabelPositionChanger(pos)
 
     fig,ax = plt.subplots(1, figsize = (7,12))
-    nx.draw(NetworkXGraph, pos, node_color=color_values, node_size=70)
+    nx.draw(NetworkXGraph, pos, edges=edges, node_color=color_values, edge_color = colours, node_size=70, width=weights)
     nx.draw_networkx_labels(NetworkXGraph, pos_changed, labels = labelsdictcritical, font_size=14, font_color='#ffb780')
     nx.draw_networkx_labels(NetworkXGraph, pos_changed, labels = labelsdictnoncritical, font_size=12, font_color='#80916b')
+    # ax.legend(edges)
     plt.show()
 
 def OverviewCreator(NetworkXGraph):
 
+    # img = plt.imread("kaart.png")
     NetworkXGraph = NodeAdder(NetworkXGraph)
     NetworkXGraph = EdgeAdder(NetworkXGraph)
 
@@ -149,24 +170,26 @@ def OverviewCreator(NetworkXGraph):
 
     pos=nx.get_node_attributes(NetworkXGraph,'pos')
     pos_changed = LabelPositionChanger(pos)
-    fig,ax = plt.subplots(1, figsize = (7,12))
+    fig,ax = plt.subplots(1, figsize = (8,11))
+    # ax.imshow(img, extent=[5, 8, 50, 54])
 
-    nx.draw(NetworkXGraph, pos, node_color=color_values, node_size=70)
-    nx.draw_networkx_labels(NetworkXGraph, pos_changed, labels = labelsdictcritical, font_size=14, font_color='#ffb780')
-    nx.draw_networkx_labels(NetworkXGraph, pos_changed, labels = labelsdictnoncritical, font_size=12, font_color='#80916b')
+    nx.draw(NetworkXGraph, pos, node_color=color_values, node_size=80)
+    nx.draw_networkx_labels(NetworkXGraph, pos_changed, labels = labelsdictcritical, font_size=10, font_color='#381e1e')
+    nx.draw_networkx_labels(NetworkXGraph, pos_changed, labels = labelsdictnoncritical, font_size=8, font_color='#381e1e')
     plt.show()
 
 def MapHelper(mapchooser, dienstvoering):
 
-    NetworkXGraph = nx.Graph()
+    NetworkXGraph = nx.DiGraph()
+    # NetworkXGraph = nx.Graph()
     StationLoader()
 
     Stringinput = input("Choose which plot to create: Overview or Trajects. ")
 
     if Stringinput == "Overview":
-        print("Above overview")
+
         OverviewCreator(NetworkXGraph)
-        print("Below overview")
+
 
     if Stringinput == "Trajects":
-        TrajectsCreator(NetworkXGraph, dienstvoering)
+        TrajectsCreator(NetworkXGraph, dienstvoering, mapchooser)

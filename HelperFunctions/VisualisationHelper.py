@@ -14,6 +14,7 @@ def currency(x, pos):
     return s
 
 # Creates a histogram of the scores of a certain algorithm
+# Creates a histogram of the scores of a certain algorithm
 def HistogramPlot(scores, name):
 
     scores_array = []
@@ -29,7 +30,7 @@ def HistogramPlot(scores, name):
 
     arraybins = []
     bincounter = 0
-    for i in range(18):
+    for i in range(20):
         bincounter = bincounter + 500
         arraybins.append(bincounter)
 
@@ -47,26 +48,36 @@ def HistogramPlot(scores, name):
 
 
 # Prints out the average, lowest and highest score for on scores_dict
-def CategoricalPlot(scores):
+def CategoricalPlot(scores_hillclimber, scores_SA):
 
-    n = len(scores)
-    high = max(scores.values())
-    low = min(scores.values())
-    total = sum(scores.values())
-    average = total / n
+    n_hillclimber = len(scores_hillclimber)
+    n_SA = len(scores_SA)
 
-    names = ['low', 'average', 'high']
-    values = [low, average, high]
+    run_array = []
+    for key in scores_hillclimber.keys():
+        run_array.append(key)
 
-    plt.figure(1, figsize=(9, 3))
+    print(run_array)
+    scores_array_hc = []
+    for row in scores_hillclimber.values():
+        scores_array_hc.append(row)
+    print(scores_array_hc)
+    scores_array_SA = []
+    for row in scores_SA.values():
+        scores_array_SA.append(row)
 
-    plt.subplot(131)
-    plt.bar(names, values)
-    plt.subplot(132)
-    plt.scatter(names, values)
-    plt.subplot(133)
-    plt.plot(names, values)
-    plt.suptitle('Categorical Plotting')
+
+    #plt.plot(run_array, scores_array_hc)
+    plt.plot(run_array, scores_array_SA, 'r', linewidth=0.4)
+    plt.plot(run_array, scores_array_hc, 'b', linewidth=0.4)
+
+    plt.xlabel('Run')
+    plt.ylabel('Temperature')
+    plt.title("Temperature SA")
+    # plt.text(100, 420, "n = 100")
+    # plt.axvline(average, label='average at x = {}'.format(average), linestyle='dashed', linewidth=2, color='r')
+    plt.tight_layout()
+    plt.legend()
     plt.show()
 
 # This function calculates the lowest, highest and average K of the results of each algorithm
