@@ -9,7 +9,6 @@ import networkx as nx
 import edges as e
 
 def LabelPositionChanger(pos):
-
     pos_changed = {}
     y_off = 0.04 # offset on the y axis
 
@@ -61,13 +60,10 @@ def EdgeAdder(G):
         for key in station.adjacent.keys():
             elist.append((station.id, key, station.adjacent[key]))
 
-    #print(elist)
-
     for edge in elist:
 
         print(edge)
         G.add_edge(edge[0], edge[1])
-
     return G
 
 def EdgeAdderTrajects(G, dienstvoering, mapchooser):
@@ -89,7 +85,6 @@ def EdgeAdderTrajects(G, dienstvoering, mapchooser):
 
         for train in traject.connections_visited.values():
 
-            # print(train)
             elist.append((train[0], train[1]))
 
         for edge in elist:
@@ -100,9 +95,6 @@ def EdgeAdderTrajects(G, dienstvoering, mapchooser):
         first = elist[0][0]
         length = len(elist) - 1
         last = elist[length][1]
-
-        # print(first)
-        # print(last)
 
     return G
 
@@ -156,7 +148,6 @@ def TrajectsCreator(NetworkXGraph, dienstvoering, mapchooser):
     plt.show()
 
 def OverviewCreator(NetworkXGraph):
-
     # img = plt.imread("kaart.png")
     NetworkXGraph = NodeAdder(NetworkXGraph)
     NetworkXGraph = EdgeAdder(NetworkXGraph)
@@ -180,15 +171,12 @@ def OverviewCreator(NetworkXGraph):
 def MapHelper(mapchooser, dienstvoering):
 
     NetworkXGraph = nx.DiGraph()
-    # NetworkXGraph = nx.Graph()
     StationLoader()
 
     Stringinput = input("Choose which plot to create: Overview or Trajects. ")
-
     if Stringinput == "Overview":
 
         OverviewCreator(NetworkXGraph)
-
 
     if Stringinput == "Trajects":
         TrajectsCreator(NetworkXGraph, dienstvoering, mapchooser)

@@ -7,7 +7,7 @@ from Algorithms.random import Random, scores_dict_returner_random
 from Algorithms.HillClimber2 import Hillclimber2
 from Algorithms.SimulatedAnnealing import SimulatedAnnealing
 from HelperFunctions.VisualisationHelper import HistogramPlot, CategoricalPlot
-from HelperFunctions.MapHelper import MapHelper
+#from HelperFunctions.MapHelper import MapHelper
 import time
 import random
 

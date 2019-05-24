@@ -3,8 +3,6 @@ from Classes.station import Station
 from Classes.connection import Connection
 from Classes.graph import Graph
 from Classes.dienstvoering import Dienstvoering
-from HelperFunctions.VisualisationHelper import *
-
 
 INPUT_CONNECTIONS = "Data/ConnectiesHolland.csv"
 INPUT_STATIONS = "Data/StationsHolland.csv"
@@ -28,9 +26,6 @@ def load_stations(file):
 
             g.add_station(name, xCoordinate, yCoordinate, critical)
 
-
-        #station_printer()
-
 # Function to load the CSV file 'ConnectiesHolland' into a dictionary named connections
 def load_connections(file):
 
@@ -50,11 +45,6 @@ def load_connections(file):
             visited = False
 
             g.add_connection(stationA, stationB, time, critical, visited)
-
-            #g.station_dict[stationA].add_neighbor(stationB, time)
-            #g.station_dict[stationB].add_neighbor(stationA, time)
-
-        #connection_printer()
 
 # Function to write the results to a CSV file
 def WriteScores(results, choiceAlgorithm, mode):
@@ -84,7 +74,6 @@ def WriteScores(results, choiceAlgorithm, mode):
         run = 0
         row = str(run) + ',' + str(results) + '\n'
         csv.write(row)
-
 
 def ReadScores(CSVName):
 
@@ -117,4 +106,3 @@ if __name__ == "__main__":
 
     load_stations(INPUT_STATIONS)
     load_connections(INPUT_CONNECTIONS)
-    #WriteScores(results)
